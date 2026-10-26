@@ -20,7 +20,7 @@ Flows deploy as **Draft**. Activate `Lock_Quote_On_Order_Completion` manually in
 
 ## 2. Enable record locking and unlocking in Apex
 
-The project needs `Approval.lock` / `Approval.unlock` (for example, `scripts/apex/unlockQuoteAndDeleteOrders.apex`). Without this setting, Apex fails with:
+The project needs `Approval.lock` (used by the `LockRecordOnce` Apex action). Without this setting, Apex fails with:
 
 > `System.NoAccessException: Apex approval lock/unlock api preference not enabled`
 
@@ -128,4 +128,3 @@ If the flow runs without an error but the email does not arrive:
   ```bash
   sf data query -o "<org alias>" -q "SELECT Id, SequenceNumber__c, Order__c, OrderStatus__c, Quote__c, QuoteStatus__c FROM QuoteToOrderInspect__c WHERE Quote__c = '<Quote Id>' ORDER BY SequenceNumber__c"
   ```
-- To reset test data, run `scripts/apex/unlockQuoteAndDeleteOrders.apex`.
