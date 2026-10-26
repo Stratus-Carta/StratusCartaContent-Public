@@ -1,0 +1,10 @@
+# Salesforce local org/cache data - never commit
+.sfdx/
+.sf/
+.localdevserver/
+deploy-options.json
+# Tooling
+node_modules/
+.vscode/
+*.log
+.DS_Store
