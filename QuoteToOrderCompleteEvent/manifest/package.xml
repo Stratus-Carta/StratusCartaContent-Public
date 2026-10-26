@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>LockRecordOnce</members>
+		<members>LockRecordOnceTest</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>QuoteToOrderInspect__c.OrderStatus__c</members>
+		<members>QuoteToOrderInspect__c.Order__c</members>
+		<members>QuoteToOrderInspect__c.QuoteStatus__c</members>
+		<members>QuoteToOrderInspect__c.Quote__c</members>
+		<members>QuoteToOrderInspect__c.SequenceNumber__c</members>
+		<name>CustomField</name>
+	</types>
+	<types>
+		<members>QuoteConvertedToOrder</members>
+		<name>CustomNotificationType</name>
+	</types>
+	<types>
+		<members>QuoteToOrderInspect__c</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>QuoteToOrderInspect__c</members>
+		<name>CustomTab</name>
+	</types>
+	<types>
+		<members>Lock_Quote_On_Order_Completion</members>
+		<name>Flow</name>
+	</types>
+	<types>
+		<members>QuoteToOrderInspect__c-Quote To Order Inspect Layout</members>
+		<name>Layout</name>
+	</types>
+	<types>
+		<members>QuoteToOrderInspect</members>
+		<name>PermissionSet</name>
+	</types>
+	<types>
+		<members>Apex</members>
+		<name>Settings</name>
+	</types>
+	<version>67.0</version>
+</Package>

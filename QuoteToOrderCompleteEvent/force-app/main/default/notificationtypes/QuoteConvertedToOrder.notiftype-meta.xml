@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomNotificationType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customNotifTypeName>Quote Converted To Order</customNotifTypeName>
+    <description>Notifies the Quote Owner when a Quote is converted to Order(s).</description>
+    <desktop>true</desktop>
+    <masterLabel>Quote Converted To Order</masterLabel>
+    <mobile>true</mobile>
+    <slack>false</slack>
+</CustomNotificationType>
