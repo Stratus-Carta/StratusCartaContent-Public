@@ -1,0 +1,17 @@
+Product.ProductCode,Product.Name,RootProduct.ProductCode,ParentProduct.ProductCode,NF_AccessTechnology__c,NF_MinDownloadMbps__c,EffectiveFromDate,EffectiveToDate
+NFR-INT-1G,NovaFiber 1 Gig,,,Fiber,1000,2026-01-01,2027-01-24
+NFR-INT-2G,NovaFiber 2 Gig,,,Fiber,2000,2026-01-01,2027-01-24
+NFR-INT-300,NovaFiber 300,,,Fiber,300,2026-01-01,2027-01-24
+NFR-INT-5G,NovaAir 5G Home,,,5G FWA,250,2026-01-01,2027-01-24
+NFR-INT-DSL100,NovaDSL 100,,,Copper,100,2026-01-01,2027-01-24
+NFR-INT-DSL50,NovaDSL 50,,,Copper,50,2026-01-01,2027-01-24
+NFR-MOB-ESS,NovaMobile Essentials,,,5G FWA,0,2026-01-01,2027-01-24
+NFR-MOB-ESS,NovaMobile Essentials,,,Copper,0,2026-01-01,2027-01-24
+NFR-MOB-ESS,NovaMobile Essentials,,,Fiber,0,2026-01-01,2027-01-24
+NFR-MOB-ESS,NovaMobile Essentials,,,None,0,2026-01-01,2027-01-24
+NFR-MOB-UNL,NovaMobile Unlimited,,,5G FWA,0,2026-01-01,2027-01-24
+NFR-MOB-UNL,NovaMobile Unlimited,,,Copper,0,2026-01-01,2027-01-24
+NFR-MOB-UNL,NovaMobile Unlimited,,,Fiber,0,2026-01-01,2027-01-24
+NFR-MOB-UNL,NovaMobile Unlimited,,,None,0,2026-01-01,2027-01-24
+NFR-TV-ESS,NovaTV Essentials,,,Fiber,0,2026-01-01,2027-01-24
+NFR-TV-PRM,NovaTV Premium,,,Fiber,0,2026-01-01,2027-01-24

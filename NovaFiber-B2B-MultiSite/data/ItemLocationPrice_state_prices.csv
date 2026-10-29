@@ -1,0 +1,325 @@
+Product__r.ProductCode,Product__r.Name,Price_Book__r.Name,Product_Selling_Model__r.Name,LocationState__c,Unit_Price__c
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,AK,23.99
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,CA,21.99
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,GA,19.2
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,IL,20.99
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,NY,21.99
+NFB-ADD-AA,Auto Attendant,Standard Price Book,Evergreen - Monthly,TX,18.8
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,AK,69.99
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,CA,65.99
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,GA,56.99
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,IL,60.99
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,NY,64.99
+NFB-ADD-BKP,5G Backup Connection,Standard Price Book,Evergreen - Monthly,TX,54.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,AK,234.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,CA,222.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,GA,190.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,IL,204.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,NY,218.99
+NFB-ADD-DDOS,DDoS Protection,Standard Price Book,Evergreen - Monthly,TX,186.99
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,AK,17.7
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,CA,16.8
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,GA,14.4
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,IL,15.45
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,NY,16.5
+NFB-ADD-DID,DID Number Block (100),Standard Price Book,Evergreen - Monthly,TX,14.1
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,AK,412.99
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,CA,391.99
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,GA,335.99
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,IL,360.99
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,NY,384.99
+NFB-ADD-DIV,Diverse Path,Standard Price Book,Evergreen - Monthly,TX,328.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,AK,92.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,CA,87.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,GA,75.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,IL,80.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,NY,86.99
+NFB-ADD-FW,Managed Firewall,Standard Price Book,Evergreen - Monthly,TX,73.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,AK,52.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,CA,49.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,GA,42.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,IL,45.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,NY,49.99
+NFB-ADD-IP16,Static IP Block /28,Standard Price Book,Evergreen - Monthly,TX,41.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,AK,29.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,CA,27.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,GA,23.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,IL,25.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,NY,27.99
+NFB-ADD-IP8,Static IP Block /29,Standard Price Book,Evergreen - Monthly,TX,23.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,AK,34.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,CA,33.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,GA,28.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,IL,30.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,NY,32.99
+NFB-ADD-REC,Call Recording,Standard Price Book,Evergreen - Monthly,TX,27.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,AK,530.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,CA,503.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,GA,431.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,IL,463.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,NY,494.99
+NFB-DIA-100,Dedicated Internet 100 Mbps,Standard Price Book,Evergreen - Monthly,TX,422.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,AK,4601.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,CA,4367.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,GA,3743.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,IL,4016.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,NY,4289.99
+NFB-DIA-10G,Dedicated Internet 10 Gbps,Standard Price Book,Evergreen - Monthly,TX,3665.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,AK,1356.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,CA,1287.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,GA,1103.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,IL,1184.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,NY,1264.99
+NFB-DIA-1G,Dedicated Internet 1 Gbps,Standard Price Book,Evergreen - Monthly,TX,1080.99
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,AK,17.7
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,CA,16.8
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,GA,14.4
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,IL,15.45
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,NY,16.5
+NFB-EQ-AP,Managed Wi-Fi Access Point,Standard Price Book,Evergreen - Monthly,TX,14.1
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,AK,0
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,CA,0
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,GA,0
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,IL,0
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,NY,0
+NFB-EQ-GW,Business Gateway,Standard Price Book,Evergreen - Monthly,TX,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,AK,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,CA,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,GA,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,IL,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,NY,0
+NFB-EQ-MRTR,Managed Edge Router,Standard Price Book,Evergreen - Monthly,TX,0
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,AK,7.08
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,CA,6.72
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,GA,5.76
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,IL,6.18
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,NY,6.6
+NFB-EQ-PHONE,IP Desk Phone,Standard Price Book,Evergreen - Monthly,TX,5.64
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,AK,88.99
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,CA,83.99
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,GA,71.99
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,IL,76.99
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,NY,82.99
+NFB-EQ-SDWL,SD-WAN Edge Appliance (Large),Standard Price Book,Evergreen - Monthly,TX,70.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,AK,40.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,CA,38.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,GA,33.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,IL,35.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,NY,38.99
+NFB-EQ-SDWS,SD-WAN Edge Appliance (Small),Standard Price Book,Evergreen - Monthly,TX,32.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,AK,210.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,CA,199.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,GA,171.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,IL,183.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,NY,196.99
+NFB-FIB-1G,Business Fiber 1 Gig,Standard Price Book,Evergreen - Monthly,TX,167.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,AK,293.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,CA,278.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,GA,238.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,IL,255.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,NY,273.99
+NFB-FIB-2G,Business Fiber 2 Gig,Standard Price Book,Evergreen - Monthly,TX,233.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,AK,151.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,CA,143.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,GA,123.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,IL,132.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,NY,141.99
+NFB-FIB-500,Business Fiber 500,Standard Price Book,Evergreen - Monthly,TX,120.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,AK,1769.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,CA,1679.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,GA,1439.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,IL,1544.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,NY,1649.99
+NFB-INS-DIA,Dedicated Circuit Build,Standard Price Book,One-Time,TX,1409.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,AK,352.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,CA,334.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,GA,286.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,IL,307.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,NY,328.99
+NFB-INS-ONSITE,Onsite Installation,Standard Price Book,One-Time,TX,280.99
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,AK,0
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,CA,0
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,GA,0
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,IL,0
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,NY,0
+NFB-INS-REMOTE,Remote Activation,Standard Price Book,One-Time,TX,0
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,AK,588.99
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,CA,558.99
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,GA,478.99
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,IL,513.99
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,NY,548.99
+NFB-INS-RUSH,Expedited Installation,Standard Price Book,One-Time,TX,468.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,AK,234.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,CA,222.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,GA,190.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,IL,204.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,NY,218.99
+NFB-INS-STD,Standard Business Installation,Standard Price Book,One-Time,TX,186.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,AK,175.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,CA,166.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,GA,142.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,IL,152.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,NY,163.99
+NFB-SDW-ADV,NovaWAN SD-WAN Advanced,Standard Price Book,Evergreen - Monthly,TX,139.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,AK,104.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,CA,99.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,GA,84.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,IL,91.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,NY,97.99
+NFB-SDW-ESS,NovaWAN SD-WAN Essentials,Standard Price Book,Evergreen - Monthly,TX,83.99
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,AK,20.99
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,CA,19.99
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,GA,17.28
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,IL,18.54
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,NY,19.8
+NFB-VOC-CHAN,SIP Channel,Standard Price Book,Evergreen - Monthly,TX,16.92
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,AK,27.99
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,CA,26.99
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,GA,22.99
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,IL,24.99
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,NY,25.99
+NFB-VOC-SEAT,UC Seat,Standard Price Book,Evergreen - Monthly,TX,22.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,AK,45.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,CA,43.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,GA,36.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,IL,39.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,NY,42.99
+NFB-VOC-SIP,NovaVoice SIP Trunk,Standard Price Book,Evergreen - Monthly,TX,36.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,AK,57.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,CA,54.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,GA,46.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,IL,49.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,NY,53.99
+NFB-VOC-UC,NovaVoice UC,Standard Price Book,Evergreen - Monthly,TX,45.99
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,AK,9.44
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,CA,8.96
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,GA,7.68
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,IL,8.24
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,NY,8.8
+NFR-ADD-CARE,Tech Care Plus,Standard Price Book,Evergreen - Monthly,TX,7.52
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,AK,7.08
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,CA,6.72
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,GA,5.76
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,IL,6.18
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,NY,6.6
+NFR-ADD-SEC,NovaShield Security,Standard Price Book,Evergreen - Monthly,TX,5.64
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,AK,11.8
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,CA,11.2
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,GA,9.6
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,IL,10.3
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,NY,11
+NFR-ADD-SIP,Static IP Address,Standard Price Book,Evergreen - Monthly,TX,9.4
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,AK,0
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,CA,0
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,GA,0
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,IL,0
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,NY,0
+NFR-EQ-5GCPE,5G Outdoor Receiver,Standard Price Book,Evergreen - Monthly,TX,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,AK,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,CA,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,GA,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,IL,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,NY,0
+NFR-EQ-DSLMODEM,VDSL2 Modem Router,Standard Price Book,Evergreen - Monthly,TX,0
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,AK,5.9
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,CA,5.6
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,GA,4.8
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,IL,5.15
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,NY,5.5
+NFR-EQ-MESH,Wi-Fi Mesh Extender,Standard Price Book,Evergreen - Monthly,TX,4.7
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,AK,0
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,CA,0
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,GA,0
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,IL,0
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,NY,0
+NFR-EQ-RTR,Wi-Fi 6 Router,Standard Price Book,Evergreen - Monthly,TX,0
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,AK,8.26
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,CA,7.84
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,GA,6.72
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,IL,7.21
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,NY,7.7
+NFR-EQ-STB,4K Set-Top Box,Standard Price Book,Evergreen - Monthly,TX,6.58
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,AK,116.99
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,CA,110.99
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,GA,94.99
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,IL,101.99
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,NY,108.99
+NFR-INS-PRO,Professional Installation,Standard Price Book,One-Time,TX,92.99
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,AK,0
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,CA,0
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,GA,0
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,IL,0
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,NY,0
+NFR-INS-SELF,Self-Install Kit,Standard Price Book,One-Time,TX,0
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,AK,82.99
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,CA,77.99
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,GA,66.99
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,IL,71.99
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,NY,76.99
+NFR-INT-1G,NovaFiber 1 Gig,Standard Price Book,Evergreen - Monthly,TX,65.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,AK,105.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,CA,100.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,GA,85.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,IL,92.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,NY,98.99
+NFR-INT-2G,NovaFiber 2 Gig,Standard Price Book,Evergreen - Monthly,TX,84.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,AK,58.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,CA,55.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,GA,47.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,IL,50.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,NY,54.99
+NFR-INT-300,NovaFiber 300,Standard Price Book,Evergreen - Monthly,TX,46.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,AK,52.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,CA,49.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,GA,42.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,IL,45.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,NY,49.99
+NFR-INT-5G,NovaAir 5G Home,Standard Price Book,Evergreen - Monthly,TX,41.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,AK,52.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,CA,49.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,GA,42.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,IL,45.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,NY,48.99
+NFR-INT-DSL100,NovaDSL 100,Standard Price Book,Evergreen - Monthly,TX,41.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,AK,40.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,CA,38.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,GA,33.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,IL,35.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,NY,37.99
+NFR-INT-DSL50,NovaDSL 50,Standard Price Book,Evergreen - Monthly,TX,32.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,AK,34.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,CA,33.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,GA,28.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,IL,30.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,NY,32.99
+NFR-MOB-ESS,NovaMobile Essentials,Standard Price Book,Evergreen - Monthly,TX,27.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,AK,58.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,CA,55.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,GA,47.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,IL,51.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,NY,54.99
+NFR-MOB-UNL,NovaMobile Unlimited,Standard Price Book,Evergreen - Monthly,TX,46.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,AK,29.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,CA,27.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,GA,23.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,IL,25.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,NY,27.99
+NFR-TV-ESS,NovaTV Essentials,Standard Price Book,Evergreen - Monthly,TX,23.99
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,AK,14.16
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,CA,13.44
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,GA,11.52
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,IL,12.36
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,NY,13.2
+NFR-TV-MOVIE,Movies Pack,Standard Price Book,Evergreen - Monthly,TX,11.28
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,AK,52.99
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,CA,49.99
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,GA,42.99
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,IL,45.99
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,NY,49.99
+NFR-TV-PRM,NovaTV Premium,Standard Price Book,Evergreen - Monthly,TX,41.99
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,AK,17.7
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,CA,16.8
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,GA,14.4
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,IL,15.45
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,NY,16.5
+NFR-TV-SPORT,Sports Pack,Standard Price Book,Evergreen - Monthly,TX,14.1

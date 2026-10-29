@@ -1,0 +1,247 @@
+{
+ "info": {
+  "name": "NovaFiber Serviceability Mock",
+  "description": "Network inventory mock for the NF_Serviceability named credential. One saved example per demo ZIP code; create a Postman mock server from this collection and put its URL in NF_Serviceability.",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "item": [
+  {
+   "name": "Check serviceability",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\"street\": \"1 Market St\", \"city\": \"San Francisco\", \"state\": \"CA\", \"postalCode\": \"94105\"}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/nf/serviceability?postalCode=94105",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "nf",
+      "serviceability"
+     ],
+     "query": [
+      {
+       "key": "postalCode",
+       "value": "94105"
+      }
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "10001 New York: fiber 2 Gig + 5G",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=10001",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "10001"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-392497\",\n  \"status\": \"SERVICEABLE\",\n  \"message\": \"Great news! Multi-gig NovaFiber is available at this address.\",\n  \"tvAvailable\": true,\n  \"technologies\": [\n    {\n      \"technology\": \"Fiber\",\n      \"maxDownloadMbps\": 2000,\n      \"maxUploadMbps\": 2000,\n      \"installType\": \"Existing Drop\",\n      \"leadTimeDays\": 2\n    },\n    {\n      \"technology\": \"5G FWA\",\n      \"maxDownloadMbps\": 250,\n      \"maxUploadMbps\": 30,\n      \"installType\": \"Self Install\",\n      \"leadTimeDays\": 2\n    }\n  ]\n}"
+    },
+    {
+     "name": "94105 San Francisco: fiber 1 Gig, new build",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=94105",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "94105"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-781638\",\n  \"status\": \"SERVICEABLE\",\n  \"message\": \"NovaFiber is available at this address. A technician visit is required to connect the building.\",\n  \"tvAvailable\": true,\n  \"technologies\": [\n    {\n      \"technology\": \"Fiber\",\n      \"maxDownloadMbps\": 1000,\n      \"maxUploadMbps\": 1000,\n      \"installType\": \"New Build\",\n      \"leadTimeDays\": 10\n    }\n  ]\n}"
+    },
+    {
+     "name": "60601 Chicago: copper 100 Mbps",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=60601",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "60601"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-223855\",\n  \"status\": \"PARTIAL\",\n  \"message\": \"Fiber isn't available here yet, but NovaDSL over our copper network is, with speeds up to 100 Mbps.\",\n  \"tvAvailable\": false,\n  \"technologies\": [\n    {\n      \"technology\": \"Copper\",\n      \"maxDownloadMbps\": 100,\n      \"maxUploadMbps\": 20,\n      \"installType\": \"Self Install\",\n      \"leadTimeDays\": 3\n    }\n  ]\n}"
+    },
+    {
+     "name": "30301 Atlanta: copper 60 Mbps + 5G",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=30301",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "30301"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-383952\",\n  \"status\": \"PARTIAL\",\n  \"message\": \"Choose NovaDSL (up to 60 Mbps) or NovaAir 5G Home at this address.\",\n  \"tvAvailable\": false,\n  \"technologies\": [\n    {\n      \"technology\": \"Copper\",\n      \"maxDownloadMbps\": 60,\n      \"maxUploadMbps\": 10,\n      \"installType\": \"Self Install\",\n      \"leadTimeDays\": 3\n    },\n    {\n      \"technology\": \"5G FWA\",\n      \"maxDownloadMbps\": 250,\n      \"maxUploadMbps\": 30,\n      \"installType\": \"Self Install\",\n      \"leadTimeDays\": 2\n    }\n  ]\n}"
+    },
+    {
+     "name": "73301 Austin: 5G only",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=73301",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "73301"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-242566\",\n  \"status\": \"PARTIAL\",\n  \"message\": \"Fiber hasn't reached this address yet, but NovaAir 5G Home is available.\",\n  \"tvAvailable\": false,\n  \"technologies\": [\n    {\n      \"technology\": \"5G FWA\",\n      \"maxDownloadMbps\": 250,\n      \"maxUploadMbps\": 30,\n      \"installType\": \"Self Install\",\n      \"leadTimeDays\": 2\n    }\n  ]\n}"
+    },
+    {
+     "name": "99501 Anchorage: not serviceable",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/nf/serviceability?postalCode=99501",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "nf",
+        "serviceability"
+       ],
+       "query": [
+        {
+         "key": "postalCode",
+         "value": "99501"
+        }
+       ]
+      }
+     },
+     "status": "OK",
+     "code": 200,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"serviceabilityId\": \"SVC-769837\",\n  \"status\": \"NOT_SERVICEABLE\",\n  \"message\": \"Home internet isn't available at this address yet. You can still get NovaMobile.\",\n  \"tvAvailable\": false,\n  \"technologies\": []\n}"
+    }
+   ]
+  }
+ ],
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "https://YOUR-MOCK.example.com"
+  }
+ ]
+}

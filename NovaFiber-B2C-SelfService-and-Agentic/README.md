@@ -13,83 +13,306 @@ After ordering, Dynamic Revenue Orchestrator decomposes the order into technical
 with callouts to (mocked) provisioning, logistics and billing systems, and the customer follows it live in the My NovaFiber
 portal. A Journey Inspector panel shows every server call, tagged Salesforce (out of the box), Custom or External.
 
-Watch the demo: *NovaFiber E2E Demo, Behind the Scenes* (Stratus Carta).
+## Contents
 
-## What you need
+- [How it works](#how-it-works)
+- [1. What you need](#1-what-you-need)
+- [2. Connect the org to itself](#2-connect-the-org-to-itself)
+- [3. Extend the sales transaction context](#3-extend-the-sales-transaction-context)
+- [4. Replace the placeholders](#4-replace-the-placeholders)
+- [5. Deploy](#5-deploy)
+- [6. Assign permissions](#6-assign-permissions)
+- [7. Load the demo data](#7-load-the-demo-data)
+- [8. Post-deployment steps](#8-post-deployment-steps)
+- [9. Try it](#9-try-it)
+- [Set up DocuSign](#set-up-docusign)
+- [Troubleshooting](#troubleshooting)
+- [What's in this folder](#whats-in-this-folder)
 
-- A Salesforce org with **Revenue Cloud** (Product Catalog, Pricing, Configurator, Transaction Management, Salesforce Contracts,
-  Dynamic Revenue Orchestrator) and **Field Service**. A Revenue Cloud developer org or the Communications Cloud trial works.
-- Salesforce CLI (`sf`) v2, Python 3 and Node 18+ for the setup scripts.
-- Two HTTP mocks (Postman, Mockoon, or any small service) standing in for the outside systems:
-  - **Network inventory**: `POST /nf/serviceability?postalCode=…` returns the access technology and top download speed for an
-    address (see `NF_ServiceabilityService` for the fields it reads).
-  - **Fulfillment systems**: `POST /provisioning/v1/reservations`, `/provisioning/v1/activations`, `/logistics/v1/shipments`,
-    `/billing/v1/accounts`, `/billing/v1/subscriptions`. A `200` completes the DRO step at once; a `202` keeps it in progress
-    until the system posts to `/services/apexrest/nf/fulfillment/v1/callback` (see `NF_DroCalloutProvider`). In this demo,
-    `NF_FulfillmentSimulator` plays the callbacks.
+## How it works
 
+```
+Experience Cloud site (guest) / Lightning tab (rep)
+        |  Lightning Web Components (nfGuidedSelling shell, nfAgentJourney, nfPortal, nfInspector)
+        v
+  c/nfApi  ->  NF_JourneyController (one Apex gateway; every call returns data + a trace for the Journey Inspector)
+        |
+        +--> NF_ServiceabilityService ---- NF_Serviceability named credential --> network inventory (mock)
+        +--> NF_OfferService / NF_QuoteService -- NF_RevenueCloud named credential --> Revenue Cloud REST
+        |       Product Discovery, Configurator (CML rules), Place Sales Transaction
+        +--> NF_DocumentService / NF_ESignService --> Salesforce Contracts, Document Generation, DocuSign
+        +--> NF_OrderService / NF_DroService --> createOrdersFromQuote, activate, submitOrder --> Dynamic Revenue Orchestrator
+        |       DRO callout steps --> NF_DroCalloutProvider --> NF_FulfillmentSystems (mock) --> callback to NF_FulfillmentCallbackApi
+        +--> NF_SchedulingService --> Field Service work orders, appointments and crews
+  Nova (Agentforce service agent, Agent Script) --> NF_AgentAction* --> NF_AgentJourney --> the same services
+```
 
-## Replace the placeholders before you deploy
+Every Revenue Cloud call goes over REST through the `NF_RevenueCloud` named credential, which logs in to the org itself
+with the client credentials flow. That way guests, the agent and reps run the same code path, synchronously.
 
-| File | Placeholder | Put in |
+## 1. What you need
+
+**Org.** A Salesforce org with:
+
+| Capability | Used for |
+| --- | --- |
+| Revenue Cloud: Product Catalog Management, Pricing, Product Discovery | catalog, prices, qualified offers |
+| Revenue Cloud: Product Configurator with **CML constraint models** | bundle rules (`NF_Residential_Rules`) |
+| Revenue Cloud: Transaction Management | quotes (Place Sales Transaction), orders |
+| **Salesforce Contracts** with Document Generation | the home service agreement (Contracts template, Data Mapper data) |
+| **Dynamic Revenue Orchestrator** | decomposition and the fulfillment plan |
+| **Field Service** (enabled in Setup) | install crews, work orders, appointments |
+| **Agentforce** (Agentforce DX / Agent Script, Agent API) | Nova, the service agent |
+| **Experience Cloud** (Digital Experiences enabled) | the public website and the My NovaFiber portal |
+| **OmniStudio Data Mappers** | data for the agreement template |
+| Platform Cache, at least 1 MB of org cache | the `NFJourney` partition (address, offers and cart cache) |
+
+A Revenue Cloud developer org or the Communications Cloud trial
+(<https://developer.salesforce.com/free-trials/comparison/communications-cloud>) has everything above, except that Agentforce and Experience Cloud may need to be turned on.
+Set the org default language to English, then run **Salesforce Pricing Setup → Sync Pricing Data** once.
+
+**On your machine.** Salesforce CLI (`sf`) v2, PowerShell 7, Python 3.10+ with `pip install python-docx`, Node 18+.
+
+**Two HTTP mocks** for the outside systems. Import the Postman collections in [`mocks/`](mocks) and create a mock server
+from each (Postman: collection → **⋯ → Mock collection**):
+
+| Collection | Named credential | What it answers |
 | --- | --- | --- |
-| `namedCredentials/NF_RevenueCloud.namedCredential-meta.xml` | `YOUR-MY-DOMAIN` | your org's My Domain |
-| `externalCredentials/NF_RevenueCloud_API.externalCredential-meta.xml` | `YOUR-MY-DOMAIN` | your org's My Domain (token URL) |
-| `namedCredentials/NF_Serviceability.namedCredential-meta.xml` | `YOUR-SERVICEABILITY-MOCK.example.com` | your network inventory mock |
-| `namedCredentials/NF_FulfillmentSystems.namedCredential-meta.xml` | `YOUR-FULFILLMENT-MOCK.example.com` | your fulfillment mock |
-| `platformEventSubscriberConfigs/NF_JourneyWorkerConfig…` | `YOUR-INTEGRATION-USERNAME@your-org.example` | the user the journey worker runs as |
-| `aiAuthoringBundles/NF_Sales_Agent/NF_Sales_Agent.agent` | `YOUR-AGENT-USER@your-org.example` | the agent's run-as user |
+| `NovaFiber_Serviceability_Mock` | `NF_Serviceability` | `POST /nf/serviceability?postalCode=…`, one example per demo ZIP code |
+| `NovaFiber_Fulfillment_Systems_Mock` | `NF_FulfillmentSystems` | provisioning, logistics and billing calls from the DRO callout steps |
 
-The Revenue Cloud named credential calls the org's own Connect REST APIs with the client credentials flow: create an External
-Client App with client credentials enabled, set its run-as user, and add its consumer key and secret to the
-`NF_RevenueCloud_API` external credential principal in Setup. Keys and secrets are never stored in this repo.
+Demo ZIP codes: `10001` New York (fiber 2 Gig + 5G), `94105` San Francisco (fiber 1 Gig, new build), `60601` Chicago (copper
+100), `30301` Atlanta (copper 60 + 5G), `73301` Austin (5G only), `99501` Anchorage (not serviceable). A `202` answer keeps a
+DRO step in progress until a callback arrives; in this demo `NF_FulfillmentSimulator` plays the callbacks to
+`/services/apexrest/nf/fulfillment/v1/callback`, so you don't have to.
 
+## 2. Connect the org to itself
 
-## Deploy
+The `NF_RevenueCloud` named credential calls the org's own REST APIs as an integration user.
+
+1. **Integration user.** Use an admin-level user (or a dedicated integration user) with Revenue Cloud, Contracts and
+   DRO permissions. It runs every Revenue Cloud call.
+2. **External Client App.** Setup → **External Client App Manager** → **New External Client App**, name `NF Revenue Cloud API`:
+   - Enable OAuth, callback URL `https://login.salesforce.com/services/oauth2/callback`.
+   - OAuth scopes: **Manage user data via APIs (api)**, **Access chatbot services (chatbot_api)**, **Access the Salesforce API Platform (sfap_api)**.
+   - Enable **Client Credentials Flow** and **Issue JSON Web Token (JWT)-based access tokens for named users**.
+   - In the app's policies, set **Run As** (client credentials user) to the integration user.
+   - Copy the **consumer key and secret**.
+3. **External credential.** After you deploy (step 5), open Setup → **Named Credentials → External Credentials →
+   NF Revenue Cloud API → Principals → NF_Integration → Edit** and paste the consumer key and secret. Keys are never
+   stored in this repo.
+4. The `NF_AgentApi` named credential reuses the same external credential to call the Agent API
+   (`https://api.salesforce.com`). If the Agent API answers an empty 404, the app isn't issuing JWT tokens yet: check the
+   JWT option and the three scopes, then revoke the named credential's cached token (Setup → Session Management, or
+   delete the `NF Revenue Cloud API` OAuth session) so it logs in again.
+
+## 3. Extend the sales transaction context
+
+The CML models and the location pricing step use an extension of the standard **SalesTransactionContext** with one extra
+attribute. Context extensions carry org-specific mappings, so create yours in the org rather than deploying one:
+
+1. Setup → **Context Service → Context Definitions** → **SalesTransactionContext** → **Extend**. Name the extension
+   `SalesTransactionContextExt_256` (or keep your own name and change `<contextDefinitions>` in
+   `expressionSetDefinition/NF_*_Rules.expressionSetDefinition-meta.xml` to match).
+2. On the **SalesTransactionItem** node, add the attribute `ItemLocationState__c`: data type *string*, field type
+   *input/output*, with a tag of the same name.
+3. In the **QuoteEntitiesMapping** and **OrderEntitiesMapping** mappings, map it as an input attribute named
+   `ItemLocationState__c` (no object field: only the business journey fills it).
+4. Activate the extension and select it as the sales transaction context in **Revenue Settings**.
+
+The other two context definitions are deployed for you: `NF_NovaDiscoveryCtx` (Product Discovery: adds the address's
+access technology and top download speed on the Account node).
+
+## 4. Replace the placeholders
+
+| File (under `force-app/main/default`) | Placeholder | Put in |
+| --- | --- | --- |
+| `namedCredentials/NF_RevenueCloud.namedCredential-meta.xml` | `YOUR-MY-DOMAIN` | your My Domain |
+| `externalCredentials/NF_RevenueCloud_API.externalCredential-meta.xml` | `YOUR-MY-DOMAIN` | your My Domain (token URL) |
+| `namedCredentials/NF_Serviceability.namedCredential-meta.xml` | `YOUR-SERVICEABILITY-MOCK.example.com` | the serviceability mock URL |
+| `namedCredentials/NF_FulfillmentSystems.namedCredential-meta.xml` | `YOUR-FULFILLMENT-MOCK.example.com` | the fulfillment mock URL |
+| `platformEventSubscriberConfigs/NF_JourneyWorkerConfig…` | `YOUR-INTEGRATION-USERNAME@your-org.example` | the integration user's username |
+| `aiAuthoringBundles/NF_Sales_Agent/NF_Sales_Agent.agent` | `YOUR-AGENT-USER@your-org.example` | Nova's agent user (create it first, see step 8) |
+
+## 5. Deploy
 
 ```bash
 sf org login web --alias RCPOC --instance-url https://<mydomain>.my.salesforce.com
-sf project deploy start --manifest manifest/package.xml --target-org RCPOC
+# 1) context definitions and custom objects first: the expression sets refer to them
+sf project deploy start --metadata ContextDefinition CustomObject --target-org RCPOC
+# 2) everything else
+sf project deploy start --manifest manifest/package.xml --target-org RCPOC --test-level RunLocalTests
 ```
 
-The setup scripts use the org alias `RCPOC` (change `ORG` at the top of the Python scripts, or set `NF_ORG`, to use another).
-Flows, expression sets and decision tables may deploy inactive; activate them in Setup after the data is in.
+The scripts use the org alias `RCPOC`; to use another, pass `-Org` to `run-apex.ps1`, change `ORG` at the top of the
+Python scripts, or set `NF_ORG`. When you redeploy Apex later, pause the hourly cleanup job first
+(`scripts/apex/nf_00_pauseCleanup.apex`) and schedule it again afterwards (`nf_03_scheduleCleanup.apex`): a scheduled
+job blocks deploying the classes it uses.
 
-## Set up the data, in order
+## 6. Assign permissions
+
+| Permission set | Assign to |
+| --- | --- |
+| `NF_Guided_Selling` | reps and admins (the guided selling tab, the inspector, agent-assisted selling) |
+| `NF_Fulfillment_Ops` | admins and operations users who work the fulfillment timeline |
+| `NF_Guest_Journey` | the Experience Cloud site's guest user (step 8) |
+| `NF_AI_Agent` | Nova's agent user (step 8) |
+
+Each of them grants access to the `NF_RevenueCloud_API` external credential principal. Add the **NF Guided Selling** tab
+to an app (or open it from the App Launcher) to reach the console.
+
+## 7. Load the demo data
+
+Run the setup scripts in this order (each one is idempotent, so you can run it again):
+
+| # | Script | Creates |
+| --- | --- | --- |
+| 1 | `scripts/apex/nf_01_seedCatalog.apex` | Residential catalog `NF_RESI`: NFR products, selling models, price book entries, bundles |
+| 2 | `scripts/apex/nf_02_seedQualificationRules.apex` | Residential qualification rules (ProductQualification, technology + minimum speed) |
+| 3 | `scripts/apex/nf_04_configuratorWorkspace.apex` | The shared configurator workspace quote that carts are configured on (never saved to) |
+| 4 | `scripts/apex/nf_05_taxSetup.apex` | Tax treatment and policy (order activation needs one on every item) |
+| 5 | `scripts/apex/nf_06_billingSetup.apex` | Billing treatment and policy (order activation needs one too) |
+| 6 | `scripts/apex/nf_07a_integrationDefs.apex` | DRO integration definitions for the five mock callouts (uses the Revenue Cloud named credential) |
+| 7 | `scripts/apex/nf_07_droConfig.apex` | Residential DRO: technical products, decomposition rules, swimlanes, steps, scenarios, workspace |
+| 8 | `scripts/apex/nf_14_fieldServiceSetup.apex` | Field Service: work types, operating hours, a territory and install crews per state, background load |
+| 9 | `scripts/apex/nf_03_scheduleCleanup.apex` | Schedules the hourly cleanup of abandoned prospect quotes and accounts |
 
 ```powershell
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_00_pauseCleanup.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_01_seedCatalog.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_02_seedQualificationRules.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_04_configuratorWorkspace.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_05_taxSetup.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_06_billingSetup.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_07a_integrationDefs.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_07_droConfig.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_14_fieldServiceSetup.apex
-./scripts/run-apex.ps1 -Org RCPOC -File scripts/apex/nf_03_scheduleCleanup.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_01_seedCatalog.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_02_seedQualificationRules.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_04_configuratorWorkspace.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_05_taxSetup.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_06_billingSetup.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_07a_integrationDefs.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_07_droConfig.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_14_fieldServiceSetup.apex
+./scripts/run-apex.ps1 -File scripts/apex/nf_03_scheduleCleanup.apex
 ```
 
-Then deploy and activate the CML constraint model with `python scripts/cml/nf_cml.py` (it compiles the model in the Constraint
-Builder and activates it), and build the document templates with `python scripts/docgen/build_templates.py` followed by
-`python scripts/docgen/setup_templates.py`.
+**Sample data.** [`data/`](data) holds what these scripts load into the decision tables, exported from the demo org, so
+you can review it or load it with Data Loader (match `Product.ProductCode` to your product IDs):
 
+| File | Rows | Read by |
+| --- | --- | --- |
+| `ProductQualification_rules.csv` | 16 | decision table `NF_Serviceability_Qualification`: a plan qualifies when the technology matches and the address is at least `NF_MinDownloadMbps__c` fast |
 
-## Not included
+## 8. Post-deployment steps
 
-Org-specific or secret pieces are left out on purpose; create them in your org:
+1. **Refresh the decision tables** after loading the data (Setup → **Decision Tables** → open → **Refresh**, or):
+   ```bash
+   sf api request rest /services/data/v66.0/actions/standard/refreshDecisionTable --method POST --target-org RCPOC --body '{"inputs":[{"decisionTableApiName":"Price_Book_Entry_Decision_Table_v2"}]}'
+   sf api request rest /services/data/v66.0/actions/standard/refreshDecisionTable --method POST --target-org RCPOC --body '{"inputs":[{"decisionTableApiName":"NF_Serviceability_Qualification"}]}'
+   ```
+2. **Product Discovery settings** (Setup → **Revenue Settings** / Product Discovery): browse context
+   `NF_NovaDiscoveryCtx`, pricing **on** with procedure *Product Discovery Pricing Procedure*, qualification **on** with
+   procedure *NF Serviceability Qualification*. Activate both expression sets if they deployed as drafts.
+3. **CML constraint model.** Compile and activate it in the Constraint Builder (only the builder compiles a model):
+   ```bash
+   cd scripts/cml && npm install && npx playwright install chromium && cd ../..
+   python scripts/cml/nf_cml.py scripts/cml/NF_Residential_Rules.json
+   ```
+4. **Document templates.** Register the Word templates in [`docs/templates`](docs/templates) as Salesforce
+   document templates (it also writes the Data Mappers the agreement reads), then activate them:
+   ```bash
+   python scripts/docgen/setup_templates.py
+   ```
+   `build_templates.py` regenerates the `.docx` files if you want to change them.
+5. **Experience Cloud site.** Create an LWR site (for example *NovaFiber*, path `/novafiber`), add the `nfGuidedSelling`
+   component to its home page, assign `NF_Guest_Journey` to the site's guest user, add **CSP Trusted Sites** for
+   `https://fonts.googleapis.com` and `https://fonts.gstatic.com` (style and font sources), and publish
+   (`sf community publish --name NovaFiber`). The portal opens with `?portal=1`, the AI chat with `?ai=1`, and the
+   Journey Inspector with `?debug=1` (guests only when `NF_Journey_Setting__mdt.Default.Guest_Debug_Enabled__c` is on).
+6. **Nova, the agent.** Create an agent user (Agentforce service agent user), assign `NF_AI_Agent`, put its username in
+   `NF_Sales_Agent.agent`, then publish and activate:
+   ```bash
+   sf agent publish authoring-bundle --api-name NF_Sales_Agent --target-org RCPOC
+   sf agent activate --api-name NF_Sales_Agent --target-org RCPOC
+   ```
+7. **DocuSign.** See [Set up DocuSign](#set-up-docusign) below. Until it's done, signing falls back to a
+   typed-name sandbox signature, so the rest of the journey works.
+8. **Flows** deploy active. The DRO workspaces and plans are created active by the setup scripts.
 
-- **DocuSign**: the JWT certificate, auth provider and integration key, plus the CSP trusted sites for embedded signing.
-- **External Client App** and its OAuth settings for the Revenue Cloud named credential.
-- **Experience Cloud site**, profiles and org settings (the website and portal LWCs run in an Experience Cloud site with a guest user; `nfGuidedSelling` is the page component).
-- Sample data beyond what the setup scripts create.
+## 9. Try it
 
+1. Open the site and enter an address with ZIP `94105`: you should see fiber up to 1 Gig and a new-build install.
+2. Pick a 1 Gig bundle, add a static IP: **NovaShield Security** is added by the CML rule, and the cart says why.
+3. **See my quote**, check out, sign, place the order and book an installer.
+4. Open the order in Salesforce: a fulfillment plan runs, callouts go to your mock, and `NF_FulfillmentSimulator` answers
+   them. Complete the technician's Task (or run `scripts/apex/nf_13_completeManualTasks.apex`) and the plan finishes.
+5. Try Nova with **Ask Nova (AI)**, and follow the order in **My NovaFiber**.
+
+## Set up DocuSign
+
+*Embedded signing in the page.*
+
+Alex and Priya sign the agreement inside the page. `NF_ESignService` calls the DocuSign eSignature REST API directly with a
+JWT grant, signed by a Salesforce certificate, so no private key is stored in any field. Until DocuSign is set up, the
+journey falls back to a typed-name sandbox signature, so you can try everything else first.
+
+1. **DocuSign developer account.** Sign up for free at <https://developers.docusign.com>. In **Settings → Apps and Keys**,
+   note your **User ID** and **API Account ID** (both GUIDs). Developer accounts use the base URI `https://demo.docusign.net`.
+2. **Certificate in Salesforce.** Setup → **Certificate and Key Management** → **Create Self-Signed Certificate**, unique
+   name `NF_DocuSign_JWT`, 2048-bit key. Download the certificate (`.crt`).
+3. **App in DocuSign.** Apps and Keys → **Add App and Integration Key**, and note the **Integration Key**. Under
+   **Service Integration**, upload the certificate's public key (`openssl x509 -in NF_DocuSign_JWT.crt -pubkey -noout`).
+   Add a redirect URI, for example `https://developers.docusign.com/platform/auth/consent`.
+4. **Grant consent once**, signed in as that DocuSign user, by opening:
+   `https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature%20impersonation&client_id=<INTEGRATION KEY>&redirect_uri=<REDIRECT URI>`
+5. **Settings in Salesforce.** Setup → **Custom Settings** → **NF DocuSign Settings** → **Manage** → **New** (organization
+   level):
+
+   | Field | Value |
+   | --- | --- |
+   | Enabled | checked |
+   | Integration Key | the app's integration key |
+   | User Id | your DocuSign user ID |
+   | Account Id | your API account ID |
+   | Base URI | `https://demo.docusign.net` |
+   | Auth Host | `account-d.docusign.com` |
+   | Certificate Name | `NF_DocuSign_JWT` |
+
+6. **Let Salesforce and the browser reach DocuSign.** Add **Remote Site Settings** for `https://account-d.docusign.com`
+   and `https://demo.docusign.net`, and **CSP Trusted Sites** with *frame-src* for `https://account-d.docusign.com`,
+   `https://apps-d.docusign.com` and `https://demo.docusign.net`, so the signing page can open inside the journey.
+7. **Signature anchors.** The agreement template carries invisible anchors, `[[SIGN_CUSTOMER]]` and `[[DATE_CUSTOMER]]`
+   (white text, written by `scripts/docgen/build_templates.py`), where DocuSign places the signature and the date.
+
+When the signer finishes, the journey checks that the envelope is completed and files the signed PDF on the contract.
+For a production DocuSign account, use `account.docusign.com` and your account's own base URI instead.
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| Offers come back unpriced or `ProductDetailsNotFound` | Run **Sync Pricing Data** and refresh `Price_Book_Entry_Decision_Table_v2` after seeding the catalog |
+| Every plan shows, even ones the address can't get | Refresh `NF_Serviceability_Qualification`; check the Product Discovery qualification setting |
+| Cart rules don't fire after a model change | Only the Constraint Builder compiles CML: rerun `nf_cml.py` (it deactivates and activates the model) |
+| An active expression set won't redeploy | Deactivate its version first (`ExpressionSetVersion.IsActive = false`) |
+| Order activation fails | Run `nf_05_taxSetup` and `nf_06_billingSetup`; orders need tax and billing treatments and addresses |
+| Deploying Apex fails with "jobs pending" | Run `nf_00_pauseCleanup.apex`, deploy, then `nf_03_scheduleCleanup.apex` |
+| The Agent API answers an empty 404 | Enable JWT tokens for named users on the external client app and revoke the cached token |
+| Callouts fail with "Unauthorized endpoint" | Check the named credential URLs; DocuSign also needs its remote sites |
+
+## Not included on purpose
+
+Org-specific or secret pieces aren't in this repo; create them in your org as described above: the External Client App and
+its keys, DocuSign keys, certificate and connection, profiles and org settings, and the Experience Cloud site.
 
 ## What's in this folder
 
-112 components. **Bold** ones are specific to this journey; the rest is the shared NovaFiber core (the
-website shell, journey controller, offer, quote, order, document, e-signature, scheduling and fulfillment services),
-included so this folder deploys on its own.
+| Path | What it is |
+| --- | --- |
+| `force-app/` | the Salesforce metadata (deploy with `manifest/package.xml`) |
+| `scripts/apex/` | setup scripts, run in the order of step 7 |
+| `scripts/cml/` | the CML model spec, generator and Constraint Builder activation |
+| `scripts/docgen/` | the Word templates builder and the template / Data Mapper registration |
+| `data/` | sample decision table data exported from the demo org |
+| `mocks/` | Postman collections for the two mock systems |
+| `docs/templates/` | the Word document templates |
+
+113 metadata components. **Bold** ones are specific to this journey; the rest is the shared NovaFiber core
+(the website shell, journey controller, offer, quote, order, document, e-signature, scheduling and fulfillment
+services), included so this folder deploys on its own. The folder also carries the multi-site classes and component, because the shared shell and controller reference them.
 
 - **Agent (Agent Script)** (1): **NF_Sales_Agent**
 - **Apex** (42): ApexDmlAttributePreHook, **NF_AgentActionBookInstall**, **NF_AgentActionCheckAddress**, **NF_AgentActionFindPlans**, **NF_AgentActionInstallSlots**, **NF_AgentActionJourneyStatus**, **NF_AgentActionPlaceOrder**, **NF_AgentActionSaveQuote**, **NF_AgentActionShowAddOns**, **NF_AgentActionUpdateCart**, **NF_AgentApi**, **NF_AgentGateway**, **NF_AgentJourney**, NF_ConfigRules, NF_ConfigRulesTest, NF_DocumentService, NF_DocumentTest, NF_DroCalloutProvider, NF_DroService, NF_ESignService, NF_FulfillmentCallbackApi, NF_FulfillmentSimulator, NF_FulfillmentStatus, NF_FulfillmentTest, NF_JourneyCache, NF_JourneyCleanup, NF_JourneyController, NF_JourneyModels, NF_JourneyTest, NF_JourneyWorker, NF_MultiSiteService, NF_OfferService, NF_OrderService, **NF_PortalController**, **NF_PortalService**, **NF_PortalTest**, NF_QuoteService, NF_RevCloudApi, NF_SchedulingService, NF_SchedulingTest, NF_ServiceabilityService, NF_Trace
@@ -106,8 +329,9 @@ included so this folder deploys on its own.
 - **Custom metadata records** (1): NF_Journey_Setting
 - **Platform Cache partitions** (1): NFJourney
 - **Triggers** (1): NF_JourneyRequestTrigger
+- **Tabs** (1): NF_Guided_Selling
 - **Static resources** (1): NF_ESignReturn
 - **Platform event subscriber configs** (1): NF_JourneyWorkerConfig
 
 ---
-Built by Stratus Carta as a proof of concept on Revenue Cloud (API v66.0). Provided as is, for learning and demos.
+Built by Stratus Carta as a proof of concept on Salesforce Revenue Cloud (API v66.0). Provided as is, for learning and demos.
