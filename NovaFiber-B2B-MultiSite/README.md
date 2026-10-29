@@ -87,11 +87,51 @@ After `nf_08_seedLocationPrices.apex`, refresh the table: `POST /services/data/v
 Check location pricing with `nf_09_testMultiSitePricing.apex` (a quote in New York and Texas) and `nf_10_testSessionLocationPricing.apex` (a configurator session).
 
 
+## Set up DocuSign (proposal signing with Salesforce Contracts)
+
+The business proposal is signed with the standard **Salesforce Contracts e-signature**, with DocuSign as the provider.
+Salesforce emails the proposal to the customer's signatory and tracks the envelope on the contract, so it's configuration
+only, with no custom DocuSign code. Until it's configured, the journey falls back to a typed-name sandbox signature.
+
+1. **DocuSign developer account.** Sign up for free at <https://developers.docusign.com>. In **Settings → Apps and Keys**,
+   note your **API Account ID**.
+2. **App in DocuSign.** Apps and Keys → **Add App and Integration Key**. Note the **Integration Key**, add a **Secret Key**,
+   and add the redirect URI `https://<your-domain>.my.salesforce.com/services/authcallback/DocuSignAuthProvider`.
+3. **Auth provider in Salesforce.** Setup → **Auth. Providers** → **New** → **Open ID Connect**:
+
+   | Field | Value |
+   | --- | --- |
+   | Name / URL suffix | `DocuSignAuthProvider` |
+   | Consumer Key / Secret | the integration key and the secret key |
+   | Authorize Endpoint URL | `https://account-d.docusign.com/oauth/auth` |
+   | Token Endpoint URL | `https://account-d.docusign.com/oauth/token` |
+   | User Info Endpoint URL | `https://account-d.docusign.com/oauth/userinfo` |
+   | Default Scopes | `signature extended` |
+
+4. **Named credential.** Setup → **Named Credentials** → **New Legacy**: name `NF_DocuSign_eSignature`, URL
+   `https://demo.docusign.net`, identity type **Named Principal**, protocol **OAuth 2.0**, provider `DocuSignAuthProvider`,
+   scope `signature extended`, **Start Authentication Flow on Save** checked. Save, and sign in to DocuSign when asked.
+5. **Salesforce Contracts e-signature settings** (stored as `ESignatureConfig` records, vendor DocuSign):
+
+   | Setting | Value |
+   | --- | --- |
+   | Callout named credential | `NF_DocuSign_eSignature` |
+   | Vendor account ID | your API account ID |
+   | Anchor string | `signHereTabs:nfSignHere,dateSignedTabs:nfDateSigned` |
+   | Signer roles | `Signer 1` |
+
+6. **Signature anchors.** The proposal template carries invisible anchors, `\nfSignHere1\` and `\nfDateSigned1\` (the
+   anchor name plus the signer number), written by `scripts/docgen/build_templates.py`.
+
+After signing, the envelope status syncs back to the contract and the rep can place the order. For a production DocuSign
+account, use `account.docusign.com` and your account's own base URI instead.
+
+
 ## Not included
 
 Org-specific or secret pieces are left out on purpose; create them in your org:
 
-- **DocuSign**: the JWT certificate, auth provider and integration key (the business proposal uses the standard Salesforce Contracts e-signature with DocuSign as the provider).
+- **DocuSign** keys, certificate and connection (app, auth provider, named credential and e-signature settings): create them as described in *Set up DocuSign* above.
 - **External Client App** and its OAuth settings for the Revenue Cloud named credential.
 - **Experience Cloud site**, profiles and org settings (the rep uses `nfGuidedSelling` on a Lightning page in multi-site mode).
 - Sample data beyond what the setup scripts create.

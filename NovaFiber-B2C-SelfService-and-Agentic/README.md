@@ -75,11 +75,49 @@ Builder and activates it), and build the document templates with `python scripts
 `python scripts/docgen/setup_templates.py`.
 
 
+## Set up DocuSign (embedded signing)
+
+Alex and Priya sign the agreement inside the page. `NF_ESignService` calls the DocuSign eSignature REST API directly with a
+JWT grant, signed by a Salesforce certificate, so no private key is stored in any field. Until DocuSign is set up, the
+journey falls back to a typed-name sandbox signature, so you can try everything else first.
+
+1. **DocuSign developer account.** Sign up for free at <https://developers.docusign.com>. In **Settings → Apps and Keys**,
+   note your **User ID** and **API Account ID** (both GUIDs). Developer accounts use the base URI `https://demo.docusign.net`.
+2. **Certificate in Salesforce.** Setup → **Certificate and Key Management** → **Create Self-Signed Certificate**, unique
+   name `NF_DocuSign_JWT`, 2048-bit key. Download the certificate (`.crt`).
+3. **App in DocuSign.** Apps and Keys → **Add App and Integration Key**, and note the **Integration Key**. Under
+   **Service Integration**, upload the certificate's public key (`openssl x509 -in NF_DocuSign_JWT.crt -pubkey -noout`).
+   Add a redirect URI, for example `https://developers.docusign.com/platform/auth/consent`.
+4. **Grant consent once**, signed in as that DocuSign user, by opening:
+   `https://account-d.docusign.com/oauth/auth?response_type=code&scope=signature%20impersonation&client_id=<INTEGRATION KEY>&redirect_uri=<REDIRECT URI>`
+5. **Settings in Salesforce.** Setup → **Custom Settings** → **NF DocuSign Settings** → **Manage** → **New** (organization
+   level):
+
+   | Field | Value |
+   | --- | --- |
+   | Enabled | checked |
+   | Integration Key | the app's integration key |
+   | User Id | your DocuSign user ID |
+   | Account Id | your API account ID |
+   | Base URI | `https://demo.docusign.net` |
+   | Auth Host | `account-d.docusign.com` |
+   | Certificate Name | `NF_DocuSign_JWT` |
+
+6. **Let Salesforce and the browser reach DocuSign.** Add **Remote Site Settings** for `https://account-d.docusign.com`
+   and `https://demo.docusign.net`, and **CSP Trusted Sites** with *frame-src* for `https://account-d.docusign.com`,
+   `https://apps-d.docusign.com` and `https://demo.docusign.net`, so the signing page can open inside the journey.
+7. **Signature anchors.** The agreement template carries invisible anchors, `[[SIGN_CUSTOMER]]` and `[[DATE_CUSTOMER]]`
+   (white text, written by `scripts/docgen/build_templates.py`), where DocuSign places the signature and the date.
+
+When the signer finishes, the journey checks that the envelope is completed and files the signed PDF on the contract.
+For a production DocuSign account, use `account.docusign.com` and your account's own base URI instead.
+
+
 ## Not included
 
 Org-specific or secret pieces are left out on purpose; create them in your org:
 
-- **DocuSign**: the JWT certificate, auth provider and integration key, plus the CSP trusted sites for embedded signing.
+- **DocuSign** keys, certificate and connection, remote sites and CSP trusted sites: create them as described in *Set up DocuSign* above.
 - **External Client App** and its OAuth settings for the Revenue Cloud named credential.
 - **Experience Cloud site**, profiles and org settings (the website and portal LWCs run in an Experience Cloud site with a guest user; `nfGuidedSelling` is the page component).
 - Sample data beyond what the setup scripts create.
