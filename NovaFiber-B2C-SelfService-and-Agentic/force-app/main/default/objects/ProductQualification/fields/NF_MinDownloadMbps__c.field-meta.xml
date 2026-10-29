@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_MinDownloadMbps__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>Minimum download speed (Mbps) the address must support on this technology (compared with the NF_MaxDownloadMbps context tag).</description>
+    <label>NF Min Download Mbps</label>
+    <precision>6</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+</CustomField>

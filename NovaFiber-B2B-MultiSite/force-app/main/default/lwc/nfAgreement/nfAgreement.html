@@ -1,0 +1,122 @@
+<template>
+    <section class="ag nf-card" aria-label={heading}>
+        <div class="ag-head">
+            <div class="ag-doc-icon" aria-hidden="true">
+                <lightning-icon icon-name="utility:contract_doc" size="small" alternative-text=""></lightning-icon>
+            </div>
+            <div class="ag-head-text">
+                <h2 class="nf-h2">{heading}</h2>
+                <p class="nf-small nf-muted">{sourceNote}</p>
+            </div>
+        </div>
+
+        <template lwc:if={error}>
+            <div class="ag-error" role="alert">
+                <lightning-icon icon-name="utility:error" size="x-small" alternative-text=""></lightning-icon>
+                <span>{error}</span>
+                <button type="button" class="nf-link" onclick={handleRegenerate}>Try again</button>
+            </div>
+        </template>
+
+        <!-- Generating -->
+        <template lwc:if={isGenerating}>
+            <c-nf-progress class="ag-progress" variant="card" heading={generatingHeading} steps={generatingProgress.steps}
+                tips={generatingProgress.tips}></c-nf-progress>
+        </template>
+
+        <!-- Ready to sign -->
+        <template lwc:if={isReady}>
+            <div class="ag-doc">
+                <div>
+                    <p class="ag-doc-title">{state.title}</p>
+                    <p class="nf-small nf-muted">PDF · generated just now from your quote</p>
+                </div>
+                <template lwc:if={state.documentUrl}>
+                    <a class="ag-open" href={state.documentUrl} target="_blank" rel="noopener">
+                        <lightning-icon icon-name="utility:preview" size="x-small" alternative-text=""></lightning-icon>
+                        Read the document
+                    </a>
+                </template>
+            </div>
+
+            <div class="ag-sign">
+                <p class="nf-small ag-provider">{providerNote}</p>
+
+                <template lwc:if={isDocuSign}>
+                    <lightning-button variant="brand" label="Review and sign with DocuSign" icon-name="utility:signature"
+                        onclick={handleStart} disabled={signing}></lightning-button>
+                    <p class="nf-small nf-muted">{docuSignStatus}</p>
+                </template>
+
+                <template lwc:if={isContracts}>
+                    <template lwc:if={isSent}>
+                        <div class="ag-sent" aria-live="polite">
+                            <lightning-icon icon-name="utility:email" size="x-small" alternative-text=""></lightning-icon>
+                            <div>
+                                <strong>Sent to {signer.email} for signature</strong>
+                                <p class="nf-small nf-muted">{state.message}</p>
+                            </div>
+                            <lightning-button label="Check status" onclick={handleCheckNow} disabled={signing}></lightning-button>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <lightning-button variant="brand" label="Send for e-signature" icon-name="utility:send"
+                            onclick={handleStart} disabled={signing}></lightning-button>
+                    </template>
+                </template>
+
+                <template lwc:if={isSandbox}>
+                    <div class="ag-pad">
+                        <lightning-input label={signerLabel} value={typedName} onchange={handleTyped}
+                            placeholder={signerName} autocomplete="off"></lightning-input>
+                        <div class="ag-signature" aria-hidden="true">{typedPreview}</div>
+                        <lightning-input type="checkbox" checked={consent} onchange={handleConsent}
+                            label="I agree to sign electronically and that my typed name is my signature."></lightning-input>
+                        <div class="ag-actions">
+                            <lightning-button variant="brand" label="Sign" icon-name="utility:signature"
+                                onclick={handleSandboxSign} disabled={signDisabled}></lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <template lwc:if={isAgent}>
+                    <template lwc:if={showSkip}>
+                        <button type="button" class="nf-link ag-skip" onclick={handleSkip}>Customer accepted verbally: order without e-signature</button>
+                    </template>
+                </template>
+            </div>
+        </template>
+
+        <!-- Signed -->
+        <template lwc:if={isSigned}>
+            <div class="ag-signed">
+                <lightning-icon icon-name="utility:success" size="small" alternative-text=""></lightning-icon>
+                <div>
+                    <strong>{signedLine}</strong>
+                    <p class="nf-small nf-muted">{state.title} · filed on your contract</p>
+                </div>
+                <template lwc:if={state.signedDocumentUrl}>
+                    <a class="ag-open" href={state.signedDocumentUrl} target="_blank" rel="noopener">View signed PDF</a>
+                </template>
+            </div>
+            <template lwc:if={showContinue}>
+                <div class="ag-actions">
+                    <lightning-button variant="brand" label={continueLabel} icon-name="utility:check" onclick={handleContinue}></lightning-button>
+                </div>
+            </template>
+        </template>
+
+        <!-- DocuSign embedded signing: loads hidden as soon as it is prepared, shown on "Review and sign" -->
+        <template lwc:if={docuSignLoaded}>
+            <div class={modalClass} role="dialog" aria-modal="true" aria-label="Sign with DocuSign" aria-hidden={hiddenAria}>
+                <div class="ag-modal-box">
+                    <div class="ag-modal-head">
+                        <strong>Sign with DocuSign</strong>
+                        <button type="button" class="nf-link" onclick={handleCloseDocuSign}>Close</button>
+                    </div>
+                    <iframe class="ag-frame" src={session.signingUrl} title="DocuSign signing"></iframe>
+                </div>
+            </div>
+        </template>
+    </section>
+</template>

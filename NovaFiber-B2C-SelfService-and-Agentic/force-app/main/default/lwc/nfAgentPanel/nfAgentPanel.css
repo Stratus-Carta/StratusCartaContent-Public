@@ -1,0 +1,10 @@
+@import 'c/nfStyles';
+.nf-agent { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; justify-content: space-between;
+    background: var(--nf-warn-soft); border: 1px solid #f5cf9f; border-radius: var(--nf-radius); padding: 0.75rem 1rem; }
+.nf-agent-id { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; --slds-c-icon-color-foreground-default: var(--nf-warn); }
+.nf-agent-customer { position: relative; min-width: min(22rem, 100%); }
+.nf-results { position: absolute; z-index: 10; left: 0; right: 0; top: 100%; margin: 0.25rem 0 0; padding: 0.25rem 0;
+    list-style: none; background: var(--nf-surface); border: 1px solid var(--nf-line); border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(27, 19, 64, 0.12); }
+.nf-results li { display: flex; flex-direction: column; padding: 0.5rem 0.75rem; cursor: pointer; }
+.nf-results li:hover { background: var(--nf-primary-soft); }

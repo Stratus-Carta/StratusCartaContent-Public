@@ -1,0 +1,64 @@
+/* NovaFiber brand tokens + shared building blocks. Imported by every nf* component. */
+:host {
+    --nf-primary: #5b2be0;
+    --nf-primary-dark: #4318c4;
+    --nf-primary-soft: #efeafd;
+    --nf-accent: #00a693;
+    --nf-accent-soft: #e3f7f4;
+    --nf-warn: #b85c00;
+    --nf-warn-soft: #fff4e5;
+    --nf-error: #ba0517;
+    --nf-error-soft: #fdecee;
+    --nf-ink: #1b1340;
+    --nf-muted: #5f6577;
+    --nf-line: #e4e1ee;
+    --nf-surface: #ffffff;
+    --nf-radius: 12px;
+    --slds-c-button-brand-color-background: var(--nf-primary);
+    --slds-c-button-brand-color-border: var(--nf-primary);
+    --slds-c-button-brand-color-background-hover: var(--nf-primary-dark);
+    --slds-c-button-brand-color-border-hover: var(--nf-primary-dark);
+    color: var(--nf-ink);
+}
+.nf-card {
+    background: var(--nf-surface);
+    border: 1px solid var(--nf-line);
+    border-radius: var(--nf-radius);
+    padding: 1.5rem;
+}
+.nf-h2 { font-size: 1.375rem; font-weight: 700; line-height: 1.25; margin: 0 0 0.25rem; }
+.nf-h3 { font-size: 1.0625rem; font-weight: 700; line-height: 1.3; margin: 0 0 0.25rem; }
+.nf-muted { color: var(--nf-muted); }
+.nf-small { font-size: 0.8125rem; }
+.nf-actions { display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1.5rem; }
+.nf-chip {
+    border: 1px solid var(--nf-line);
+    background: var(--nf-surface);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--nf-ink);
+    cursor: pointer;
+}
+.nf-chip:hover { border-color: var(--nf-primary); color: var(--nf-primary); }
+.nf-chip:disabled { opacity: 0.5; cursor: default; }
+.nf-badge {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--nf-primary-soft);
+    color: var(--nf-primary-dark);
+}
+.nf-badge_accent { background: var(--nf-accent-soft); color: #00695c; }
+.nf-badge_warn { background: var(--nf-warn-soft); color: var(--nf-warn); }
+.nf-price { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+.nf-price-unit { font-size: 0.875rem; font-weight: 500; color: var(--nf-muted); }
+.nf-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.nf-divider { border: 0; border-top: 1px solid var(--nf-line); margin: 1rem 0; }
+.nf-agent-tag {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    font-size: 0.75rem; font-weight: 600; color: var(--nf-warn);
+    background: var(--nf-warn-soft); border-radius: 6px; padding: 0.125rem 0.5rem;
+}

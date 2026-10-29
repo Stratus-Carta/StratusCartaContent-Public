@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Trace__c</fullName>
+    <label>Trace</label>
+    <description>NF_Trace entries captured by the worker (JSON), shown in the Journey Inspector.</description>
+    <type>LongTextArea</type>
+    <length>131072</length>
+    <visibleLines>5</visibleLines>
+</CustomField>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>NovaFiber e-signature</title>
+<style>body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1b1340;background:#fbfaff;display:grid;place-items:center;height:100vh}
+p{font-size:15px}</style></head>
+<body>
+<p id="m">Thanks, returning to NovaFiber&hellip;</p>
+<script>
+  // DocuSign embedded signing returns here (?event=signing_complete|decline|cancel|ttl_expired…); tell the journey page.
+  var params = new URLSearchParams(window.location.search);
+  var msg = { type: 'nf-esign', event: params.get('event') || '' };
+  try { window.parent.postMessage(msg, '*'); } catch (e) {}
+  try { if (window.opener) { window.opener.postMessage(msg, '*'); window.close(); } } catch (e) {}
+</script>
+</body>
+</html>

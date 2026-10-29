@@ -1,0 +1,13 @@
+@import 'c/nfStyles';
+.nf-banner { display: flex; gap: 1rem; border-radius: var(--nf-radius); padding: 1.25rem 1.5rem; border: 1px solid; }
+.nf-ok { background: var(--nf-accent-soft); border-color: #9be3d8; --slds-c-icon-color-foreground-default: var(--nf-accent); }
+.nf-partial { background: var(--nf-primary-soft); border-color: #cfc2f7; --slds-c-icon-color-foreground-default: var(--nf-primary); }
+.nf-none { background: var(--nf-warn-soft); border-color: #f5cf9f; --slds-c-icon-color-foreground-default: var(--nf-warn); }
+.nf-banner-body { flex: 1; min-width: 0; }
+.nf-wrap { flex-wrap: wrap; }
+.nf-banner-actions { display: flex; gap: 0.5rem; align-items: center; }
+.nf-message { margin: 0.5rem 0; }
+.nf-techs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.nf-tech { background: rgba(255, 255, 255, 0.85); border-radius: 8px; padding: 0.25rem 0.625rem; font-size: 0.8125rem; }
+.nf-override { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 0.75rem;
+    padding-top: 0.75rem; border-top: 1px dashed #e7b77a; }

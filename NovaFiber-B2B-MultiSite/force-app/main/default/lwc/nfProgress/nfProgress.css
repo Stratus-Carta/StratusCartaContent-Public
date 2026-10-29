@@ -1,0 +1,44 @@
+@import 'c/nfStyles';
+
+.pg { display: flex; flex-direction: column; gap: 0.75rem; color: var(--nf-ink); }
+.pg_toast { position: fixed; z-index: 60; left: 50%; bottom: 1.5rem; transform: translateX(-50%); width: min(30rem, calc(100vw - 2rem));
+    padding: 1rem 1.125rem; border-radius: 16px; background: #1b1340; color: #fff; box-shadow: 0 18px 50px rgba(27, 19, 64, 0.35);
+    animation: pg-rise 0.35s ease-out; }
+.pg_card { padding: 1rem 1.125rem; border-radius: 12px; background: #fbfaff; border: 1px solid var(--nf-line); }
+@keyframes pg-rise { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+.pg-head { display: flex; align-items: center; gap: 0.75rem; }
+.pg-titles { flex: 1; min-width: 0; }
+.pg-titles p { margin: 0; }
+.pg-heading { font-weight: 700; font-size: 0.9375rem; }
+.pg-current { font-size: 0.8125rem; opacity: 0.8; animation: pg-fade 0.4s ease; }
+.pg-time { font-size: 0.75rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
+@keyframes pg-fade { from { opacity: 0; } to { opacity: 0.8; } }
+
+/* three orbiting dots */
+.pg-orb { position: relative; width: 1.75rem; height: 1.75rem; flex: none; animation: pg-spin 1.4s linear infinite; }
+.pg-orb span { position: absolute; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #5fe0cc; }
+.pg-orb span:nth-child(1) { top: 0; left: 0.625rem; }
+.pg-orb span:nth-child(2) { bottom: 0.125rem; left: 0; background: #8f6bff; }
+.pg-orb span:nth-child(3) { bottom: 0.125rem; right: 0; background: #ffffff; }
+.pg_card .pg-orb span:nth-child(3) { background: var(--nf-primary); }
+@keyframes pg-spin { to { transform: rotate(360deg); } }
+
+.pg-bar { position: relative; height: 6px; border-radius: 999px; overflow: hidden; background: rgba(143, 107, 255, 0.25); }
+.pg-bar span { position: absolute; inset: 0 auto 0 0; border-radius: 999px; transition: width 0.25s linear;
+    background: linear-gradient(90deg, #5b2be0, #00a693, #5b2be0); background-size: 200% 100%; animation: pg-shine 1.6s linear infinite; }
+@keyframes pg-shine { to { background-position: -200% 0; } }
+
+.pg-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.375rem; font-size: 0.8125rem; }
+.pg-step { display: flex; align-items: center; gap: 0.5rem; opacity: 0.45; transition: opacity 0.3s; }
+.pg-step_active, .pg-step_done { opacity: 1; }
+.pg-step_active { font-weight: 600; }
+.pg-dot { display: inline-grid; place-items: center; width: 1.125rem; height: 1.125rem; border-radius: 50%; flex: none; font-size: 0.6875rem;
+    border: 2px solid currentColor; }
+.pg-step_done .pg-dot { background: #00a693; border-color: #00a693; color: #fff; }
+.pg-step_active .pg-dot { border-color: #5fe0cc; border-right-color: transparent; animation: pg-spin 0.8s linear infinite; }
+.pg_card .pg-step_active .pg-dot { border-color: var(--nf-primary); border-right-color: transparent; }
+
+.pg-tip { margin: 0; font-size: 0.8125rem; padding-top: 0.625rem; border-top: 1px solid rgba(143, 107, 255, 0.3); animation: pg-fade 0.5s ease; }
+.pg-tip strong { color: #5fe0cc; margin-right: 0.25rem; }
+.pg_card .pg-tip strong { color: var(--nf-primary); }

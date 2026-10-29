@@ -1,0 +1,35 @@
+{
+  "model": "NF_Business_Rules",
+  "bundles": {
+    "NFB-DIA-100": "NFBDia100",
+    "NFB-DIA-1G": "NFBDia1G",
+    "NFB-DIA-10G": "NFBDia10G",
+    "NFB-VOC-UC": "NFBVoiceUC"
+  },
+  "components": {
+    "NFB-ADD-IP8": "NFBIpBlock29",
+    "NFB-ADD-IP16": "NFBIpBlock28",
+    "NFB-ADD-DIV": "NFBDiversePath",
+    "NFB-ADD-DDOS": "NFBDdos",
+    "NFB-EQ-PHONE": "NFBDeskPhone",
+    "NFB-VOC-SEAT": "NFBUcSeat"
+  },
+  "rules": {
+    "NFBDia100": [
+      "exclude(ipAddresses[NFBIpBlock28] > 0, ipAddresses[NFBIpBlock29], \"The /28 block replaces the /29 block: a site takes one static IP block.\");"
+    ],
+    "NFBDia1G": [
+      "exclude(ipAddresses[NFBIpBlock28] > 0, ipAddresses[NFBIpBlock29], \"The /28 block replaces the /29 block: a site takes one static IP block.\");"
+    ],
+    "NFBDia10G": [
+      "exclude(ipAddresses[NFBIpBlock28] > 0, ipAddresses[NFBIpBlock29], \"The /28 block replaces the /29 block: a site takes one static IP block.\");",
+      "require(true, resilienceSecurity[NFBDiversePath], \"10 Gbps Dedicated Internet is built on two diverse fiber paths.\");",
+      "require(true, resilienceSecurity[NFBDdos], \"10 Gbps Dedicated Internet includes DDoS protection.\");",
+      "message(resilienceSecurity[NFBDiversePath] > 0 && resilienceSecurity[NFBDdos] > 0, \"10 Gbps Dedicated Internet includes Diverse Path and DDoS Protection.\", \"Info\");"
+    ],
+    "NFBVoiceUC": [
+      "constraint(devices[NFBDeskPhone] <= seats[NFBUcSeat], \"Each IP desk phone needs a UC seat: add seats or remove phones.\");"
+    ]
+  },
+  "_note": "Business Fiber and SD-WAN share options (static IP blocks, 5G backup) with Dedicated Internet in other component groups, and a product can belong to one CML type only, so this model covers Dedicated Internet and NovaVoice UC."
+}

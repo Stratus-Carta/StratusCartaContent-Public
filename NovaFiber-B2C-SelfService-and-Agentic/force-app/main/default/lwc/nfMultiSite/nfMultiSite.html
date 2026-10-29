@@ -1,0 +1,368 @@
+<template>
+    <div class="ms">
+        <ol class="nf-steps" aria-label="Multi-site progress">
+            <template for:each={stepsView} for:item="s">
+                <li key={s.key} class={s.cssClass} aria-current={s.ariaCurrent}>
+                    <span class="nf-step-dot">{s.number}</span>
+                    <span class="nf-step-label">{s.label}</span>
+                </li>
+            </template>
+        </ol>
+
+        <template lwc:if={error}>
+            <div class="nf-error" role="alert">
+                <lightning-icon icon-name="utility:error" size="x-small" alternative-text="Error"></lightning-icon>
+                <span>{error}</span>
+                <lightning-button-icon icon-name="utility:close" variant="bare" alternative-text="Dismiss" onclick={dismissError}></lightning-button-icon>
+            </div>
+        </template>
+        <template lwc:if={notice}>
+            <div class="nf-notice" role="status">
+                <span>{notice}</span>
+                <lightning-button-icon icon-name="utility:close" variant="bare" alternative-text="Dismiss" onclick={dismissNotice}></lightning-button-icon>
+            </div>
+        </template>
+        <template lwc:if={busy}>
+            <c-nf-progress heading={busyMessage} steps={busyProgress.steps} tips={busyProgress.tips}></c-nf-progress>
+        </template>
+
+        <!-- 1. Sites -->
+        <template lwc:if={isSitesStep}>
+            <div class="nf-card">
+                <div class="nf-row nf-wrap">
+                    <div>
+                        <template lwc:if={isAgent}>
+                            <h2 class="nf-h2">Multi-site quote</h2>
+                            <p class="nf-muted">Upload the customer's service locations. Each site is checked for service and priced for its state.</p>
+                        </template>
+                        <template lwc:else>
+                            <h2 class="nf-h2">NovaFiber for Business</h2>
+                            <p class="nf-muted">Add your business locations (up to 10). We check service at each one and price it for its state.</p>
+                        </template>
+                    </div>
+                    <a class="ms-template" href={templateHref} download="novafiber-sites-template.csv">
+                        <lightning-icon icon-name="utility:download" size="x-small" alternative-text=""></lightning-icon>
+                        Download CSV template
+                    </a>
+                </div>
+
+                <div class="ms-upload">
+                    <label class="ms-drop">
+                        <input type="file" accept=".csv,text/csv" class="ms-file" onchange={handleFile} disabled={busy} />
+                        <lightning-icon icon-name="utility:upload" size="small" alternative-text=""></lightning-icon>
+                        <span><strong>Upload sites (CSV)</strong><span class="nf-small nf-muted"> · name, street, unit, city, state, postalCode · up to 25 sites</span></span>
+                    </label>
+                    <button type="button" class="nf-chip" onclick={handleSamples} disabled={busy}>Add 4 sample sites</button>
+                </div>
+
+                <template lwc:if={hasSites}>
+                    <div class="ms-table" role="table" aria-label="Sites">
+                        <div class="ms-tr ms-th" role="row">
+                            <span role="columnheader">#</span>
+                            <span role="columnheader">Site</span>
+                            <span role="columnheader">Service address</span>
+                            <span role="columnheader">State</span>
+                            <span role="columnheader">Service</span>
+                            <span role="columnheader"></span>
+                        </div>
+                        <template for:each={sitesView} for:item="s">
+                            <div key={s.key} class="ms-tr" role="row">
+                                <span role="cell" class="nf-muted">{s.number}</span>
+                                <span role="cell"><strong>{s.name}</strong></span>
+                                <span role="cell">{s.addressLine}</span>
+                                <span role="cell"><span class="nf-badge">{s.address.state}</span></span>
+                                <span role="cell"><span class={s.statusClass}>{s.statusLabel}</span></span>
+                                <span role="cell" class="ms-right">
+                                    <template lwc:if={s.canRemove}>
+                                        <lightning-button-icon icon-name="utility:delete" variant="bare" alternative-text="Remove site"
+                                            data-key={s.key} onclick={handleRemoveSite}></lightning-button-icon>
+                                    </template>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="nf-actions">
+                        <span class="nf-muted nf-small ms-grow">{siteCountLabel}</span>
+                        <lightning-button label="Clear" onclick={handleClearSites} disabled={busy}></lightning-button>
+                        <lightning-button variant="brand" label={checkLabel} icon-name="utility:location" onclick={handleCheckSites}
+                            disabled={checkDisabled}></lightning-button>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="ms-empty nf-muted">No sites yet. Upload a CSV or add the sample sites.</p>
+                </template>
+            </div>
+        </template>
+
+        <!-- 2. Plans per site -->
+        <template lwc:if={isBuildStep}>
+            <div class="ms-build">
+                <aside class="ms-sites" aria-label="Sites">
+                    <div class="nf-row">
+                        <h2 class="nf-h3">Sites</h2>
+                        <button type="button" class="nf-link" onclick={handleBackToSites} disabled={busy}>Edit sites</button>
+                    </div>
+                    <template for:each={buildSites} for:item="s">
+                        <button key={s.key} type="button" class={s.cssClass} data-key={s.key} onclick={handlePickSite}>
+                            <span class="ms-site-name">{s.name}</span>
+                            <span class="nf-small nf-muted">{s.place} · {s.tech}</span>
+                            <span class="ms-site-foot">
+                                <span class="nf-small">{s.itemsLabel}</span>
+                                <template lwc:if={s.hasItems}><strong class="nf-small">{s.monthly}/mo</strong></template>
+                            </span>
+                        </button>
+                    </template>
+                    <template lwc:if={hasSkippedSites}>
+                        <p class="nf-small nf-muted ms-skipped">Not quotable:
+                            <template for:each={skippedSites} for:item="s"><span key={s.key}> {s.name} ({s.error})</span></template>
+                        </p>
+                    </template>
+                </aside>
+
+                <div class="ms-main">
+                    <div class="nf-card ms-site-head">
+                        <div class="nf-row nf-wrap">
+                            <div>
+                                <span class="nf-muted nf-small">Building plans for</span>
+                                <h2 class="nf-h2">{selectedSite.name}</h2>
+                                <span class="nf-small">{selectedAddress}</span>
+                            </div>
+                            <div class="ms-price-src">
+                                <span class="nf-badge nf-badge_accent">Prices for {selectedState}</span>
+                                <span class="nf-small nf-muted">Location price list · Revenue Cloud</span>
+                            </div>
+                        </div>
+                        <p class="nf-small ms-svc">{selectedTech}<template lwc:if={selectedServiceMessage}> · {selectedServiceMessage}</template></p>
+                    </div>
+
+                    <template for:each={categoriesView} for:item="c">
+                        <section key={c.key} class="ms-block">
+                            <h3 class="ms-section-title">{c.label}</h3>
+                            <div class="ms-grid">
+                                <template for:each={c.offers} for:item="o">
+                                    <c-nf-offer-card key={o.offer.productId} offer={o.offer} in-cart-quantity={o.inCart}
+                                        currency-code={currencyCode} disabled={busy} onselect={handleSelectOffer}></c-nf-offer-card>
+                                    <!-- The configurator opens as a full-width row right under the chosen plan's row. -->
+                                    <template lwc:if={o.showConfig}>
+                                        <div key={o.configKey} class="ms-config-inline">
+                                            <c-nf-offer-configurator offer={configuring.offer} initial-selections={configuring.selections}
+                                                editing={configuring.key} currency-code={currencyCode} rule-hidden={configuringRuleHidden}
+                                                oncancel={handleConfigCancel}
+                                                onconfirm={handleConfigConfirm}></c-nf-offer-configurator>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </section>
+                    </template>
+                </div>
+
+                <aside class="nf-card ms-cart" aria-label="Site cart">
+                    <div class="nf-row">
+                        <h2 class="nf-h3">{selectedSite.name} cart</h2>
+                        <span class="nf-badge">{selectedState}</span>
+                    </div>
+                    <template lwc:if={siteCartEmpty}>
+                        <p class="nf-muted nf-small">Choose plans for this site.</p>
+                    </template>
+                    <template for:each={siteCartView} for:item="i">
+                        <div key={i.key} class="ms-item">
+                            <div class="nf-row">
+                                <span class="ms-item-name">{i.name}</span>
+                                <span>{i.monthly}<span class="nf-price-unit">/mo</span></span>
+                            </div>
+                            <template lwc:if={i.options}><div class="nf-small nf-muted">{i.options}</div></template>
+                            <template lwc:if={i.oneTime}><div class="nf-small nf-muted">+ {i.oneTime} one-time</div></template>
+                            <template for:each={i.notes} for:item="n">
+                                <p key={n.key} class={n.cssClass} role="status"><lightning-icon icon-name="utility:rules" size="xx-small"
+                                    alternative-text=""></lightning-icon><span>{n.text}</span></p>
+                            </template>
+                            <div class="ms-item-actions">
+                                <template lwc:if={i.isBundle}>
+                                    <button type="button" class="nf-link" data-key={i.key} onclick={handleEditItem}>Edit</button>
+                                </template>
+                                <button type="button" class="nf-link nf-remove" data-key={i.key} onclick={handleRemoveItem}>Remove</button>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:if={canApplyToAll}>
+                        <button type="button" class="nf-chip ms-apply" onclick={handleApplyToAll} disabled={busy}>
+                            Apply this cart to all sites
+                        </button>
+                    </template>
+                    <template lwc:if={checkingRules}>
+                        <p class="ms-rule-check" role="status"><span class="ms-rule-dot"></span>Checking configuration rules in Revenue Cloud…</p>
+                    </template>
+                    <hr class="nf-divider" />
+                    <div class="nf-row"><span>Site monthly</span><strong>{siteTotals.monthly}</strong></div>
+                    <div class="nf-row nf-small nf-muted"><span>One-time</span><span>{siteTotals.oneTime}</span></div>
+                    <p class="nf-small nf-muted ms-note">Estimated from {selectedState} list prices. Revenue Cloud confirms every site at review.</p>
+                    <p class="nf-small ms-progress">{sitesWithPlansLabel}</p>
+                    <lightning-button class="ms-cta" variant="brand" label="Review all sites" icon-name="utility:forward" icon-position="right"
+                        stretch onclick={handleReview} disabled={reviewDisabled}></lightning-button>
+                </aside>
+            </div>
+        </template>
+
+        <!-- 3. Review -->
+        <template lwc:if={isReviewStep}>
+            <div class="nf-card">
+                <h2 class="nf-h2">Review the multi-site quote</h2>
+                <p class="nf-muted">Each site configured and priced by Revenue Cloud for its state. Nothing has been saved yet.</p>
+
+                <template for:each={reviewSites} for:item="s">
+                    <section key={s.key} class="ms-sum">
+                        <div class="nf-row ms-sum-head">
+                            <span><strong>{s.name}</strong> <span class="nf-badge">{s.state}</span></span>
+                            <span><strong>{s.monthly}</strong><span class="nf-price-unit">/mo</span>
+                                <span class="nf-small nf-muted"> · {s.oneTime} one-time</span></span>
+                        </div>
+                        <template for:each={s.lines} for:item="l">
+                            <div key={l.key} class="ms-line">
+                                <div class="nf-row"><span>{l.name}</span><span>{l.net}{l.unit}</span></div>
+                                <template for:each={l.children} for:item="c">
+                                    <div key={c.key} class="nf-row ms-child nf-small nf-muted"><span>{c.name}</span><span>{c.net}{c.unit}</span></div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:if={s.hasMessages}>
+                            <template for:each={s.messages} for:item="m"><p key={m.key} class={m.cssClass}>{m.text}</p></template>
+                        </template>
+                    </section>
+                </template>
+
+                <div class="ms-total">
+                    <div class="nf-row"><span>All sites · monthly</span><span class="nf-price">{reviewTotals.monthly}<span class="nf-price-unit">/mo</span></span></div>
+                    <div class="nf-row"><span>One-time charges</span><strong>{reviewTotals.oneTime}</strong></div>
+                </div>
+
+                <div class="ms-customer">
+                    <template lwc:if={hasAccount}>
+                        <p>Quote for <strong>{account.name}</strong> (selected in the agent panel).</p>
+                    </template>
+                    <template lwc:else>
+                        <lightning-input label={companyLabel} value={companyName} onchange={handleCompany}
+                            placeholder="e.g. Globex Corporation" required></lightning-input>
+                        <template lwc:if={isAgent}>
+                            <p class="nf-small nf-muted">Or pick an existing customer in the agent panel above.</p>
+                        </template>
+                    </template>
+                </div>
+
+                <div class="nf-actions">
+                    <lightning-button label="Change plans" icon-name="utility:back" onclick={handleBackToBuild} disabled={busy}></lightning-button>
+                    <lightning-button variant="brand" label="Create quote" icon-name="utility:check" onclick={handleCreateQuote}
+                        disabled={createDisabled}></lightning-button>
+                </div>
+            </div>
+        </template>
+
+        <!-- 4. Done -->
+        <template lwc:if={isDoneStep}>
+            <div class="nf-card">
+                <div class="ms-done-head">
+                    <lightning-icon icon-name="utility:success" size="small" alternative-text="Quote created"></lightning-icon>
+                    <div>
+                        <h2 class="nf-h2">Quote {quote.quoteNumber} created</h2>
+                        <p class="nf-muted">One service location and one line group per site; every line priced for its site's state.</p>
+                    </div>
+                </div>
+                <template for:each={doneSites} for:item="s">
+                    <div key={s.key} class="nf-row ms-done-row">
+                        <span><strong>{s.name}</strong> <span class="nf-badge">{s.state}</span></span>
+                        <span>{s.monthly}<span class="nf-price-unit">/mo</span><span class="nf-small nf-muted"> · {s.oneTime} one-time</span></span>
+                    </div>
+                </template>
+                <div class="ms-total">
+                    <div class="nf-row"><span>Monthly total</span><span class="nf-price">{doneTotals.monthly}<span class="nf-price-unit">/mo</span></span></div>
+                    <div class="nf-row"><span>One-time charges</span><strong>{doneTotals.oneTime}</strong></div>
+                </div>
+                <template lwc:if={hasOrder}>
+                    <div class="ms-order ms-order_done">
+                        <lightning-icon icon-name="utility:success" size="x-small" alternative-text=""></lightning-icon>
+                        <div>
+                            <strong>Order {order.orderNumber} placed for {order.accountName}</strong>
+                            <p class="nf-small nf-muted">{orderStatusLabel}</p>
+                        </div>
+                    </div>
+                    <div class="ms-install">
+                        <div class="nf-row nf-wrap">
+                            <div>
+                                <h3 class="nf-h3">Book the installations</h3>
+                                <p class="nf-small nf-muted">One visit per site, with an install crew from that site's state. Times are local to each site.</p>
+                            </div>
+                            <span class="nf-badge">{installProgress}</span>
+                        </div>
+                        <template for:each={installSites} for:item="s">
+                            <div key={s.siteKey} class="ms-install-site">
+                                <div class="ms-install-site-head">
+                                    <strong>{s.name}</strong>
+                                    <span class="nf-badge">{s.state}</span>
+                                    <span class="nf-small nf-muted">{s.address}</span>
+                                </div>
+                                <c-nf-install-booking order-id={order.orderId} booking-token={order.bookingToken} site-key={s.siteKey}
+                                    site-name={s.name} appointment={s.appointment} heading="Pick an arrival window"
+                                    onbooked={handleInstallBooked}></c-nf-install-booking>
+                            </div>
+                        </template>
+                    </div>
+                    <template lwc:if={canTrack}>
+                        <p class="nf-small nf-muted">Follow every site's installation in My NovaFiber: log in with <strong>{order.portalUsername}</strong>.</p>
+                    </template>
+                    <div class="nf-actions">
+                        <lightning-button label="New multi-site quote" onclick={handleStartOver}></lightning-button>
+                        <template lwc:if={isAgent}>
+                            <lightning-button label="Open quote record" icon-name="utility:new_window" onclick={handleOpenQuote}></lightning-button>
+                            <lightning-button variant="brand" label="Open order" icon-name="utility:new_window" onclick={handleOpenOrder}></lightning-button>
+                        </template>
+                        <template lwc:if={canTrack}>
+                            <lightning-button variant="brand" label="Track my order" icon-name="utility:forward" onclick={handleTrack}></lightning-button>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="ms-order">
+                        <h3 class="nf-h3">Place the order</h3>
+                        <p class="nf-small nf-muted">{orderIntro}</p>
+                        <div class="ms-order-grid">
+                            <lightning-input name="firstName" label="First name" value={contact.firstName} onchange={handleContact} required></lightning-input>
+                            <lightning-input name="lastName" label="Last name" value={contact.lastName} onchange={handleContact} required></lightning-input>
+                            <lightning-input name="email" type="email" label="Email" value={contact.email} onchange={handleContact} required></lightning-input>
+                            <lightning-input name="phone" type="tel" label="Phone" value={contact.phone} onchange={handleContact} required></lightning-input>
+                            <lightning-input name="preferredInstallDate" type="date" label="Preferred installation date" min={minInstallDate}
+                                value={contact.preferredInstallDate} onchange={handleContact}></lightning-input>
+                            <template lwc:if={isGuest}>
+                                <lightning-input type="password" label="Password for My NovaFiber" name="portalPassword" value={contact.portalPassword}
+                                    onchange={handleContact} required field-level-help="At least 10 characters with letters and numbers"></lightning-input>
+                                <lightning-input type="password" label="Confirm password" name="confirmPassword" value={confirmPassword}
+                                    onchange={handleConfirm} required></lightning-input>
+                            </template>
+                        </div>
+                        <template lwc:if={isGuest}>
+                            <lightning-input class="ms-terms" type="checkbox" name="acceptedTerms" checked={acceptedTerms} required
+                                label="I agree to the NovaFiber business terms of service and privacy policy" onchange={handleTerms}></lightning-input>
+                        </template>
+                    </div>
+                    <template lwc:if={showProposal}>
+                        <c-nf-agreement class="ms-proposal" quote-id={quote.quoteId} signer={proposalSigner} is-agent={isAgent}
+                            onsigned={handleProposalSigned}></c-nf-agreement>
+                    </template>
+                    <div class="nf-actions">
+                        <lightning-button label="New multi-site quote" onclick={handleStartOver}></lightning-button>
+                        <template lwc:if={isAgent}>
+                            <lightning-button label="Open quote record" icon-name="utility:new_window" onclick={handleOpenQuote}></lightning-button>
+                        </template>
+                        <template lwc:if={proposalSigned}>
+                            <lightning-button variant="brand" label="Place order" icon-name="utility:check" onclick={handlePlaceOrder}
+                                disabled={orderDisabled}></lightning-button>
+                        </template>
+                        <template lwc:else>
+                            <lightning-button variant="brand" label="Prepare proposal for signature" icon-name="utility:contract_doc"
+                                onclick={handlePrepareProposal} disabled={orderDisabled}></lightning-button>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

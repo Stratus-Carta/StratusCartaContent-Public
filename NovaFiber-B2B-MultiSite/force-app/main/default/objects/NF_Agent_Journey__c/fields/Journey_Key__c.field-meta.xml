@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Journey_Key__c</fullName>
+    <caseSensitive>true</caseSensitive>
+    <description>Random key shared by the website chat and the agent session (Agent API variable journey_key).</description>
+    <externalId>true</externalId>
+    <label>Journey Key</label>
+    <length>36</length>
+    <required>true</required>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

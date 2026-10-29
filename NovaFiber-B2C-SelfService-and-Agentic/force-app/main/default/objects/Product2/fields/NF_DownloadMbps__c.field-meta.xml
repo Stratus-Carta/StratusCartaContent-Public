@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_DownloadMbps__c</fullName>
+    <label>NF Download Mbps</label>
+    <description>Download speed delivered by the plan. Offer is only shown when serviceability max speed is greater than or equal to this.</description>
+    <type>Number</type>
+    <precision>6</precision>
+    <scale>0</scale>
+</CustomField>

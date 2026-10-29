@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Guest_Debug_Enabled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Allows the Journey Inspector on the public site when the page URL has ?debug=1. Turn off for real customers.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <label>Guest Debug Enabled</label>
+    <type>Checkbox</type>
+</CustomField>

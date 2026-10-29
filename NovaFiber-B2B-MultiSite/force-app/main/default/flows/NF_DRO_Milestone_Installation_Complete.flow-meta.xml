@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Set_Milestone</name>
+        <label>Set Fulfillment Milestone</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>NF_FulfillmentStatus</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>orderId</name>
+            <value>
+                <elementReference>planSourceIdentifierId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>milestone</name>
+            <value>
+                <stringValue>Installation Complete</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>NF_FulfillmentStatus</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>66.0</apiVersion>
+    <description>Moves the order and customer to Installation Complete. NovaFiber DRO orchestration AutoTask (input planSourceIdentifierId = order id).</description>
+    <environments>Default</environments>
+    <interviewLabel>NF DRO: Milestone Installation Complete {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>NF DRO: Milestone Installation Complete</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Milestone</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>planSourceIdentifierId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

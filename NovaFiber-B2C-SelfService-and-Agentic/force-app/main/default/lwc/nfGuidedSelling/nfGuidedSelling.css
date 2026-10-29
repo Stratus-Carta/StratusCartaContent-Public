@@ -1,0 +1,130 @@
+@import 'c/nfStyles';
+:host { display: block; font-family: 'Instrument Sans', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+.nf-app { background: #f7f6fb; min-height: 100%; font-size: 0.9375rem; color: var(--nf-ink); }
+
+/* Header */
+.nf-topbar { background: #ffffff; border-bottom: 1px solid var(--nf-line); }
+.nf-topbar-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; padding: 0.875rem 1.5rem; }
+.nf-brand { display: flex; align-items: center; gap: 0.625rem; }
+.nf-brand-name { font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 1.375rem; letter-spacing: -0.02em; }
+.nf-brand-tag { padding: 0.125rem 0.5rem; border-radius: 6px; background: var(--nf-primary-soft); color: #3b17a8; font-size: 0.75rem; font-weight: 600; }
+.nf-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
+.nf-agent-chip { padding: 0.375rem 0.75rem; border-radius: 999px; background: var(--nf-warn-soft); color: var(--nf-warn); font-size: 0.8125rem; font-weight: 600; }
+.nf-insp-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; min-height: 40px; border-radius: 999px;
+    border: 1px solid #d8d2f3; background: #ffffff; color: #3b17a8; font-family: inherit; font-weight: 600; font-size: 0.8125rem; cursor: pointer; }
+.nf-insp-toggle_on { background: #1b1340; color: #ffffff; border-color: #1b1340; }
+
+/* Main + inspector */
+.nf-row { display: flex; flex-wrap: nowrap; align-items: stretch; }
+.nf-main { flex: 1 1 0; min-width: 0; padding: 1.25rem clamp(1rem, 2.5vw, 2rem) 0; }
+/* The page is full width; journey content stays at a readable width, centered in the space beside the inspector. */
+.nf-main > *:not(.nf-footer) { max-width: 1440px; margin-left: auto; margin-right: auto; }
+.nf-side { flex: 0 0 auto; width: var(--nf-insp-w, 440px); max-width: 100%; min-width: 0; position: sticky; top: 0;
+    align-self: flex-start; height: 100vh; border-left: 1px solid #2a2540; }
+.nf-resize { position: absolute; z-index: 5; top: 0; bottom: 0; left: -5px; width: 10px; cursor: col-resize; touch-action: none; }
+.nf-resize::after { content: ''; position: absolute; top: 0; bottom: 0; left: 4px; width: 2px; background: transparent; transition: background 0.15s; }
+.nf-resize:hover::after, .nf-resize:focus-visible::after, .nf-resizing .nf-resize::after { background: #5b2be0; }
+.nf-resize:focus-visible { outline: none; }
+.nf-resizing { cursor: col-resize; user-select: none; }
+.nf-block { display: block; margin-top: 1rem; }
+
+/* Steps */
+.nf-steps { display: flex; list-style: none; margin: 0.25rem 0 1.25rem; padding: 0; gap: 0.5rem; }
+.nf-step { flex: 1; display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--nf-line);
+    color: var(--nf-muted); font-size: 0.8125rem; font-weight: 600; }
+.nf-step-dot { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+    background: var(--nf-line); color: var(--nf-muted); font-size: 0.75rem; flex: none; }
+.nf-step_done { border-color: #00796b; color: var(--nf-ink); }
+.nf-step_done .nf-step-dot { background: #00796b; color: #fff; }
+.nf-step_current { border-color: var(--nf-primary); color: #4a1fd0; }
+.nf-step_current .nf-step-dot { background: var(--nf-primary); color: #fff; }
+
+.nf-error { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem;
+    border-radius: 10px; background: var(--nf-error-soft); color: var(--nf-error); --slds-c-icon-color-foreground-default: var(--nf-error); }
+.nf-error span { flex: 1; }
+.nf-stage { position: relative; min-height: 12rem; }
+.nf-busy { position: fixed; z-index: 50; left: 50%; bottom: 2rem; transform: translateX(-50%); display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1.25rem 0.75rem 3.25rem; background: #1b1340; color: #ffffff; border-radius: 999px; box-shadow: 0 10px 30px rgba(27, 19, 64, 0.3); }
+.nf-busy lightning-spinner { --slds-c-spinner-color-foreground: #5fe0cc; }
+.nf-busy-label { font-weight: 600; }
+.nf-loading { position: relative; min-height: 12rem; }
+
+/* Offers step */
+.nf-layout { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-start; }
+.nf-col-main { flex: 999 1 520px; min-width: 0; }
+.nf-col-side { flex: 1 1 280px; min-width: 0; }
+.nf-section-title { font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-size: 1.25rem; font-weight: 700; margin: 1.25rem 0 0.75rem; }
+.nf-offer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); grid-auto-flow: row dense; gap: 1rem; padding-top: 0.75rem; }
+/* Full-width row under the chosen plan's row (dense flow keeps the next plans filling in after it). */
+.nf-configurator { grid-column: 1 / -1; scroll-margin: 1rem; }
+
+/* Footer */
+.nf-footer { margin: 3.5rem calc(-1 * clamp(1rem, 2.5vw, 2rem)) 0; background: #1b1340; color: #cfc9e8;
+    padding: 2.5rem clamp(1rem, 2.5vw, 2rem); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; font-size: 0.875rem; }
+.nf-footer p { line-height: 1.6; margin: 0.5rem 0 0; }
+.nf-footer-brand { font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 1.25rem; color: #ffffff; }
+.nf-footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+.nf-footer-col strong { color: #ffffff; }
+
+@media (max-width: 960px) {
+    .nf-row { flex-wrap: wrap; }
+    .nf-main { flex-basis: 100%; }
+    .nf-side { position: static; width: 100%; height: 32rem; border-left: 0; border-top: 1px solid #2a2540; }
+    .nf-resize { display: none; }
+    .nf-step-label { display: none; }
+    .nf-step_current .nf-step-label { display: inline; }
+}
+
+/* Journey toolbar: back + discard */
+.nf-toolbar { display: flex; align-items: center; gap: 0.75rem; margin: 0.25rem 0 0.75rem; }
+.nf-back, .nf-discard { display: inline-flex; align-items: center; gap: 0.375rem; min-height: 40px; padding: 0.5rem 0.875rem;
+    border-radius: 10px; font: 600 0.875rem/1 inherit; font-family: inherit; cursor: pointer; }
+.nf-back { border: 1px solid var(--nf-line); background: #ffffff; color: var(--nf-ink); }
+.nf-back:hover { border-color: var(--nf-primary); color: #4a1fd0; }
+.nf-discard { margin-left: auto; border: 1px solid transparent; background: transparent; color: var(--nf-error); }
+.nf-discard:hover { background: var(--nf-error-soft); }
+.nf-back:disabled, .nf-discard:disabled { opacity: 0.5; cursor: default; }
+.nf-confirm { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem;
+    padding: 1rem 1.25rem; margin-bottom: 1rem; border-radius: 12px; background: #ffffff; border: 1px solid #f3c2c9;
+    box-shadow: 0 8px 24px rgba(186, 5, 23, 0.08); }
+.nf-confirm p { margin: 0.25rem 0 0; color: var(--nf-muted); font-size: 0.875rem; max-width: 40rem; }
+.nf-confirm-actions { display: flex; gap: 0.5rem; }
+.nf-btn-secondary, .nf-btn-danger { min-height: 40px; padding: 0.5rem 1rem; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; }
+.nf-btn-secondary { border: 1px solid var(--nf-line); background: #ffffff; color: var(--nf-ink); }
+.nf-btn-danger { border: 0; background: var(--nf-error); color: #ffffff; }
+.nf-notice { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 10px;
+    background: var(--nf-accent-soft); color: #00594f; }
+.nf-notice span { flex: 1; }
+
+/* Journey mode switch + cache flush */
+.nf-mode { display: inline-flex; padding: 3px; border-radius: 999px; background: #efeafd; border: 1px solid #d8d2f3; }
+.nf-mode-btn { min-height: 34px; padding: 0.25rem 0.875rem; border: 0; border-radius: 999px; background: transparent; color: #3b17a8;
+    font-family: inherit; font-weight: 600; font-size: 0.8125rem; cursor: pointer; }
+.nf-mode-btn_on { background: #1b1340; color: #ffffff; }
+.nf-flush { min-height: 40px; padding: 0.5rem 0.875rem; border-radius: 999px; border: 1px solid #d8d2f3; background: #ffffff;
+    color: #3b17a8; font-family: inherit; font-weight: 600; font-size: 0.8125rem; cursor: pointer; }
+.nf-flush:hover { border-color: var(--nf-primary); }
+/* AI journey (Nova, Agentforce) */
+.nf-ai-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; min-height: 40px; border-radius: 999px;
+    border: 0; background: linear-gradient(135deg, #5b2be0, #00a693); color: #ffffff; font-family: inherit; font-weight: 700; font-size: 0.8125rem; cursor: pointer; }
+.nf-ai-toggle:hover { filter: brightness(1.08); }
+.nf-ai-toggle_on { background: #ffffff; color: #3b17a8; border: 1px solid #d8d2f3; }
+.nf-ai-promo { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem 1rem;
+    border-radius: 12px; background: linear-gradient(90deg, #efeafd, #e3f7f4); color: var(--nf-ink); font-size: 0.875rem; }
+.nf-ai-promo > span:nth-child(2) { flex: 1 1 18rem; }
+.nf-ai-promo-icon { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: #5b2be0; color: #ffffff; flex: none; }
+.nf-ai-promo-cta { border: 0; border-radius: 999px; padding: 0.5rem 1rem; min-height: 40px; background: #1b1340; color: #ffffff;
+    font-family: inherit; font-weight: 700; font-size: 0.8125rem; cursor: pointer; }
+
+/* My NovaFiber portal */
+.nf-portal-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; min-height: 40px; border-radius: 999px;
+    border: 1px solid #d8d2f3; background: #ffffff; color: #1b1340; font-family: inherit; font-weight: 700; font-size: 0.8125rem; cursor: pointer; }
+.nf-portal-toggle:hover { border-color: #5b2be0; color: #3b17a8; }
+.nf-portal-toggle_on { background: #1b1340; color: #ffffff; border-color: #1b1340; }
+
+/* Home link */
+a.nf-brand { color: inherit; text-decoration: none; border-radius: 8px; }
+a.nf-brand:hover .nf-brand-name { color: #4318c4; }
+a.nf-brand:focus-visible, a.nf-footer-brand:focus-visible { outline: 2px solid #5b2be0; outline-offset: 3px; }
+a.nf-footer-brand { display: inline-block; color: inherit; text-decoration: none; }
+.nf-hidden { display: none; }

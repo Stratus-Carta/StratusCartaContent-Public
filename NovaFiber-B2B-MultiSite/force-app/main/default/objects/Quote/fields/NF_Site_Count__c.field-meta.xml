@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Site_Count__c</fullName>
+    <label>NF Site Count</label>
+    <description>Number of service locations on a multi-site quote.</description>
+    <type>Number</type>
+    <precision>4</precision>
+    <scale>0</scale>
+</CustomField>

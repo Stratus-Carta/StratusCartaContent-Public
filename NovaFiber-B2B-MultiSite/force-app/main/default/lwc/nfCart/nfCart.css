@@ -1,0 +1,27 @@
+@import 'c/nfStyles';
+.nf-cart { position: sticky; top: 1rem; }
+.nf-empty { text-align: center; padding: 1.5rem 0 0.5rem; --slds-c-icon-color-foreground-default: var(--nf-muted); }
+.nf-item { padding: 0.875rem 0; border-bottom: 1px solid var(--nf-line); }
+.nf-item-name { font-weight: 600; }
+.nf-item-price { font-weight: 700; white-space: nowrap; }
+.nf-item-actions { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+.nf-qty { min-width: 1.25rem; text-align: center; font-weight: 700; }
+.nf-link { background: none; border: 0; padding: 0; color: var(--nf-primary); font-size: 0.8125rem; cursor: pointer; }
+.nf-link:hover { text-decoration: underline; }
+.nf-remove { margin-left: auto; color: var(--nf-muted); }
+.nf-discount { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+.nf-discount-input { width: 5rem; margin-left: auto; }
+.nf-note { margin: 0.75rem 0; }
+.nf-cta { display: block; }
+.nf-cart-msg { display: flex; align-items: flex-start; gap: 0.375rem; margin-top: 0.5rem; padding: 0.375rem 0.5rem;
+    border-radius: 8px; font-size: 0.8125rem; line-height: 1.35; }
+.nf-cart-msg_warning { background: var(--nf-warn-soft); color: var(--nf-warn); --slds-c-icon-color-foreground-default: var(--nf-warn); }
+.nf-cart-msg_error { background: var(--nf-error-soft); color: var(--nf-error); --slds-c-icon-color-foreground-default: var(--nf-error); }
+.nf-cart-msg_info { background: var(--nf-primary-soft); color: var(--nf-primary-dark); --slds-c-icon-color-foreground-default: var(--nf-primary-dark); }
+.nf-cart-msg_rule { background: #efe9ff; color: #4a1fc4; border-left: 3px solid #5b2be0; --slds-c-icon-color-foreground-default: #5b2be0;
+    animation: nf-rule-in 0.5s ease-out; }
+@keyframes nf-rule-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.nf-sync-dot { display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.375rem; border-radius: 50%;
+    background: var(--nf-primary); animation: nf-pulse 1s ease-in-out infinite; }
+@keyframes nf-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .nf-sync-dot { animation: none; } }

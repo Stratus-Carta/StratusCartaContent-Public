@@ -1,0 +1,71 @@
+<template>
+    <div class="nf-card nf-config">
+        <div class="nf-row">
+            <div>
+                <span class="nf-muted nf-small">Customize your plan</span>
+                <h2 class="nf-h2">{offer.name}</h2>
+            </div>
+            <lightning-button-icon icon-name="utility:close" variant="bare" alternative-text="Close"
+                onclick={handleCancel}></lightning-button-icon>
+        </div>
+
+        <template for:each={groupsView} for:item="g">
+            <section key={g.groupId} class="nf-group">
+                <div class="nf-row">
+                    <div class="nf-h3">{g.name}</div>
+                    <span class="nf-muted nf-small">{g.rule}</span>
+                </div>
+                <div class="nf-options">
+                    <template for:each={g.options} for:item="o">
+                        <div key={o.componentId} class={o.cssClass}>
+                            <label class="nf-option-main">
+                                <input type={g.inputType} name={g.groupId} checked={o.checked} disabled={o.locked}
+                                    data-group={g.groupId} data-id={o.componentId} onchange={handleToggle} />
+                                <span class="nf-option-text">
+                                    <span class="nf-option-name">{o.name}
+                                        <template lwc:if={o.isRequired}><span class="nf-muted nf-small"> (included)</span></template>
+                                    </span>
+                                    <span class="nf-muted nf-small">{o.tagline}</span>
+                                    <template lwc:if={o.ruled}>
+                                        <span class="nf-rule-tag">Not available with this plan · configuration rule</span>
+                                    </template>
+                                </span>
+                                <span class="nf-option-price">{o.priceLabel}</span>
+                            </label>
+                            <template lwc:if={o.showQuantity}>
+                                <div class="nf-qty">
+                                    <span class="nf-small nf-muted">Quantity</span>
+                                    <lightning-button-icon icon-name="utility:dash" size="small" alternative-text="Fewer"
+                                        data-id={o.componentId} data-delta="-1" onclick={handleQty}
+                                        disabled={o.atMin}></lightning-button-icon>
+                                    <span class="nf-qty-value">{o.quantity}</span>
+                                    <lightning-button-icon icon-name="utility:add" size="small" alternative-text="More"
+                                        data-id={o.componentId} data-delta="1" onclick={handleQty}
+                                        disabled={o.atMax}></lightning-button-icon>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </template>
+
+        <hr class="nf-divider" />
+        <div class="nf-row nf-totals">
+            <div>
+                <span class="nf-muted nf-small">Estimated</span>
+                <div><span class="nf-price">{monthlyLabel}</span><span class="nf-price-unit">/mo</span></div>
+                <template lwc:if={oneTimeLabel}>
+                    <span class="nf-muted nf-small">+ {oneTimeLabel} one-time</span>
+                </template>
+            </div>
+            <div class="nf-actions nf-no-margin">
+                <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button variant="brand" label={confirmLabel} onclick={handleConfirm}></lightning-button>
+            </div>
+        </div>
+        <template lwc:if={error}>
+            <p class="nf-error" role="alert">{error}</p>
+        </template>
+    </div>
+</template>

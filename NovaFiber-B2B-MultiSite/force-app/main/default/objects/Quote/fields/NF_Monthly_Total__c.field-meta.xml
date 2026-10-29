@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Monthly_Total__c</fullName>
+    <label>NF Monthly Total</label>
+    <description>Sum of the recurring lines (net).</description>
+    <summarizedField>QuoteLineItem.NetTotalPrice</summarizedField>
+    <summaryFilterItems>
+        <field>QuoteLineItem.NF_Is_One_Time__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryForeignKey>QuoteLineItem.QuoteId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <type>Summary</type>
+</CustomField>

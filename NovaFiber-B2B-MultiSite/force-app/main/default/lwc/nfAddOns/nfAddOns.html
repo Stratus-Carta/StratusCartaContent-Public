@@ -1,0 +1,35 @@
+<template>
+    <template lwc:if={hasSections}>
+        <section class={rootClass} aria-label="Add-ons">
+            <template for:each={sections} for:item="s">
+                <div key={s.key} class="ao-section">
+                    <h2 class="ao-title">{s.title}</h2>
+                    <template for:each={s.groups} for:item="g">
+                        <div key={g.key} class="ao-group">
+                            <div class="ao-group-head"><strong>{g.name}</strong><span class="nf-muted nf-small">{g.hint}</span></div>
+                            <div class="ao-grid">
+                                <template for:each={g.options} for:item="o">
+                                    <div key={o.key} class={o.cssClass}>
+                                        <div class="ao-name">{o.name}</div>
+                                        <template lwc:if={o.tagline}><div class="nf-muted nf-small">{o.tagline}</div></template>
+                                        <div class="ao-foot">
+                                            <span class="ao-price">{o.priceLabel}<span class="nf-muted nf-small"> {o.unitLabel}</span></span>
+                                            <template lwc:if={o.stateLabel}><span class="nf-badge nf-badge_accent">{o.stateLabel}</span></template>
+                                        </div>
+                                        <template lwc:if={o.ruled}>
+                                            <span class="ao-rule">Not available with this plan · configuration rule</span>
+                                        </template>
+                                        <template lwc:if={o.hasAction}>
+                                            <button type="button" class={o.buttonClass} data-item-key={o.itemKey} data-component-id={o.componentId}
+                                                data-action={o.action} onclick={handleClick} disabled={busy}>{o.buttonLabel}</button>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </section>
+    </template>
+</template>

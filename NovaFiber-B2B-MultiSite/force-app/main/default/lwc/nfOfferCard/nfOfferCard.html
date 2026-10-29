@@ -1,0 +1,32 @@
+<template>
+    <article class={cardClass}>
+        <template lwc:if={offer.isFeatured}>
+            <div class="nf-ribbon">Most popular</div>
+        </template>
+        <header>
+            <div class="nf-h3">{offer.name}</div>
+            <template lwc:if={speedLabel}>
+                <span class="nf-badge nf-badge_accent">{speedLabel}</span>
+            </template>
+            <p class="nf-muted nf-small nf-tagline">{offer.tagline}</p>
+        </header>
+        <div>
+            <span class="nf-price">{price}</span><span class="nf-price-unit">{unit}</span>
+        </div>
+        <ul class="nf-highlights">
+            <template for:each={offer.highlights} for:item="h">
+                <li key={h}>
+                    <lightning-icon icon-name="utility:check" size="xx-small" alternative-text=""></lightning-icon>
+                    <span>{h}</span>
+                </li>
+            </template>
+        </ul>
+        <footer>
+            <template lwc:if={inCartQuantity}>
+                <span class="nf-badge">In cart ×{inCartQuantity}</span>
+            </template>
+            <lightning-button variant={buttonVariant} label={buttonLabel} onclick={handleSelect} class="nf-select"
+                disabled={disabled}></lightning-button>
+        </footer>
+    </article>
+</template>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Contract_Value_Display__c</fullName>
+    <label>NF 36-month Value (display)</label>
+    <description>36 months of recurring charges plus one-time charges, as text.</description>
+    <formula>"$" &amp; IF((BLANKVALUE(NF_Monthly_Total__c, 0) * 36 + BLANKVALUE(NF_One_Time_Total__c, 0)) &gt;= 1000, TEXT(FLOOR((BLANKVALUE(NF_Monthly_Total__c, 0) * 36 + BLANKVALUE(NF_One_Time_Total__c, 0)) / 1000)) &amp; "," &amp; RIGHT("00" &amp; TEXT(MOD(FLOOR((BLANKVALUE(NF_Monthly_Total__c, 0) * 36 + BLANKVALUE(NF_One_Time_Total__c, 0))), 1000)), 3), TEXT(FLOOR((BLANKVALUE(NF_Monthly_Total__c, 0) * 36 + BLANKVALUE(NF_One_Time_Total__c, 0))))) &amp; "." &amp; RIGHT("0" &amp; TEXT(ROUND(MOD((BLANKVALUE(NF_Monthly_Total__c, 0) * 36 + BLANKVALUE(NF_One_Time_Total__c, 0)), 1) * 100, 0)), 2)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

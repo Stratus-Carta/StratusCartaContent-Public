@@ -1,0 +1,162 @@
+<template>
+    <div class="aj">
+        <!-- Chat with Nova -->
+        <section class="aj-chat" aria-label="Chat with Nova, the NovaFiber assistant">
+            <header class="aj-chat-head">
+                <span class="aj-avatar" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 30 30"><path d="M7 21 C 11 9, 19 9, 23 21" stroke="#5fe0cc" stroke-width="2.6" fill="none" stroke-linecap="round"></path><circle cx="15" cy="12" r="2.6" fill="#ffffff"></circle></svg>
+                </span>
+                <div class="aj-chat-title">
+                    <strong>Nova</strong>
+                    <span class="aj-chat-sub"><span class="aj-dot" aria-hidden="true"></span>NovaFiber AI assistant · Agentforce</span>
+                </div>
+                <button type="button" class="aj-link" onclick={handleStartOver} disabled={busy}>Start over</button>
+            </header>
+
+            <div class="aj-log" role="log" aria-live="polite" aria-busy={sending}>
+                <template lwc:if={starting}>
+                    <div class="aj-typing" role="status"><span class="aj-bounce" aria-hidden="true"><i></i><i></i><i></i></span>Connecting to Nova…</div>
+                </template>
+                <template lwc:if={startError}>
+                    <div class="aj-msg aj-msg_system" role="alert">
+                        <p class="aj-line">{startError}</p>
+                        <button type="button" class="nf-chip" onclick={start}>Try again</button>
+                    </div>
+                </template>
+                <template for:each={messages} for:item="m">
+                    <div key={m.key} class={m.cssClass}>
+                        <template lwc:if={m.isAgent}><span class="aj-sr">Nova said:</span></template>
+                        <template lwc:if={m.isUser}><span class="aj-sr">You said:</span></template>
+                        <template for:each={m.lines} for:item="l">
+                            <p key={l.key} class={l.cssClass}>
+                                <template for:each={l.segments} for:item="s">
+                                    <template lwc:if={s.bold}><strong key={s.key}>{s.text}</strong></template>
+                                    <template lwc:else><span key={s.key}>{s.text}</span></template>
+                                </template>
+                            </p>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:if={sending}>
+                    <div class="aj-typing" role="status"><span class="aj-bounce" aria-hidden="true"><i></i><i></i><i></i></span>{thinkingLabel}…</div>
+                </template>
+            </div>
+
+            <template lwc:if={hasSuggestions}>
+                <div class="aj-suggest" aria-label="Suggestions">
+                    <template for:each={suggestions} for:item="s">
+                        <button key={s.key} type="button" class="nf-chip" data-text={s.text} onclick={handleSuggestion}>{s.label}</button>
+                    </template>
+                </div>
+            </template>
+
+            <div class="aj-compose">
+                <label class="aj-sr" for="aj-input">Message Nova</label>
+                <textarea id="aj-input" class="aj-input" rows="2" placeholder="Ask Nova anything about plans, prices or your order…"
+                    value={draft} oninput={handleDraft} onkeydown={handleKeydown} disabled={inputDisabled} maxlength="1000"></textarea>
+                <button type="button" class="aj-send" onclick={handleSend} disabled={sendDisabled} aria-label="Send">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z"></path></svg>
+                </button>
+            </div>
+            <p class="aj-fine">Nova uses AI and can make mistakes; prices and availability always come from NovaFiber's systems. Never share contact details in the chat.</p>
+        </section>
+
+        <!-- What Nova built -->
+        <section class="aj-canvas" aria-label="Your journey">
+            <ol class="aj-steps" aria-label="Progress">
+                <template for:each={stepsView} for:item="s">
+                    <li key={s.key} class={s.cssClass} aria-current={s.ariaCurrent}>
+                        <span class="aj-step-dot">{s.number}</span>
+                        <span>{s.label}</span>
+                    </li>
+                </template>
+            </ol>
+
+            <template lwc:if={notice}>
+                <p class="aj-notice" role="status">{notice}</p>
+            </template>
+
+            <template lwc:if={showWelcome}>
+                <div class="nf-card aj-welcome">
+                    <span class="nf-badge">New · AI assistant</span>
+                    <h2 class="nf-h2">Shop by chatting with Nova</h2>
+                    <p class="nf-muted">Tell Nova where you live and what you need. Nova checks your address, finds the plans you qualify for, builds and prices your cart, and saves your quote. Everything appears here as you go, and you can click any card to change it.</p>
+                    <ul class="aj-points">
+                        <li>Live availability from the network</li>
+                        <li>Plans qualified and priced by Salesforce Revenue Cloud</li>
+                        <li>Your contact details stay in a secure form, never in the chat</li>
+                    </ul>
+                    <button type="button" class="aj-link" onclick={handleExit}>Prefer the guided steps? Switch back</button>
+                </div>
+            </template>
+
+            <template lwc:if={serviceability}>
+                <c-nf-serviceability-banner result={serviceability} busy={busy}
+                    onchangeaddress={handleChangeAddress}></c-nf-serviceability-banner>
+            </template>
+
+            <template lwc:if={order}>
+                <div class="aj-block">
+                    <c-nf-order-confirmation order={order} currency-code={currencyCode} appointment={appointment}
+                        onopenrecord={handleOpenRecord} onrestart={handleRestart} ontrack={handleTrack}></c-nf-order-confirmation>
+                </div>
+            </template>
+
+            <template lwc:if={showQuote}>
+                <div class="aj-block">
+                    <c-nf-quote-review quote={view.quote} currency-code={currencyCode} busy={busy}
+                        onback={handleQuoteBack} oncontinue={handleToCheckout} onopenrecord={handleOpenRecord}></c-nf-quote-review>
+                    <c-nf-add-ons class="aj-block" items={cart} currency-code={currencyCode} busy={busy} hidden-options={ruleHidden}
+                        highlight={highlightAddOns} onaddon={handleAddOn}></c-nf-add-ons>
+                </div>
+            </template>
+
+            <template lwc:if={showAgreementCard}>
+                <div class="aj-block">
+                    <c-nf-agreement quote-id={view.quote.quoteId} signer={signer} continue-label="Ask Nova to place my order"
+                        oncontinue={handleAgreementSigned}></c-nf-agreement>
+                </div>
+            </template>
+
+            <template lwc:if={showCheckoutForm}>
+                <div class="aj-block">
+                    <div class="aj-secure" role="note">
+                        <lightning-icon icon-name="utility:lock" size="x-small" alternative-text=""></lightning-icon>
+                        <span>Secure form: these details go straight to NovaFiber, not to the AI assistant.</span>
+                    </div>
+                    <c-nf-checkout-form busy={busy} onback={handleCheckoutBack} onsubmit={handleCustomer}></c-nf-checkout-form>
+                </div>
+            </template>
+
+            <template lwc:if={showShop}>
+                <div class="aj-shop">
+                    <div class="aj-shop-main">
+                        <template lwc:if={hasCart}>
+                            <c-nf-add-ons class="aj-block" items={cart} currency-code={currencyCode} busy={busy} hidden-options={ruleHidden}
+                                highlight={highlightAddOns} onaddon={handleAddOn}></c-nf-add-ons>
+                        </template>
+                        <template for:each={categoriesView} for:item="c">
+                            <section key={c.key} class="aj-block">
+                                <h2 class="aj-section-title">{c.label}</h2>
+                                <div class="aj-grid">
+                                    <template for:each={c.offers} for:item="o">
+                                        <c-nf-offer-card key={o.offer.productId} offer={o.offer} in-cart-quantity={o.inCart}
+                                            currency-code={currencyCode} disabled={busy} onselect={handleSelectOffer}></c-nf-offer-card>
+                                    </template>
+                                </div>
+                            </section>
+                        </template>
+                        <template lwc:if={noOffers}>
+                            <p class="aj-block nf-muted">There are no plans available for this address right now.</p>
+                        </template>
+                    </div>
+                    <div class="aj-shop-side">
+                        <c-nf-cart items={cart} cart-state={cartState} syncing={sending} currency-code={currencyCode}
+                            max-discount="0" busy={busy} onedit={handleCartEdit} onremove={handleCartRemove}
+                            onquantity={handleCartQuantity} onquote={handleCartQuote}></c-nf-cart>
+                    </div>
+                </div>
+            </template>
+        </section>
+    </div>
+</template>

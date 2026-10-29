@@ -1,0 +1,38 @@
+{
+  "model": "NF_Residential_Rules",
+  "bundles": {
+    "NFR-INT-300": "NFFiber300",
+    "NFR-INT-1G": "NFFiber1G",
+    "NFR-INT-2G": "NFFiber2G",
+    "NFR-TV-ESS": "NFTVEssentials"
+  },
+  "components": {
+    "NFR-INS-PRO": "NFProInstall",
+    "NFR-INS-SELF": "NFSelfInstall",
+    "NFR-ADD-SIP": "NFStaticIp",
+    "NFR-ADD-SEC": "NFNovaShield",
+    "NFR-EQ-MESH": "NFMeshExtender",
+    "NFR-TV-MOVIE": "NFMoviesPack",
+    "NFR-TV-SPORT": "NFSportsPack"
+  },
+  "rules": {
+    "NFFiber300": [
+      "require(addons[NFStaticIp] > 0, addons[NFNovaShield], \"A static IP makes your network reachable from the internet, so NovaShield Security is added.\");",
+      "message(addons[NFStaticIp] > 0, \"NovaShield Security comes with a static IP: it guards a network that is reachable from the internet.\", \"Info\");"
+    ],
+    "NFFiber1G": [
+      "require(addons[NFStaticIp] > 0, addons[NFNovaShield], \"A static IP makes your network reachable from the internet, so NovaShield Security is added.\");",
+      "message(addons[NFStaticIp] > 0, \"NovaShield Security comes with a static IP: it guards a network that is reachable from the internet.\", \"Info\");"
+    ],
+    "NFFiber2G": [
+      "exclude(true, installation[NFSelfInstall], \"NovaFiber 2 Gig needs a technician to certify the line, so self-install isn't available.\");",
+      "require(true, installation[NFProInstall], \"Professional installation is included with NovaFiber 2 Gig.\");",
+      "require(addons[NFStaticIp] > 0, addons[NFNovaShield], \"A static IP makes your network reachable from the internet, so NovaShield Security is added.\");",
+      "message(addons[NFStaticIp] > 0, \"NovaShield Security comes with a static IP: it guards a network that is reachable from the internet.\", \"Info\");",
+      "message(equipment[NFMeshExtender] == 0, \"Tip: add a Wi-Fi mesh extender to get 2 Gig speeds in every room.\", \"Info\");"
+    ],
+    "NFTVEssentials": [
+      "message(channelPacks[NFMoviesPack] > 0 && channelPacks[NFSportsPack] > 0, \"With both packs, NovaTV Premium gives you more channels for about the same price.\", \"Info\");"
+    ]
+  }
+}

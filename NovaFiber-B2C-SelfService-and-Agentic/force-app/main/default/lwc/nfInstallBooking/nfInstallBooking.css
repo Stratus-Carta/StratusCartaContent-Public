@@ -1,0 +1,62 @@
+@import 'c/nfStyles';
+
+.ib { display: flex; flex-direction: column; gap: 0.875rem; }
+.ib-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+
+.ib-error { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.875rem; border-radius: 10px;
+    background: var(--nf-error-soft); color: var(--nf-error); --slds-c-icon-color-foreground-default: var(--nf-error); }
+
+/* Two-week Mon–Sat calendar */
+.ib-cal { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.375rem; }
+.ib-weekday { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--nf-muted); text-align: center; padding-bottom: 0.125rem; }
+.ib-day { display: flex; flex-direction: column; align-items: center; gap: 0.0625rem; padding: 0.5rem 0.25rem;
+    border: 1px solid var(--nf-line); border-radius: 10px; background: var(--nf-surface); color: var(--nf-ink);
+    cursor: pointer; font: inherit; min-height: 4.25rem; transition: border-color 0.15s, background 0.15s; }
+.ib-day:hover:not(:disabled) { border-color: var(--nf-primary); }
+.ib-day:focus-visible, .ib-slot:focus-visible { outline: 2px solid var(--nf-primary); outline-offset: 2px; }
+.ib-day_pad { border: 0; background: transparent; cursor: default; }
+.ib-day_full { background: #f6f5f9; color: #9a98a8; cursor: not-allowed; }
+.ib-day_selected { border-color: var(--nf-primary); background: var(--nf-primary-soft); box-shadow: inset 0 0 0 1px var(--nf-primary); }
+.ib-day-month { font-size: 0.6875rem; color: var(--nf-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.ib-day-num { font-size: 1.25rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.ib-day-avail { font-size: 0.6875rem; color: #00796b; font-weight: 600; }
+.ib-day_full .ib-day-avail { color: #9a98a8; }
+
+/* Arrival windows */
+.ib-slots-title { font-size: 0.8125rem; font-weight: 700; margin: 0.25rem 0 0; }
+.ib-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 0.5rem; }
+.ib-slot { display: flex; flex-direction: column; align-items: flex-start; gap: 0.125rem; padding: 0.625rem 0.75rem;
+    border: 1px solid var(--nf-line); border-radius: 10px; background: var(--nf-surface); color: var(--nf-ink);
+    font: inherit; cursor: pointer; text-align: left; }
+.ib-slot:hover:not(:disabled) { border-color: var(--nf-primary); }
+.ib-slot_full { background: #f6f5f9; color: #9a98a8; cursor: not-allowed; }
+.ib-slot_selected { border-color: var(--nf-primary); background: var(--nf-primary-soft); box-shadow: inset 0 0 0 1px var(--nf-primary); }
+.ib-slot-label { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ib-slot-note { font-size: 0.75rem; color: var(--nf-muted); }
+.ib-slot_full .ib-slot-note { color: #9a98a8; }
+
+.ib-actions { display: flex; justify-content: flex-end; }
+.ib-loading { position: relative; display: flex; align-items: center; gap: 0.75rem; min-height: 2.5rem; padding-left: 2.5rem; }
+
+/* Booked appointment */
+.ib-booked { display: flex; align-items: flex-start; gap: 0.875rem; padding: 0.875rem 1rem; border-radius: 12px;
+    background: var(--nf-accent-soft); border: 1px solid #b7e9e1; text-align: left; }
+.ib-booked-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 10px; background: #00796b;
+    flex: none; --slds-c-icon-color-foreground-default: #ffffff; }
+.ib-booked-body { flex: 1; min-width: 0; }
+.ib-booked-body p { margin: 0; }
+.ib-eyebrow { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #00594f; }
+.ib-booked-when { font-size: 1.0625rem; font-weight: 700; }
+.ib-booked-window { font-weight: 600; margin-bottom: 0.125rem !important; }
+.ib-change { flex: none; }
+
+@media (max-width: 480px) {
+    .ib-cal { gap: 0.25rem; }
+    .ib-day { padding: 0.375rem 0.125rem; min-height: 3.75rem; }
+    .ib-day-num { font-size: 1.0625rem; }
+    .ib-day-avail { font-size: 0.625rem; }
+}
+
+.nf-link { background: none; border: 0; padding: 0; color: var(--nf-primary); font: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; }
+.nf-link:hover { text-decoration: underline; }

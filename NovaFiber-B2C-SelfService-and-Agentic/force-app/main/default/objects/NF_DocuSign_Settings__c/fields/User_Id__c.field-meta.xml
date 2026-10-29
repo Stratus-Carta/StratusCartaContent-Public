@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User_Id__c</fullName>
+    <label>User Id</label>
+    <description>DocuSign API user id (GUID) impersonated by the JWT grant.</description>
+    <type>Text</type>
+    <length>64</length>
+</CustomField>

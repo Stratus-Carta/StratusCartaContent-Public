@@ -1,0 +1,76 @@
+@import 'c/nfStyles';
+:host { display: block; }
+.aj { display: grid; grid-template-columns: minmax(320px, 420px) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+
+/* Chat */
+.aj-chat { position: sticky; top: 1rem; display: flex; flex-direction: column; height: calc(100vh - 7rem); min-height: 520px;
+    background: var(--nf-surface); border: 1px solid var(--nf-line); border-radius: var(--nf-radius); overflow: hidden;
+    box-shadow: 0 8px 24px rgba(27, 19, 64, 0.06); }
+.aj-chat-head { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1rem; background: #1b1340; color: #ffffff; }
+.aj-avatar { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--nf-primary); flex: none; }
+.aj-chat-title { display: flex; flex-direction: column; line-height: 1.2; flex: 1; min-width: 0; }
+.aj-chat-sub { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: #c9c2ea; }
+.aj-dot { width: 8px; height: 8px; border-radius: 50%; background: #5fe0cc; }
+.aj-chat-head .aj-link { color: #ffffff; }
+
+.aj-log { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.625rem; background: #faf9fd; }
+.aj-msg { max-width: 88%; padding: 0.625rem 0.875rem; border-radius: 14px; font-size: 0.9375rem; line-height: 1.45; overflow-wrap: anywhere; }
+.aj-msg_agent { align-self: flex-start; background: #ffffff; border: 1px solid var(--nf-line); border-bottom-left-radius: 4px; }
+.aj-msg_user { align-self: flex-end; background: var(--nf-primary); color: #ffffff; border-bottom-right-radius: 4px; }
+.aj-msg_system { align-self: stretch; max-width: none; background: var(--nf-error-soft); color: var(--nf-error); font-size: 0.875rem; }
+.aj-line { margin: 0; }
+.aj-line_gap { margin-top: 0.5rem; }
+.aj-line_bullet { position: relative; padding-left: 1rem; }
+.aj-line_bullet::before { content: ''; position: absolute; left: 0.25rem; top: 0.6em; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+.aj-typing { align-self: flex-start; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--nf-muted); }
+.aj-bounce { display: inline-flex; gap: 3px; }
+.aj-bounce i { width: 6px; height: 6px; border-radius: 50%; background: var(--nf-primary); animation: aj-bounce 1s infinite ease-in-out; }
+.aj-bounce i:nth-child(2) { animation-delay: 0.15s; }
+.aj-bounce i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes aj-bounce { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .aj-bounce i { animation: none; } }
+
+.aj-suggest { display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0.625rem 1rem 0; border-top: 1px solid var(--nf-line); }
+.aj-compose { display: flex; gap: 0.5rem; align-items: flex-end; padding: 0.75rem 1rem 0.25rem; }
+.aj-input { flex: 1; resize: none; font: inherit; font-size: 0.9375rem; padding: 0.625rem 0.75rem; border: 1px solid #cfc9e6; border-radius: 10px;
+    min-height: 44px; max-height: 8rem; color: var(--nf-ink); background: #ffffff; }
+.aj-input:focus { outline: 2px solid var(--nf-primary); outline-offset: 0; border-color: var(--nf-primary); }
+.aj-send { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; border: 0; background: var(--nf-primary);
+    color: #ffffff; cursor: pointer; flex: none; }
+.aj-send:disabled { background: #c9c2ea; cursor: default; }
+.aj-fine { margin: 0; padding: 0.25rem 1rem 0.75rem; font-size: 0.6875rem; color: var(--nf-muted); }
+.aj-link { border: 0; background: none; padding: 0.25rem; font: inherit; font-size: 0.8125rem; font-weight: 600; color: var(--nf-primary);
+    text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.aj-link:disabled { opacity: 0.5; cursor: default; }
+.aj-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Canvas */
+.aj-canvas { min-width: 0; }
+.aj-steps { display: flex; list-style: none; margin: 0 0 1rem; padding: 0; gap: 0.5rem; }
+.aj-step { flex: 1; display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--nf-line);
+    color: var(--nf-muted); font-size: 0.8125rem; font-weight: 600; }
+.aj-step-dot { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--nf-line);
+    color: var(--nf-muted); font-size: 0.75rem; flex: none; }
+.aj-step_done { border-color: #00796b; color: var(--nf-ink); }
+.aj-step_done .aj-step-dot { background: #00796b; color: #ffffff; }
+.aj-step_current { border-color: var(--nf-primary); color: #4a1fd0; }
+.aj-step_current .aj-step-dot { background: var(--nf-primary); color: #ffffff; }
+.aj-notice { margin: 0 0 1rem; padding: 0.625rem 0.875rem; border-radius: 10px; background: var(--nf-accent-soft); color: #00574b; font-size: 0.875rem; }
+.aj-welcome { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+.aj-welcome p { margin: 0; max-width: 44rem; }
+.aj-points { margin: 0; padding-left: 1.25rem; color: var(--nf-ink); }
+.aj-points li { margin: 0.25rem 0; }
+.aj-block { display: block; margin-top: 1rem; }
+.aj-shop { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-start; }
+.aj-shop-main { flex: 999 1 420px; min-width: 0; }
+.aj-shop-side { flex: 1 1 280px; min-width: 0; margin-top: 1rem; }
+.aj-section-title { font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-size: 1.25rem; font-weight: 700; margin: 0.5rem 0 0.75rem; }
+.aj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1rem; padding-top: 0.75rem; }
+.aj-secure { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 8px;
+    background: var(--nf-accent-soft); color: #00574b; font-size: 0.8125rem; --slds-c-icon-color-foreground-default: #00574b; }
+
+@media (max-width: 900px) {
+    .aj { grid-template-columns: minmax(0, 1fr); }
+    .aj-chat { position: relative; top: 0; height: 70vh; min-height: 420px; }
+    .aj-steps span:not(.aj-step-dot) { display: none; }
+}

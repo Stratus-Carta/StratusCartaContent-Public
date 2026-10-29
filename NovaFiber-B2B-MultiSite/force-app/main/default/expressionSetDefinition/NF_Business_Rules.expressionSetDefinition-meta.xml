@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExpressionSetDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextDefinitions>SalesTransactionContextExt_256</contextDefinitions>
+    <description>NovaFiber business configuration rules (CML). Source: scripts/cml/NF_Business_Rules.cml</description>
+    <executionScale>Low</executionScale>
+    <interfaceSourceType>Constraint</interfaceSourceType>
+    <label>NF Business Rules</label>
+    <processType>Constraint</processType>
+    <resourceInitializationType>Off</resourceInitializationType>
+    <template>false</template>
+    <versions>
+        <fullName>NF_Business_Rules_V1</fullName>
+        <decimalScale>2</decimalScale>
+        <expressionSetDefinition>NF_Business_Rules</expressionSetDefinition>
+        <interfaceSourceType>Constraint</interfaceSourceType>
+        <label>NF Business Rules V1</label>
+        <processType>Constraint</processType>
+        <shouldShowExplExternally>false</shouldShowExplExternally>
+        <startDate>2026-10-01T00:00:00.000Z</startDate>
+        <status>Draft</status>
+        <versionNumber>1</versionNumber>
+    </versions>
+</ExpressionSetDefinition>

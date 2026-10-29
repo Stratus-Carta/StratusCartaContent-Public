@@ -1,0 +1,41 @@
+<template>
+    <div class={bannerClass}>
+        <div class="nf-banner-icon">
+            <lightning-icon icon-name={iconName} size="small" alternative-text={statusLabel}></lightning-icon>
+        </div>
+        <div class="nf-banner-body">
+            <div class="nf-row nf-wrap">
+                <div>
+                    <div class="nf-h3">{statusLabel}</div>
+                    <div class="nf-muted nf-small">{addressLine}</div>
+                </div>
+                <div class="nf-banner-actions">
+                    <template lwc:if={result.overridden}>
+                        <span class="nf-agent-tag">Overridden by agent</span>
+                    </template>
+                    <button class="nf-chip" onclick={handleChangeAddress}>Change address</button>
+                </div>
+            </div>
+            <p class="nf-message">{result.message}</p>
+            <div class="nf-techs">
+                <template for:each={techs} for:item="t">
+                    <span key={t.technology} class="nf-tech">
+                        <strong>{t.technology}</strong> up to {t.speed}
+                        <span class="nf-muted"> · {t.installType} · ready in about {t.leadTimeDays} days</span>
+                    </span>
+                </template>
+                <template lwc:if={result.tvAvailable}>
+                    <span class="nf-tech"><strong>NovaTV</strong> available</span>
+                </template>
+            </div>
+            <template lwc:if={showOverride}>
+                <div class="nf-override">
+                    <span class="nf-agent-tag">Agent</span>
+                    <span class="nf-small">Customer confirms the building is connected? You can override availability.</span>
+                    <lightning-button label="Override serviceability" onclick={handleOverride}
+                        disabled={busy}></lightning-button>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

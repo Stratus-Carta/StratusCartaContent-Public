@@ -1,0 +1,115 @@
+@import 'c/nfStyles';
+
+/* Shared journey chrome (same as nfGuidedSelling) */
+.nf-steps { display: flex; list-style: none; margin: 0.25rem 0 1.25rem; padding: 0; gap: 0.5rem; }
+.nf-step { flex: 1; display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--nf-line);
+    color: var(--nf-muted); font-size: 0.8125rem; font-weight: 600; }
+.nf-step-dot { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%;
+    background: var(--nf-line); color: var(--nf-muted); font-size: 0.75rem; flex: none; }
+.nf-step_done { border-color: #00796b; color: var(--nf-ink); }
+.nf-step_done .nf-step-dot { background: #00796b; color: #fff; }
+.nf-step_current { border-color: var(--nf-primary); color: #4a1fd0; }
+.nf-step_current .nf-step-dot { background: var(--nf-primary); color: #fff; }
+.nf-error { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem;
+    border-radius: 10px; background: var(--nf-error-soft); color: var(--nf-error); --slds-c-icon-color-foreground-default: var(--nf-error); }
+.nf-error span { flex: 1; }
+.nf-notice { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 10px;
+    background: var(--nf-accent-soft); color: #00594f; }
+.nf-notice span { flex: 1; }
+.nf-busy { position: fixed; z-index: 50; left: 50%; bottom: 2rem; transform: translateX(-50%); display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1.25rem 0.75rem 3.25rem; background: #1b1340; color: #ffffff; border-radius: 999px; box-shadow: 0 10px 30px rgba(27, 19, 64, 0.3); }
+.nf-busy lightning-spinner { --slds-c-spinner-color-foreground: #5fe0cc; }
+.nf-busy-label { font-weight: 600; }
+.nf-link { background: none; border: 0; padding: 0; color: var(--nf-primary); font-size: 0.8125rem; cursor: pointer; }
+.nf-link:hover { text-decoration: underline; }
+.nf-remove { color: var(--nf-muted); }
+.nf-wrap { flex-wrap: wrap; }
+
+.ms { scroll-margin-top: 1rem; }
+
+/* 1. Sites */
+.ms-template { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; font-weight: 600;
+    color: var(--nf-primary); --slds-c-icon-color-foreground-default: var(--nf-primary); }
+.ms-upload { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.25rem 0; }
+.ms-drop { flex: 1; min-width: 18rem; display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; cursor: pointer;
+    border: 2px dashed var(--nf-line); border-radius: var(--nf-radius); background: #faf9fe;
+    --slds-c-icon-color-foreground-default: var(--nf-primary); }
+.ms-drop:hover { border-color: var(--nf-primary); }
+.ms-file { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.ms-empty { text-align: center; padding: 1.5rem 0 0.5rem; }
+.ms-table { border: 1px solid var(--nf-line); border-radius: 10px; overflow: hidden; }
+.ms-tr { display: grid; grid-template-columns: 2.5rem 1.2fr 2.5fr 4rem 1.4fr 2.5rem; gap: 0.75rem; align-items: center;
+    padding: 0.625rem 0.875rem; border-top: 1px solid var(--nf-line); font-size: 0.875rem; }
+.ms-th { border-top: 0; background: #f6f4fb; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--nf-muted); }
+.ms-right { text-align: right; }
+.ms-grow { margin-right: auto; align-self: center; }
+
+/* 2. Plans per site */
+.ms-build { display: grid; grid-template-columns: 15rem minmax(0, 1fr) 19rem; gap: 1.25rem; align-items: start; }
+.ms-sites { display: flex; flex-direction: column; gap: 0.5rem; position: sticky; top: 1rem; }
+.nf-site { display: flex; flex-direction: column; gap: 0.125rem; text-align: left; padding: 0.75rem 0.875rem; cursor: pointer;
+    border: 1px solid var(--nf-line); border-radius: 10px; background: var(--nf-surface); color: inherit; font: inherit; }
+.nf-site:hover { border-color: var(--nf-primary); }
+.nf-site_on { border-color: var(--nf-primary); box-shadow: 0 0 0 2px var(--nf-primary-soft); background: #fbfaff; }
+.nf-site_filled .ms-site-name::after { content: ' ●'; color: var(--nf-accent); font-size: 0.75rem; }
+.ms-site-name { font-weight: 700; }
+.ms-site-foot { display: flex; justify-content: space-between; margin-top: 0.25rem; }
+.ms-skipped { margin-top: 0.5rem; }
+.ms-site-head { margin-bottom: 0.5rem; }
+.ms-price-src { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; }
+.ms-svc { margin: 0.5rem 0 0; color: var(--nf-muted); }
+.ms-block { margin-top: 1rem; }
+.ms-section-title { font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-size: 1.125rem; font-weight: 700; margin: 0.75rem 0 0.5rem; }
+/* dense: the tiles after the chosen plan fill its row, so the configurator lands right under that row */
+.ms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); grid-auto-flow: row dense; gap: 1rem; }
+.ms-config-inline { grid-column: 1 / -1; scroll-margin: 1rem; }
+.ms-cart { position: sticky; top: 1rem; }
+.ms-item { padding: 0.75rem 0; border-bottom: 1px solid var(--nf-line); }
+.ms-item-name { font-weight: 600; }
+.ms-item-actions { display: flex; gap: 1rem; margin-top: 0.375rem; }
+.ms-apply { width: 100%; margin-top: 0.875rem; }
+.ms-note { margin: 0.75rem 0 0.25rem; }
+.ms-progress { margin: 0 0 0.75rem; font-weight: 600; }
+
+/* 3. Review / 4. Done */
+.ms-sum { margin-top: 1rem; padding: 0.875rem 1rem; border: 1px solid var(--nf-line); border-radius: 10px; }
+.ms-sum-head { padding-bottom: 0.5rem; border-bottom: 1px solid var(--nf-line); margin-bottom: 0.25rem; }
+.ms-line { padding: 0.375rem 0; }
+.ms-child { padding-left: 1rem; }
+.nf-msg { margin: 0.5rem 0 0; padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.8125rem; background: var(--nf-primary-soft); }
+.nf-msg_warning { background: var(--nf-warn-soft); color: var(--nf-warn); }
+.nf-msg_error { background: var(--nf-error-soft); color: var(--nf-error); }
+.ms-total { margin-top: 1.25rem; padding: 1rem 1.25rem; border-radius: 10px; background: #f6f4fb; display: grid; gap: 0.375rem; }
+.ms-customer { margin-top: 1.25rem; max-width: 28rem; }
+.ms-done-head { display: flex; gap: 0.875rem; align-items: flex-start; margin-bottom: 1rem;
+    --slds-c-icon-color-foreground-default: var(--nf-accent); }
+.ms-done-row { padding: 0.625rem 0; border-bottom: 1px solid var(--nf-line); }
+.ms-order { margin-top: 1.5rem; padding: 1rem 1.25rem; border: 1px solid var(--nf-line); border-radius: 10px; }
+.ms-order-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.75rem 1rem; margin-top: 0.75rem; }
+.ms-order_done { display: flex; gap: 0.75rem; align-items: flex-start; background: var(--nf-accent-soft);
+    border-color: transparent; --slds-c-icon-color-foreground-default: var(--nf-accent); }
+.ms-order_done p { margin: 0.125rem 0 0; }
+
+@media (max-width: 1100px) {
+    .ms-build { grid-template-columns: 1fr; }
+    .ms-sites, .ms-cart { position: static; }
+    .ms-tr { grid-template-columns: 2rem 1fr 2fr 3.5rem 1fr 2rem; }
+}
+.ms-terms { margin-top: 0.75rem; display: block; }
+
+/* Installation booking per site */
+.ms-install { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--nf-line); }
+.ms-install-site { padding: 1rem; border: 1px solid var(--nf-line); border-radius: var(--nf-radius); background: #fbfaff; display: flex; flex-direction: column; gap: 0.75rem; }
+.ms-install-site-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.ms-proposal { display: block; margin-top: 1rem; }
+
+/* Configuration rules (CML) */
+.ms-rule { display: flex; align-items: flex-start; gap: 0.375rem; margin: 0.375rem 0 0; padding: 0.375rem 0.5rem; border-radius: 8px;
+    font-size: 0.8125rem; line-height: 1.35; background: #efe9ff; color: #4a1fc4; border-left: 3px solid #5b2be0;
+    --slds-c-icon-color-foreground-default: #5b2be0; animation: ms-rule-in 0.5s ease-out; }
+.ms-rule_error { background: var(--nf-error-soft); color: var(--nf-error); border-left-color: var(--nf-error); }
+.ms-rule-check { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0 0; font-size: 0.8125rem; color: #5b2be0; }
+.ms-rule-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #5b2be0; animation: ms-rule-pulse 1s ease-in-out infinite; }
+@keyframes ms-rule-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes ms-rule-pulse { 50% { opacity: 0.3; } }

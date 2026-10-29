@@ -1,0 +1,19 @@
+@import 'c/nfStyles';
+.nf-config { border: 2px solid var(--nf-primary); }
+.nf-group { margin-top: 1.25rem; }
+.nf-options { display: grid; gap: 0.5rem; margin-top: 0.5rem; }
+.nf-option { border: 1px solid var(--nf-line); border-radius: 10px; padding: 0.75rem 1rem; }
+.nf-option_on { border-color: var(--nf-primary); background: var(--nf-primary-soft); }
+.nf-option-main { display: flex; gap: 0.75rem; align-items: flex-start; cursor: pointer; }
+.nf-option-main input { margin-top: 0.25rem; accent-color: var(--nf-primary); width: 1rem; height: 1rem; }
+.nf-option-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.nf-option-name { font-weight: 600; }
+.nf-option-price { font-weight: 600; white-space: nowrap; }
+.nf-qty { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0 0 1.75rem; }
+.nf-qty-value { min-width: 1.5rem; text-align: center; font-weight: 700; }
+.nf-totals { align-items: center; flex-wrap: wrap; }
+.nf-no-margin { margin-top: 0; }
+.nf-error { color: var(--nf-error); margin-top: 0.75rem; }
+.nf-option_ruled { opacity: 0.6; }
+.nf-rule-tag { display: inline-block; align-self: flex-start; margin-top: 0.25rem; padding: 0.0625rem 0.5rem; border-radius: 999px; font-size: 0.6875rem;
+    font-weight: 600; background: #efe9ff; color: #5b2be0; }

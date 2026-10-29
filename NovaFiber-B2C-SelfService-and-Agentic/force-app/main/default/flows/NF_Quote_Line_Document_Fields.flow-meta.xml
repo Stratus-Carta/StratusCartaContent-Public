@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <assignments>
+        <name>Set_Recurring</name>
+        <label>Set Recurring</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.NF_Is_One_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Has_Site</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_One_Time</name>
+        <label>Set One-Time</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.NF_Is_One_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Has_Site</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Site</name>
+        <label>Set Site</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.NF_Site_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SiteShortName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.NF_Site_State__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Recipient.ServiceState</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Charge_Type</name>
+        <label>Charge Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Recurring</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Recurring</defaultConnectorLabel>
+        <rules>
+            <name>One_Time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Selling_Model.SellingModelType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OneTime</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_One_Time</targetReference>
+            </connector>
+            <label>One-Time</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_Site</name>
+        <label>Has Site</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No site</defaultConnectorLabel>
+        <rules>
+            <name>Site_Line</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.QuoteLineItemRecipientId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Recipient</targetReference>
+            </connector>
+            <label>Site line</label>
+        </rules>
+    </decisions>
+    <description>Before save, on insert or when the selling model changes (lines get their service location on insert): copies what document templates need from QuoteLineItem fields that formulas and roll-ups can't read (the line's selling model type, the service-location recipient) into NF_Is_One_Time__c, NF_Site_Name__c and NF_Site_State__c.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>"Site 01 - HQ New York - 350 5th Ave, New York NY" → "HQ New York"</description>
+        <name>SiteShortName</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!Get_Recipient.Name}, &quot; - &quot;),
+  TRIM(LEFT(MID({!Get_Recipient.Name}, FIND(&quot; - &quot;, {!Get_Recipient.Name}) + 3, 255),
+    FIND(&quot; - &quot;, MID({!Get_Recipient.Name}, FIND(&quot; - &quot;, {!Get_Recipient.Name}) + 3, 255) &amp; &quot; - &quot;) - 1)),
+  {!Get_Recipient.Name})</expression>
+    </formulas>
+    <interviewLabel>NF Quote Line Document Fields {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>NF Quote Line Document Fields</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>SellingModelType on the line itself is not populated before save; the selling model has it.</description>
+        <name>Get_Selling_Model</name>
+        <label>Get Selling Model</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Charge_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ProductSellingModelId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ProductSellingModel</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>SellingModelType</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Recipient</name>
+        <label>Get Recipient</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Site</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.QuoteLineItemRecipientId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>QuoteLineItemRecipient</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>ServiceState</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Selling_Model</targetReference>
+        </connector>
+        <filterFormula>OR(ISNEW(), ISCHANGED({!$Record.ProductSellingModelId}))</filterFormula>
+        <object>QuoteLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,30 @@
+<template>
+    <div class="nf-agent">
+        <div class="nf-agent-id">
+            <span class="nf-agent-tag"><lightning-icon icon-name="utility:headset" size="xx-small" alternative-text=""></lightning-icon> Agent mode</span>
+            <span class="nf-small nf-muted">{userName} · discounts up to {maxDiscount}% · serviceability override</span>
+        </div>
+        <div class="nf-agent-customer">
+            <template lwc:if={account}>
+                <lightning-pill label={account.name} onremove={handleClear}>
+                    <lightning-icon icon-name="standard:account" alternative-text="Account"></lightning-icon>
+                </lightning-pill>
+            </template>
+            <template lwc:else>
+                <lightning-input type="search" label="Existing customer" variant="label-hidden"
+                    placeholder="Search existing customer by name or phone…" onchange={handleSearch}
+                    is-loading={searching}></lightning-input>
+                <template lwc:if={hasResults}>
+                    <ul class="nf-results" role="listbox">
+                        <template for:each={results} for:item="r">
+                            <li key={r.accountId} role="option" data-id={r.accountId} onclick={handlePick}>
+                                <strong>{r.name}</strong>
+                                <span class="nf-small nf-muted">{r.billingAddress}</span>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>
