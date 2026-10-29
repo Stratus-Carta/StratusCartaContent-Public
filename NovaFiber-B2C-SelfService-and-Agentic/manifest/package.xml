@@ -62,6 +62,11 @@
         <members>Account.NF_Service_Address__c</members>
         <members>Account.NF_Service_Status__c</members>
         <members>Contract.NF_Start_Date_Display__c</members>
+        <members>ItemLocationPrice__c.LocationState__c</members>
+        <members>ItemLocationPrice__c.Price_Book__c</members>
+        <members>ItemLocationPrice__c.Product_Selling_Model__c</members>
+        <members>ItemLocationPrice__c.Product__c</members>
+        <members>ItemLocationPrice__c.Unit_Price__c</members>
         <members>NF_Agent_Journey__c.Journey_Key__c</members>
         <members>NF_Agent_Journey__c.Order_Id__c</members>
         <members>NF_Agent_Journey__c.Pending_Trace__c</members>
@@ -167,6 +172,7 @@
         <name>CustomMetadata</name>
     </types>
     <types>
+        <members>ItemLocationPrice__c</members>
         <members>NF_Agent_Journey__c</members>
         <members>NF_DocuSign_Settings__c</members>
         <members>NF_Fulfillment_Event__c</members>
@@ -180,6 +186,10 @@
     <types>
         <members>NF_Agent_Assisted_Selling</members>
         <name>CustomPermission</name>
+    </types>
+    <types>
+        <members>NF_Guided_Selling</members>
+        <name>CustomTab</name>
     </types>
     <types>
         <members>NF_Serviceability_Qualification</members>

@@ -1,0 +1,300 @@
+{
+ "info": {
+  "name": "NovaFiber Fulfillment Systems Mock",
+  "description": "Provisioning, logistics and billing mock for the NF_FulfillmentSystems named credential, called by the DRO callout steps (NF_DroCalloutProvider). 202 keeps the step in progress until the callback; 201/200 completes it.",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "item": [
+  {
+   "name": "Reserve network port",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/provisioning/v1/reservations",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "provisioning",
+      "v1",
+      "reservations"
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "Reserve network port",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/provisioning/v1/reservations",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "provisioning",
+        "v1",
+        "reservations"
+       ]
+      }
+     },
+     "status": "Accepted",
+     "code": 202,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"system\": \"NovaNet Provisioning\",\n  \"requestId\": \"PRV-RSV-58213\",\n  \"status\": \"ACCEPTED\",\n  \"message\": \"Port reservation queued; the result is sent to the callback URL.\",\n  \"portId\": \"OLT-SFO-04/1/12\",\n  \"vlan\": \"2210\"\n}"
+    }
+   ]
+  },
+  {
+   "name": "Activate service",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/provisioning/v1/activations",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "provisioning",
+      "v1",
+      "activations"
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "Activate service",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/provisioning/v1/activations",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "provisioning",
+        "v1",
+        "activations"
+       ]
+      }
+     },
+     "status": "Accepted",
+     "code": 202,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"system\": \"NovaNet Provisioning\",\n  \"requestId\": \"PRV-ACT-77140\",\n  \"status\": \"ACCEPTED\",\n  \"message\": \"Service activation queued; the result is sent to the callback URL.\",\n  \"circuitId\": \"NF-CKT-1G-90412\"\n}"
+    }
+   ]
+  },
+  {
+   "name": "Ship equipment",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/logistics/v1/shipments",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "logistics",
+      "v1",
+      "shipments"
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "Ship equipment",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/logistics/v1/shipments",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "logistics",
+        "v1",
+        "shipments"
+       ]
+      }
+     },
+     "status": "Accepted",
+     "code": 202,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"system\": \"NovaShip Logistics\",\n  \"requestId\": \"LOG-SHP-30981\",\n  \"status\": \"ACCEPTED\",\n  \"message\": \"Shipment created; shipped and delivered events are sent to the callback URL.\",\n  \"carrier\": \"UPS\",\n  \"trackingNumber\": \"1Z999AA10123456784\"\n}"
+    }
+   ]
+  },
+  {
+   "name": "Create billing account",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/billing/v1/accounts",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "billing",
+      "v1",
+      "accounts"
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "Create billing account",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/billing/v1/accounts",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "billing",
+        "v1",
+        "accounts"
+       ]
+      }
+     },
+     "status": "Created",
+     "code": 201,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"system\": \"NovaBill Billing\",\n  \"requestId\": \"BIL-ACC-11872\",\n  \"status\": \"CREATED\",\n  \"billingAccountNumber\": \"BA-4402-1187\",\n  \"billCycleDay\": 1\n}"
+    }
+   ]
+  },
+  {
+   "name": "Start subscription billing",
+   "request": {
+    "method": "POST",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{}"
+    },
+    "url": {
+     "raw": "{{baseUrl}}/billing/v1/subscriptions",
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "billing",
+      "v1",
+      "subscriptions"
+     ]
+    }
+   },
+   "response": [
+    {
+     "name": "Start subscription billing",
+     "originalRequest": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/billing/v1/subscriptions",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "billing",
+        "v1",
+        "subscriptions"
+       ]
+      }
+     },
+     "status": "Accepted",
+     "code": 202,
+     "_postman_previewlanguage": "json",
+     "header": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ],
+     "body": "{\n  \"system\": \"NovaBill Billing\",\n  \"requestId\": \"BIL-SUB-55319\",\n  \"status\": \"ACCEPTED\",\n  \"message\": \"Subscription billing scheduled; confirmation is sent to the callback URL.\",\n  \"subscriptionId\": \"SUB-NF-55319\"\n}"
+    }
+   ]
+  }
+ ],
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "https://YOUR-MOCK.example.com"
+  }
+ ]
+}
