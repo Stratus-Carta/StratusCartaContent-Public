@@ -1,0 +1,51 @@
+@import 'c/nfStyles';
+
+.ag { display: flex; flex-direction: column; gap: 1rem; }
+.ag-head { display: flex; gap: 0.875rem; align-items: flex-start; }
+.ag-head-text { min-width: 0; }
+.ag-doc-icon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 12px; flex: none;
+    background: var(--nf-primary-soft); --slds-c-icon-color-foreground-default: var(--nf-primary); }
+
+.ag-error { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.875rem; border-radius: 10px;
+    background: var(--nf-error-soft); color: var(--nf-error); --slds-c-icon-color-foreground-default: var(--nf-error); }
+.ag-error span { flex: 1; }
+
+.ag-progress { display: block; }
+
+.ag-doc { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+    padding: 0.875rem 1rem; border: 1px solid var(--nf-line); border-radius: 12px; background: #fbfaff; }
+.ag-doc p { margin: 0; }
+.ag-doc-title { font-weight: 700; }
+.ag-open { display: inline-flex; align-items: center; gap: 0.375rem; font-weight: 600; font-size: 0.875rem; color: var(--nf-primary);
+    text-decoration: none; --slds-c-icon-color-foreground-default: var(--nf-primary); }
+.ag-open:hover { text-decoration: underline; }
+
+.ag-sign { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+.ag-provider { margin: 0; color: var(--nf-muted); }
+.ag-pad { display: grid; gap: 0.625rem; width: 100%; max-width: 32rem; }
+.ag-signature { font-family: 'Segoe Script', 'Brush Script MT', 'Snell Roundhand', cursive; font-size: 1.75rem; color: #1b1340;
+    border-bottom: 1px solid var(--nf-ink); padding: 0.25rem 0.25rem 0.125rem; min-height: 2.5rem; }
+.ag-actions { display: flex; justify-content: flex-end; }
+.ag-skip { color: var(--nf-muted); }
+
+.ag-sent { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; padding: 0.75rem 1rem; border-radius: 12px;
+    background: var(--nf-accent-soft); color: #00574b; --slds-c-icon-color-foreground-default: #00574b; width: 100%; }
+.ag-sent > div { flex: 1; min-width: 12rem; }
+.ag-sent p { margin: 0; }
+
+.ag-signed { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; padding: 0.875rem 1rem; border-radius: 12px;
+    background: var(--nf-accent-soft); border: 1px solid #b7e9e1; --slds-c-icon-color-foreground-default: #00796b; }
+.ag-signed > div { flex: 1; min-width: 12rem; }
+.ag-signed p { margin: 0; }
+
+.nf-link { background: none; border: 0; padding: 0; color: var(--nf-primary); font: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; }
+.nf-link:hover { text-decoration: underline; }
+
+.ag-modal { position: fixed; inset: 0; z-index: 9000; background: rgba(27, 19, 64, 0.55); display: grid; place-items: center; padding: 1rem; }
+.ag-modal-box { width: min(64rem, 100%); height: min(52rem, 100%); background: #fff; border-radius: 14px; overflow: hidden;
+    display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); }
+.ag-modal-head { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--nf-line); }
+.ag-frame { flex: 1; width: 100%; border: 0; }
+
+/* Prepared DocuSign view: loaded off-screen until opened */
+.ag-modal_hidden { visibility: hidden; pointer-events: none; }

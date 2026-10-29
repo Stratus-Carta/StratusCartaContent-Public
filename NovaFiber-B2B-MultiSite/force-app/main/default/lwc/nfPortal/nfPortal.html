@@ -1,0 +1,122 @@
+<template>
+    <div class="pt">
+        <template lwc:if={showLogin}>
+            <div class="nf-card pt-login" onkeyup={handleKey}>
+                <span class="nf-badge">My NovaFiber</span>
+                <h2 class="nf-h2">Log in to track your order</h2>
+                <p class="nf-muted">Use the email address and password you chose at checkout.</p>
+                <template lwc:if={error}>
+                    <p class="pt-error" role="alert">{error}</p>
+                </template>
+                <lightning-input type="email" label="Email" value={email} required autocomplete="username"
+                    onchange={handleEmail}></lightning-input>
+                <lightning-input type="password" label="Password" value={password} required autocomplete="current-password"
+                    onchange={handlePassword}></lightning-input>
+                <div class="pt-login-actions">
+                    <lightning-button variant="brand" label="Log in" onclick={handleLogin} disabled={loading}></lightning-button>
+                    <button type="button" class="pt-link" onclick={handleShop}>Not a customer yet? Check your address</button>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={restoring}>
+            <div class="pt-restoring"><lightning-spinner alternative-text="Loading your account" size="small"></lightning-spinner></div>
+        </template>
+
+        <template lwc:if={loggedIn}>
+            <section class="nf-card pt-head" aria-label="Your account">
+                <div class="pt-head-main">
+                    <h2 class="nf-h2">{greeting}</h2>
+                    <p class="nf-muted">{dashboard.customerName} · {dashboard.username}</p>
+                    <div class="pt-head-status">
+                        <span class={statusClass}>{statusLabel}</span>
+                        <span>{dashboard.serviceStatusText}</span>
+                    </div>
+                </div>
+                <dl class="pt-facts">
+                    <div><dt>Service address</dt><dd>{dashboard.serviceAddress}</dd></div>
+                    <template lwc:if={dashboard.billingAccountNumber}>
+                        <div><dt>Billing account</dt><dd>{dashboard.billingAccountNumber}</dd></div>
+                    </template>
+                </dl>
+                <div class="pt-head-actions">
+                    <span class="nf-muted nf-small">{liveNote}</span>
+                    <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={handleRefresh}
+                        disabled={loading}></lightning-button-icon>
+                    <lightning-button label="Log out" onclick={handleLogout}></lightning-button>
+                </div>
+            </section>
+
+            <template lwc:if={hasOrders}>
+                <template for:each={orders} for:item="o">
+                    <section key={o.key} class="nf-card pt-order" aria-label={o.title}>
+                        <header class="pt-order-head">
+                            <div>
+                                <h3 class="nf-h3">{o.title}</h3>
+                                <span class="nf-muted nf-small">{o.placed}</span>
+                            </div>
+                            <span class={o.statusClass}>{o.statusText}</span>
+                        </header>
+                        <p class="pt-headline">{o.headline}</p>
+                        <div class="pt-bar" aria-hidden="true"><div class="pt-bar-fill" style={o.progressStyle}></div></div>
+                        <p class="nf-muted nf-small">{o.progress}</p>
+
+                        <ol class="pt-track" aria-label="Order progress">
+                            <template for:each={o.milestones} for:item="m">
+                                <li key={m.key} class={m.cssClass} aria-current={m.ariaCurrent}>
+                                    <span class="pt-dot" aria-hidden="true">
+                                        <template lwc:if={m.isDone}>✓</template>
+                                        <template lwc:elseif={m.isAttention}>!</template>
+                                        <template lwc:else>{m.number}</template>
+                                    </span>
+                                    <span class="pt-ms-text">
+                                        <strong>{m.label}</strong>
+                                        <span class="nf-small nf-muted">{m.when}</span>
+                                    </span>
+                                </li>
+                            </template>
+                        </ol>
+
+                        <div class="pt-cols">
+                            <div class="pt-col">
+                                <h4 class="pt-sub">Latest updates</h4>
+                                <template lwc:if={o.hasTimeline}>
+                                    <ul class="pt-timeline">
+                                        <template for:each={o.timeline} for:item="t">
+                                            <li key={t.key}>
+                                                <span class="nf-small nf-muted">{t.when}</span>
+                                                <span>{t.text}</span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p class="nf-muted nf-small">Updates appear here as your order moves forward.</p>
+                                </template>
+                            </div>
+                            <div class="pt-col">
+                                <h4 class="pt-sub">Your plan</h4>
+                                <ul class="pt-lines">
+                                    <template for:each={o.lines} for:item="l">
+                                        <li key={l.key}><span>{l.name}</span><span>{l.price}</span></li>
+                                    </template>
+                                </ul>
+                                <p class="pt-total"><span>Monthly</span><strong>{o.monthly}</strong></p>
+                                <p class="pt-total"><span>One-time</span><strong>{o.oneTime}</strong></p>
+                                <template lwc:if={o.technicianVisit}>
+                                    <p class="pt-visit"><span class="nf-muted nf-small">Technician visit</span><strong>{o.technicianVisit}</strong></p>
+                                </template>
+                                <template lwc:if={o.installDateNote}>
+                                    <p class="nf-muted nf-small">{o.installDateNote}</p>
+                                </template>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+            </template>
+            <template lwc:else>
+                <div class="nf-card"><p class="nf-muted">You have no orders yet.</p></div>
+            </template>
+        </template>
+    </div>
+</template>

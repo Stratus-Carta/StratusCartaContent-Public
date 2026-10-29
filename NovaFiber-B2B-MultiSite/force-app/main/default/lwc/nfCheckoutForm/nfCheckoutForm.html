@@ -1,0 +1,46 @@
+<template>
+    <div class="nf-card">
+        <h2 class="nf-h2">{heading}</h2>
+        <p class="nf-muted">{subheading}</p>
+
+        <div class="nf-grid">
+            <lightning-input label="First name" name="firstName" value={customer.firstName} required
+                autocomplete="given-name" onchange={handleChange}></lightning-input>
+            <lightning-input label="Last name" name="lastName" value={customer.lastName} required
+                autocomplete="family-name" onchange={handleChange}></lightning-input>
+            <lightning-input type="email" label="Email" name="email" value={customer.email} required
+                autocomplete="email" onchange={handleChange}></lightning-input>
+            <lightning-input type="tel" label="Mobile phone" name="phone" value={customer.phone} required
+                autocomplete="tel" pattern="[0-9()+\-. ]{10,20}" message-when-pattern-mismatch="Enter a valid phone number"
+                onchange={handleChange}></lightning-input>
+            <lightning-input type="date" label="Preferred installation date" name="preferredInstallDate"
+                value={customer.preferredInstallDate} min={minDate} required
+                message-when-range-underflow="Choose a date from tomorrow onwards" onchange={handleChange}></lightning-input>
+        </div>
+
+        <template lwc:if={askPassword}>
+            <div class="nf-login">
+                <h3 class="nf-h3">Create your My NovaFiber login</h3>
+                <p class="nf-muted nf-small">Follow your order from network setup to activation. Your email is your username.</p>
+                <div class="nf-grid">
+                    <lightning-input type="password" label="Password" name="portalPassword" value={customer.portalPassword} required
+                        autocomplete="new-password" field-level-help="At least 10 characters with letters and numbers"
+                        onchange={handleChange}></lightning-input>
+                    <lightning-input type="password" label="Confirm password" name="confirmPassword" value={confirmPassword} required
+                        autocomplete="new-password" onchange={handleConfirm}></lightning-input>
+                </div>
+            </div>
+        </template>
+
+        <div class="nf-terms">
+            <lightning-input type="checkbox" name="acceptedTerms" checked={customer.acceptedTerms}
+                label={termsLabel} required={termsRequired} onchange={handleCheck}></lightning-input>
+        </div>
+
+        <div class="nf-actions">
+            <lightning-button label="Back to quote" icon-name="utility:back" onclick={handleBack} disabled={busy}></lightning-button>
+            <lightning-button variant="brand" label={submitLabel} icon-name="utility:check" onclick={handleSubmit}
+                disabled={busy}></lightning-button>
+        </div>
+    </div>
+</template>

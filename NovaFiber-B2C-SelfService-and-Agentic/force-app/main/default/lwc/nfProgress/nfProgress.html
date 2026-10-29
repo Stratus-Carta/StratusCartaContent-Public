@@ -1,0 +1,26 @@
+<template>
+    <div class={rootClass} role="status" aria-live="polite">
+        <div class="pg-head">
+            <span class="pg-orb" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="pg-titles">
+                <p class="pg-heading">{heading}</p>
+                <p class="pg-current">{current}</p>
+            </div>
+            <span class="pg-time">{seconds}</span>
+        </div>
+        <div class="pg-bar" aria-hidden="true"><span style={barStyle}></span></div>
+        <ol class="pg-steps">
+            <template for:each={stepViews} for:item="s">
+                <li key={s.key} class={s.className}>
+                    <span class="pg-dot" aria-hidden="true">
+                        <template lwc:if={s.done}>✓</template>
+                    </span>
+                    <span>{s.label}</span>
+                </li>
+            </template>
+        </ol>
+        <template lwc:if={tip}>
+            <p class="pg-tip"><strong>Good to know</strong> {tip}</p>
+        </template>
+    </div>
+</template>

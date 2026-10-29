@@ -1,0 +1,90 @@
+<template>
+    <aside class="nf-card nf-cart">
+        <div class="nf-row">
+            <h2 class="nf-h3">Your cart</h2>
+            <span class="nf-muted nf-small">{countLabel}</span>
+        </div>
+
+        <template lwc:if={isEmpty}>
+            <div class="nf-empty">
+                <lightning-icon icon-name="utility:cart" size="small" alternative-text=""></lightning-icon>
+                <p class="nf-muted nf-small">Choose a plan to get started.</p>
+            </div>
+        </template>
+
+        <template lwc:if={hasCartMessages}>
+            <template for:each={cartMessages} for:item="m">
+                <div key={m.key} class={m.cssClass} role="status">
+                    <lightning-icon icon-name={m.icon} size="xx-small" alternative-text=""></lightning-icon>
+                    <span>{m.text}</span>
+                </div>
+            </template>
+        </template>
+
+        <template for:each={rows} for:item="r">
+            <div key={r.key} class="nf-item">
+                <div class="nf-row">
+                    <div class="nf-item-name">{r.name}</div>
+                    <div class="nf-item-price">{r.monthlyLabel}<span class="nf-price-unit">/mo</span></div>
+                </div>
+                <template lwc:if={r.optionNames}>
+                    <div class="nf-muted nf-small">{r.optionNames}</div>
+                </template>
+                <template lwc:if={r.oneTimeLabel}>
+                    <div class="nf-muted nf-small">+ {r.oneTimeLabel} one-time</div>
+                </template>
+                <template lwc:if={r.hasMessages}>
+                    <template for:each={r.messages} for:item="m">
+                        <div key={m.key} class={m.cssClass} role="status">
+                            <lightning-icon icon-name={m.icon} size="xx-small" alternative-text=""></lightning-icon>
+                            <span>{m.text}</span>
+                        </div>
+                    </template>
+                </template>
+                <div class="nf-item-actions">
+                    <template lwc:if={r.isBundle}>
+                        <button class="nf-link" data-key={r.key} onclick={handleEdit} disabled={busy}>Edit</button>
+                    </template>
+                    <template lwc:else>
+                        <span class="nf-small nf-muted">Lines</span>
+                        <lightning-button-icon icon-name="utility:dash" size="x-small" alternative-text="Fewer"
+                            data-key={r.key} data-delta="-1" onclick={handleQty} disabled={r.atMin}></lightning-button-icon>
+                        <span class="nf-qty">{r.quantity}</span>
+                        <lightning-button-icon icon-name="utility:add" size="x-small" alternative-text="More"
+                            data-key={r.key} data-delta="1" onclick={handleQty} disabled={r.atMax}></lightning-button-icon>
+                    </template>
+                    <button class="nf-link nf-remove" data-key={r.key} onclick={handleRemove} disabled={busy}>Remove</button>
+                </div>
+                <template lwc:if={isAgent}>
+                    <div class="nf-discount">
+                        <span class="nf-agent-tag">Agent</span>
+                        <span class="nf-small">Discount %</span>
+                        <lightning-input class="nf-discount-input" type="number" label="Discount percent" variant="label-hidden" min="0"
+                            max={maxDiscount} step="1" value={r.discountPercent} data-key={r.key}
+                            message-when-range-overflow={discountMessage} onchange={handleDiscount}></lightning-input>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={hasItems}>
+            <hr class="nf-divider" />
+            <div class="nf-row">
+                <span>{totalLabel}</span>
+                <strong>{totalMonthlyLabel}</strong>
+            </div>
+            <div class="nf-row nf-muted nf-small">
+                <span>One-time charges</span>
+                <span>{totalOneTimeLabel}</span>
+            </div>
+            <p class="nf-muted nf-small nf-note" aria-live="polite">
+                <template lwc:if={syncing}>
+                    <span class="nf-sync-dot" aria-hidden="true"></span>
+                </template>
+                {statusText}
+            </p>
+            <lightning-button class="nf-cta" variant="brand" label={ctaLabel} icon-name="utility:forward"
+                icon-position="right" stretch onclick={handleQuote} disabled={ctaDisabled}></lightning-button>
+        </template>
+    </aside>
+</template>

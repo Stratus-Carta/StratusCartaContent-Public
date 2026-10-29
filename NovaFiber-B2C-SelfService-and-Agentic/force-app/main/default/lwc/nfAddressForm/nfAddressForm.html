@@ -1,0 +1,37 @@
+<template>
+    <div class="nf-card">
+        <h2 class="nf-h2">Where do you need service?</h2>
+        <p class="nf-muted">Enter the service address and we'll show you the plans available there.</p>
+        <template lwc:if={hint}>
+            <p class="nf-hint" role="status">{hint}</p>
+        </template>
+
+        <div class="nf-samples">
+            <span class="nf-muted nf-small">Try a sample address:</span>
+            <template for:each={samples} for:item="s">
+                <button key={s.postalCode} class="nf-chip" data-zip={s.postalCode} onclick={handleSample} disabled={busy}>
+                    {s.label}
+                </button>
+            </template>
+        </div>
+
+        <div class="nf-grid">
+            <lightning-input class="nf-span-3" label="Street address" name="street" value={address.street}
+                required onchange={handleChange} autocomplete="address-line1"></lightning-input>
+            <lightning-input class="nf-span-1" label="Apt / Unit" name="unit" value={address.unit}
+                onchange={handleChange} autocomplete="address-line2"></lightning-input>
+            <lightning-input class="nf-span-2" label="City" name="city" value={address.city}
+                required onchange={handleChange} autocomplete="address-level2"></lightning-input>
+            <lightning-combobox class="nf-span-1" label="State" name="state" value={address.state}
+                options={states} required onchange={handleChange}></lightning-combobox>
+            <lightning-input class="nf-span-1" label="ZIP code" name="postalCode" value={address.postalCode}
+                required pattern="[0-9]{5}" message-when-pattern-mismatch="Enter a 5-digit ZIP code"
+                max-length="5" onchange={handleChange} autocomplete="postal-code"></lightning-input>
+        </div>
+
+        <div class="nf-actions">
+            <lightning-button variant="brand" label="Check availability" icon-name="utility:location"
+                onclick={handleSubmit} disabled={busy}></lightning-button>
+        </div>
+    </div>
+</template>

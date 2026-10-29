@@ -1,0 +1,139 @@
+<template>
+    <!-- Hero -->
+    <section class="nf-hero" aria-labelledby="nf-hero-title">
+        <div class="nf-hero-copy">
+            <span class="nf-pill">Now building in New York, Austin &amp; San Francisco</span>
+            <h1 id="nf-hero-title" class="nf-display">{heroTitle}</h1>
+            <p class="nf-lead">{heroSubtitle}</p>
+            <div class="nf-hero-form">
+                <slot name="form"></slot>
+            </div>
+            <ul class="nf-trust">
+                <li>No annual contract</li>
+                <li>Wi-Fi 6 router included</li>
+                <li>No data caps</li>
+            </ul>
+        </div>
+        <div class="nf-hero-art">
+            <div class="nf-hero-illo">
+                <c-nf-illustration name="hero"></c-nf-illustration>
+            </div>
+            <dl class="nf-hero-stats">
+                <div><dt>Up to 2 Gig</dt><dd>Symmetrical fiber upload &amp; download</dd></div>
+                <div><dt>3 networks</dt><dd>Fiber, DSL and 5G Home where fiber isn't yet</dd></div>
+                <div><dt>2 days</dt><dd>Typical self-install lead time</dd></div>
+            </dl>
+        </div>
+    </section>
+
+    <!-- Plans preview (live from the Revenue Cloud catalog) -->
+    <template lwc:if={hasPlans}>
+        <section class="nf-section" aria-labelledby="nf-plans-title">
+            <div class="nf-section-head">
+                <div>
+                    <p class="nf-eyebrow">Home internet</p>
+                    <h2 id="nf-plans-title" class="nf-h2">Pick the speed that fits your home</h2>
+                </div>
+                <p class="nf-muted">Prices shown are monthly list prices. Availability depends on your address.</p>
+            </div>
+            <div class="nf-plan-grid">
+                <template for:each={plans} for:item="p">
+                    <article key={p.productId} class={p.cardClass}>
+                        <template lwc:if={p.isFeatured}>
+                            <span class="nf-flag">Most popular</span>
+                        </template>
+                        <h3 class="nf-h3">{p.name}</h3>
+                        <p class="nf-muted">{p.tagline}</p>
+                        <div><span class="nf-price">{p.priceLabel}</span><span class="nf-muted">/mo</span></div>
+                        <ul class="nf-ticks">
+                            <template for:each={p.highlights} for:item="h">
+                                <li key={h}>{h}</li>
+                            </template>
+                        </ul>
+                        <button type="button" class={p.buttonClass} data-id={p.productId} onclick={handleChoose}>Check availability for {p.shortName}</button>
+                    </article>
+                </template>
+            </div>
+        </section>
+    </template>
+
+    <!-- TV + Mobile -->
+    <section class="nf-section nf-two" aria-label="TV and mobile">
+        <article class="nf-tile">
+            <div class="nf-tile-art"><c-nf-illustration name="tv"></c-nf-illustration></div>
+            <div class="nf-tile-body">
+                <h3 class="nf-h3">NovaTV — live TV over your fiber</h3>
+                <p class="nf-muted">80 to 160+ live channels, cloud DVR and a 4K set-top box. Add Sports or Movies packs any time.</p>
+                <template lwc:if={tvFrom}><p class="nf-from">From {tvFrom}/mo with any fiber plan</p></template>
+            </div>
+        </article>
+        <article class="nf-tile">
+            <div class="nf-tile-art nf-tile-art_teal"><c-nf-illustration name="mobile"></c-nf-illustration></div>
+            <div class="nf-tile-body">
+                <h3 class="nf-h3">NovaMobile — one bill, every line</h3>
+                <p class="nf-muted">Unlimited 5G data, hotspot and Wi-Fi calling. Available everywhere, even where home fiber isn't yet.</p>
+                <template lwc:if={mobileFrom}><p class="nf-from">From {mobileFrom}/mo per line</p></template>
+            </div>
+        </article>
+    </section>
+
+    <!-- How it works -->
+    <section class="nf-section nf-panel" aria-labelledby="nf-how-title">
+        <h2 id="nf-how-title" class="nf-h2">From address to online in four steps</h2>
+        <ol class="nf-how">
+            <li><span class="nf-num">1</span><strong>Check your address</strong><span class="nf-muted">We look up the fiber and 5G network at your door in real time.</span></li>
+            <li><span class="nf-num">2</span><strong>Build your plan</strong><span class="nf-muted">Pick a speed, equipment and add-ons. Add TV and mobile lines.</span></li>
+            <li><span class="nf-num">3</span><strong>Get an instant quote</strong><span class="nf-muted">Your exact monthly and one-time price, valid for 30 days.</span></li>
+            <li><span class="nf-num">4</span><strong>We connect you</strong><span class="nf-muted">Choose an install date, or self-install with a kit we ship to you.</span></li>
+        </ol>
+    </section>
+
+    <!-- Why -->
+    <section class="nf-section nf-why" aria-labelledby="nf-why-title">
+        <div class="nf-why-art"><c-nf-illustration name="technician"></c-nf-illustration></div>
+        <div>
+            <h2 id="nf-why-title" class="nf-h2">Why households switch to NovaFiber</h2>
+            <div class="nf-features">
+                <div>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5b2be0" stroke-width="2" aria-hidden="true"><path d="M7 4v16M7 4L3 8M7 4l4 4M17 20V4M17 20l-4-4M17 20l4-4"></path></svg>
+                    <strong>Same speed up and down</strong><span class="nf-muted">Video calls and cloud backups never fight your downloads.</span>
+                </div>
+                <div>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5b2be0" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8M8 13h8M8 17h4"></path></svg>
+                    <strong>Price shown is price paid</strong><span class="nf-muted">Your quote lists every monthly and one-time charge up front.</span>
+                </div>
+                <div>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5b2be0" stroke-width="2" aria-hidden="true"><path d="M3 10a13 13 0 0 1 18 0M6.5 13.5a8 8 0 0 1 11 0M10 17a3 3 0 0 1 4 0"></path></svg>
+                    <strong>Wi-Fi in every room</strong><span class="nf-muted">Add mesh extenders right in your cart.</span>
+                </div>
+                <div>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5b2be0" stroke-width="2" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"></path><rect x="3" y="14" width="4" height="6" rx="1"></rect><rect x="17" y="14" width="4" height="6" rx="1"></rect></svg>
+                    <strong>Real people, 24/7</strong><span class="nf-muted">Prefer to talk? An agent can finish your order with you.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="nf-section" aria-labelledby="nf-faq-title">
+        <h2 id="nf-faq-title" class="nf-h2">Questions, answered</h2>
+        <div class="nf-faq">
+            <details open>
+                <summary>What if fiber isn't at my address yet?</summary>
+                <p>We'll offer NovaAir 5G Home where it's available, plus NovaMobile everywhere. We'll let you know when fiber reaches your street.</p>
+            </details>
+            <details>
+                <summary>Do I need a technician?</summary>
+                <p>Buildings already connected can self-install. New builds need a technician visit.</p>
+            </details>
+            <details>
+                <summary>Can I keep my phone number?</summary>
+                <p>Yes — bring your number when you add a NovaMobile line.</p>
+            </details>
+            <details>
+                <summary>Is there a contract?</summary>
+                <p>No annual contract. Plans are month to month.</p>
+            </details>
+        </div>
+    </section>
+</template>

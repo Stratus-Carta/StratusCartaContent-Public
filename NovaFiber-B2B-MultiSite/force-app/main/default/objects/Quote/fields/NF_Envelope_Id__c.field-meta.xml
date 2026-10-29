@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Envelope_Id__c</fullName>
+    <label>NF Envelope Id</label>
+    <description>DocuSign envelope (or sandbox signing reference).</description>
+    <type>Text</type>
+    <length>64</length>
+</CustomField>

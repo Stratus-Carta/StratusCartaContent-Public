@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_AccessTechnology__c</fullName>
+    <label>NF Access Technology</label>
+    <description>Access technologies a product can be delivered over. Used by the NovaFiber journey to match offers to serviceability results. "Any" = not location dependent.</description>
+    <type>MultiselectPicklist</type>
+    <visibleLines>4</visibleLines>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Fiber</fullName><default>false</default><label>Fiber</label></value>
+            <value><fullName>Copper</fullName><default>false</default><label>Copper</label></value>
+            <value><fullName>5G FWA</fullName><default>false</default><label>5G FWA</label></value>
+            <value><fullName>Any</fullName><default>false</default><label>Any</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

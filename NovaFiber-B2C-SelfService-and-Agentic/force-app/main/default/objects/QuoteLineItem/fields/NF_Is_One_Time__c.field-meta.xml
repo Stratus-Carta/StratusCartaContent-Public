@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Is_One_Time__c</fullName>
+    <label>NF One-time Charge</label>
+    <description>Set by flow NF_Quote_Line_Document_Fields from SellingModelType (formulas cannot read it).</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>

@@ -1,0 +1,9 @@
+{
+  "name": "nf-cml",
+  "private": true,
+  "description": "Activates NovaFiber CML constraint models through the Constraint Builder (see nf_cml.py)",
+  "type": "module",
+  "dependencies": {
+    "playwright": "^1.48.2"
+  }
+}

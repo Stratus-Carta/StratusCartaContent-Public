@@ -1,0 +1,252 @@
+<template>
+    <div class="nf-app">
+        <header class="nf-topbar">
+            <div class="nf-topbar-inner">
+                <a href="#" class="nf-brand" onclick={handleHome} title="NovaFiber home" aria-label="NovaFiber home">
+                    <svg width="32" height="32" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="#5b2be0"></rect><path d="M7 21 C 11 9, 19 9, 23 21" stroke="#5fe0cc" stroke-width="2.4" fill="none" stroke-linecap="round"></path><circle cx="15" cy="12" r="2.4" fill="#ffffff"></circle></svg>
+                    <span class="nf-brand-name">NovaFiber</span>
+                    <span class="nf-brand-tag">{brandTag}</span>
+                </a>
+                <div class="nf-topbar-actions">
+                    <template lwc:if={context}>
+                        <button type="button" class={aiButtonClass} aria-pressed={aiPressed} onclick={toggleAi}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"></path></svg>
+                            {aiButtonLabel}
+                        </button>
+                    </template>
+                    <template lwc:if={showPortalButton}>
+                        <button type="button" class={portalButtonClass} aria-pressed={portalPressed} onclick={togglePortal}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+                            My NovaFiber
+                        </button>
+                    </template>
+                    <template lwc:if={context}>
+                        <button type="button" class={multiSiteButtonClass} aria-pressed={multiSitePressed} onclick={toggleMultiSite}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"></path><circle cx="12" cy="11" r="2"></circle><path d="M3 21h4M17 21h4"></path></svg>
+                            {multiSiteButtonLabel}
+                        </button>
+                    </template>
+                    <template lwc:if={isAgent}>
+                        <span class="nf-agent-chip">Agent · {context.userName}</span>
+                    </template>
+                    <template lwc:if={inspectorAvailable}>
+                        <template lwc:if={showModeSwitch}>
+                            <div class="nf-mode" role="radiogroup" aria-label="Journey mode">
+                                <template for:each={modeOptions} for:item="m">
+                                    <button key={m.value} type="button" role="radio" aria-checked={m.checked} class={m.cssClass}
+                                        title={m.title} data-mode={m.value} onclick={handleModeChange}>{m.label}</button>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:if={canFlushCache}>
+                            <button type="button" class="nf-flush" title="Invalidate every cached serviceability, catalog, offer and priced-cart entry"
+                                onclick={handleFlushCache} disabled={busy}>Flush cache</button>
+                        </template>
+                        <button type="button" class={inspectorButtonClass} aria-pressed={inspectorPressed} onclick={toggleInspector}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"></path></svg>
+                            {inspectorButtonLabel}
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </header>
+
+        <template lwc:if={context}>
+            <div class="nf-row">
+                <main class="nf-main">
+                    <template lwc:if={isAgent}>
+                        <c-nf-agent-panel class="nf-block" user-name={context.userName} max-discount={context.maxDiscountPercent}
+                            account={account} onaccountchange={handleAccountChange} onerror={handleChildError}></c-nf-agent-panel>
+                    </template>
+
+                    <template lwc:if={showToolbar}>
+                        <div class="nf-toolbar">
+                            <template lwc:if={canGoBack}>
+                                <button type="button" class="nf-back" onclick={handleBack} disabled={busy}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+                                    {backLabel}
+                                </button>
+                            </template>
+                            <template lwc:if={canDiscard}>
+                                <button type="button" class="nf-discard" onclick={handleDiscardAsk} disabled={busy}>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>
+                                    Discard journey
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={confirmingDiscard}>
+                        <div class="nf-confirm" role="alertdialog" aria-labelledby="nf-confirm-title" aria-describedby="nf-confirm-text">
+                            <div>
+                                <strong id="nf-confirm-title">Discard this journey?</strong>
+                                <p id="nf-confirm-text">{discardDescription}</p>
+                            </div>
+                            <div class="nf-confirm-actions">
+                                <button type="button" class="nf-btn-secondary" onclick={handleDiscardCancel}>Keep going</button>
+                                <button type="button" class="nf-btn-danger" onclick={handleDiscardConfirm}>Discard</button>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template lwc:if={notice}>
+                        <div class="nf-notice" role="status">
+                            <span>{notice}</span>
+                            <lightning-button-icon icon-name="utility:close" variant="bare" alternative-text="Dismiss"
+                                onclick={dismissNotice}></lightning-button-icon>
+                        </div>
+                    </template>
+
+                    <template lwc:if={showSteps}>
+                        <ol class="nf-steps" aria-label="Progress">
+                            <template for:each={stepsView} for:item="s">
+                                <li key={s.key} class={s.cssClass} aria-current={s.ariaCurrent}>
+                                    <span class="nf-step-dot">{s.number}</span>
+                                    <span class="nf-step-label">{s.label}</span>
+                                </li>
+                            </template>
+                        </ol>
+                    </template>
+
+                    <template lwc:if={error}>
+                        <div class="nf-error" role="alert">
+                            <lightning-icon icon-name="utility:error" size="x-small" alternative-text="Error"></lightning-icon>
+                            <span>{error}</span>
+                            <lightning-button-icon icon-name="utility:close" variant="bare" alternative-text="Dismiss"
+                                onclick={dismissError}></lightning-button-icon>
+                        </div>
+                    </template>
+
+                    <div class="nf-stage">
+                        <template lwc:if={aiStarted}>
+                            <c-nf-agent-journey class={aiClass} currency-code={currencyCode} onexit={handleAiExit} ontrack={handleTrack}></c-nf-agent-journey>
+                        </template>
+                        <template lwc:if={multiSiteMode}>
+                            <c-nf-multi-site currency-code={currencyCode} account={account} is-agent={isAgent}
+                                onopenrecord={handleOpenRecord} ontrack={handleTrack}></c-nf-multi-site>
+                        </template>
+                        <template lwc:if={portalMode}>
+                            <c-nf-portal currency-code={currencyCode} username={portalUsername} onshop={handlePortalShop}></c-nf-portal>
+                        </template>
+                        <template lwc:if={showAiPromo}>
+                            <div class="nf-ai-promo">
+                                <span class="nf-ai-promo-icon" aria-hidden="true">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3z"></path></svg>
+                                </span>
+                                <span><strong>New: shop by chatting with Nova.</strong> Our AI assistant checks your address, finds your plans and builds your quote with you.</span>
+                                <button type="button" class="nf-ai-promo-cta" onclick={toggleAi}>Chat with Nova</button>
+                            </div>
+                        </template>
+                        <template lwc:if={showGuided}>
+                        <template lwc:if={busy}>
+                            <c-nf-progress heading={busyMessage} steps={busyProgress.steps} tips={busyProgress.tips}></c-nf-progress>
+                        </template>
+
+                        <template lwc:if={isAddressStep}>
+                            <template lwc:if={showLanding}>
+                                <c-nf-landing hero-title={heroTitle} hero-subtitle={heroSubtitle} preview={preview}
+                                    currency-code={currencyCode} onchooseplan={handleChoosePlan}>
+                                    <c-nf-address-form slot="form" class="nf-address" value={address} busy={busy}
+                                        hint={planHint} oncheck={handleCheck}></c-nf-address-form>
+                                </c-nf-landing>
+                            </template>
+                            <template lwc:else>
+                                <c-nf-address-form class="nf-address" value={address} busy={busy} oncheck={handleCheck}></c-nf-address-form>
+                            </template>
+                        </template>
+
+                        <template lwc:if={isOffersStep}>
+                            <div class="nf-layout">
+                                <div class="nf-col-main">
+                                    <c-nf-serviceability-banner result={serviceability} can-override={context.canOverrideServiceability}
+                                        busy={busy} onchangeaddress={handleChangeAddress} onoverride={handleOverride}></c-nf-serviceability-banner>
+
+                                    <template for:each={categoriesView} for:item="c">
+                                        <section key={c.key} class="nf-block">
+                                            <h2 class="nf-section-title">{c.label}</h2>
+                                            <div class="nf-offer-grid">
+                                                <template for:each={c.offers} for:item="o">
+                                                    <c-nf-offer-card key={o.offer.productId} offer={o.offer} in-cart-quantity={o.inCart}
+                                                        currency-code={currencyCode} disabled={busy} onselect={handleSelectOffer}></c-nf-offer-card>
+                                                    <!-- The configurator opens as a full-width row right under the chosen plan's row. -->
+                                                    <template lwc:if={o.showConfig}>
+                                                        <div key={o.configKey} class="nf-configurator">
+                                                            <c-nf-offer-configurator offer={configuring.offer} initial-selections={configuring.selections}
+                                                                editing={configuring.key} currency-code={currencyCode} rule-hidden={ruleHidden} oncancel={handleConfigCancel}
+                                                                onconfirm={handleConfigConfirm}></c-nf-offer-configurator>
+                                                        </div>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </section>
+                                    </template>
+                                    <template lwc:if={noOffers}>
+                                        <p class="nf-block nf-muted">There are no plans available for this address right now.</p>
+                                    </template>
+                                </div>
+                                <div class="nf-col-side">
+                                    <c-nf-cart items={cart} cart-state={cartState} syncing={syncing} currency-code={currencyCode} is-agent={isAgent}
+                                        max-discount={context.maxDiscountPercent} busy={busy} onedit={handleCartEdit}
+                                        onremove={handleCartRemove} onquantity={handleCartQuantity} ondiscount={handleCartDiscount}
+                                        onquote={handleQuote}></c-nf-cart>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template lwc:if={isReviewStep}>
+                            <c-nf-quote-review quote={quote} currency-code={currencyCode} is-agent={isAgent} busy={busy}
+                                onback={handleBackToOffers} oncontinue={handleToCheckout} onopenrecord={handleOpenRecord}></c-nf-quote-review>
+                        </template>
+
+                        <template lwc:if={isCheckoutStep}>
+                            <c-nf-checkout-form is-agent={isAgent} busy={busy} account-name={accountName}
+                                onback={handleBackToReview} onsubmit={handleCustomerDetails}></c-nf-checkout-form>
+                        </template>
+
+                        <template lwc:if={isSignStep}>
+                            <c-nf-agreement quote-id={quote.quoteId} signer={signer} is-agent={isAgent} continue-label={placeOrderLabel}
+                                oncontinue={handleAgreementSigned} onskip={handleAgreementSkipped}></c-nf-agreement>
+                            <div class="nf-actions">
+                                <lightning-button label="Back to details" icon-name="utility:back" onclick={handleBackToCheckout} disabled={busy}></lightning-button>
+                            </div>
+                        </template>
+
+                        <template lwc:if={isDoneStep}>
+                            <c-nf-order-confirmation order={order} currency-code={currencyCode} is-agent={isAgent}
+                                onopenrecord={handleOpenRecord} onrestart={handleRestart} ontrack={handleTrack}></c-nf-order-confirmation>
+                        </template>
+                        </template>
+                    </div>
+
+                    <template lwc:if={showFooter}>
+                        <footer class="nf-footer">
+                            <div>
+                                <a href="#" class="nf-footer-brand" onclick={handleHome}>NovaFiber</a>
+                                <p>A hypothetical carrier built on Salesforce Revenue Cloud for a guided selling proof of concept.</p>
+                            </div>
+                            <div class="nf-footer-col"><strong>Shop</strong><span>Home internet</span><span>NovaTV</span><span>NovaMobile</span></div>
+                            <div class="nf-footer-col"><strong>Help</strong><span>Order status</span><span>Install guide</span><span>Contact us</span></div>
+                            <div class="nf-footer-col"><strong>Company</strong><span>Terms of service</span><span>Privacy</span><span>Accessibility</span></div>
+                        </footer>
+                    </template>
+                </main>
+
+                <template lwc:if={inspectorOpen}>
+                    <div class="nf-side" style={sideStyle}>
+                        <div class="nf-resize" role="separator" aria-orientation="vertical" aria-label="Resize inspector"
+                            aria-valuemin="320" aria-valuemax={maxInspectorWidth} aria-valuenow={inspectorWidth} tabindex="0"
+                            title="Drag to resize · double-click to reset" onpointerdown={handleResizeStart}
+                            onkeydown={handleResizeKey} ondblclick={handleResizeReset}></div>
+                        <c-nf-inspector context={context} journey-state={journeyState} onclose={toggleInspector}></c-nf-inspector>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template lwc:elseif={loadError}>
+            <div class="nf-error" role="alert">{loadError}</div>
+        </template>
+        <template lwc:else>
+            <div class="nf-loading"><lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner></div>
+        </template>
+    </div>
+</template>

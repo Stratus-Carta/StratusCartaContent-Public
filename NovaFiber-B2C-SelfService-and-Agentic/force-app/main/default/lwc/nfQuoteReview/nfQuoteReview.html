@@ -1,0 +1,67 @@
+<template>
+    <div class="nf-card">
+        <div class="nf-row nf-wrap">
+            <div>
+                <h2 class="nf-h2">Your quote</h2>
+                <span class="nf-muted nf-small">Quote {quote.quoteNumber} · valid for 30 days</span>
+            </div>
+            <template lwc:if={isAgent}>
+                <lightning-button label="Open quote record" icon-name="utility:new_window" onclick={handleOpen}></lightning-button>
+            </template>
+        </div>
+
+        <template lwc:if={hasNotes}>
+            <template for:each={notes} for:item="n">
+                <div key={n.key} class="nf-note-banner nf-small" role="status">
+                    <span class="nf-agent-tag">Note</span> {n.text}
+                </div>
+            </template>
+        </template>
+
+        <div class="nf-lines" role="table" aria-label="Quote lines">
+            <div class="nf-line nf-head" role="row">
+                <span role="columnheader">Item</span>
+                <span role="columnheader" class="nf-num">Qty</span>
+                <span role="columnheader" class="nf-num">Price</span>
+                <span role="columnheader" class="nf-num">Total</span>
+            </div>
+            <template for:each={groups} for:item="g">
+                <div key={g.lineId} class="nf-group" role="rowgroup">
+                    <div class="nf-line nf-parent" role="row">
+                        <span role="cell">{g.productName}</span>
+                        <span role="cell" class="nf-num">{g.qty}</span>
+                        <span role="cell" class="nf-num">{g.listLabel}</span>
+                        <span role="cell" class="nf-num">{g.netLabel}
+                            <template lwc:if={g.discountLabel}><span class="nf-disc">{g.discountLabel}</span></template>
+                        </span>
+                    </div>
+                    <template for:each={g.children} for:item="c">
+                        <div key={c.lineId} class="nf-line nf-child" role="row">
+                            <span role="cell">{c.productName}</span>
+                            <span role="cell" class="nf-num">{c.qty}</span>
+                            <span role="cell" class="nf-num">{c.listLabel}</span>
+                            <span role="cell" class="nf-num">{c.netLabel}
+                                <template lwc:if={c.discountLabel}><span class="nf-disc">{c.discountLabel}</span></template>
+                            </span>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="nf-summary">
+            <div class="nf-row"><span>Monthly total</span><span class="nf-price">{monthlyLabel}<span class="nf-price-unit">/mo</span></span></div>
+            <div class="nf-row"><span>One-time charges</span><strong>{oneTimeLabel}</strong></div>
+            <template lwc:if={savingsLabel}>
+                <div class="nf-row nf-savings"><span>You save</span><strong>{savingsLabel}/mo</strong></div>
+            </template>
+            <p class="nf-muted nf-small">Configured and priced by Revenue Cloud. Taxes and regulatory fees are added on your first bill.</p>
+        </div>
+
+        <div class="nf-actions">
+            <lightning-button label="Change plans" icon-name="utility:back" onclick={handleBack} disabled={busy}></lightning-button>
+            <lightning-button variant="brand" label="Continue to checkout" icon-name="utility:forward" icon-position="right"
+                onclick={handleContinue} disabled={busy}></lightning-button>
+        </div>
+    </div>
+</template>

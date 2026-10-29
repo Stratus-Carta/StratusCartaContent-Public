@@ -1,0 +1,48 @@
+<template>
+    <div class="nf-card nf-done">
+        <div class="nf-check">
+            <lightning-icon icon-name="utility:success" size="large" alternative-text="Order placed"></lightning-icon>
+        </div>
+        <h2 class="nf-h2">{heading}</h2>
+        <p class="nf-muted">Order <strong>{order.orderNumber}</strong> for {order.accountName}</p>
+        <template lwc:if={order.contractNumber}>
+            <p class="nf-small nf-muted">Signed service agreement · Contract <strong>{order.contractNumber}</strong></p>
+        </template>
+
+        <div class="nf-facts">
+            <div><span class="nf-muted nf-small">Monthly</span><strong>{monthlyLabel}</strong></div>
+            <div><span class="nf-muted nf-small">One-time</span><strong>{oneTimeLabel}</strong></div>
+            <div><span class="nf-muted nf-small">{installHeading}</span><strong>{installLabel}</strong></div>
+            <div><span class="nf-muted nf-small">Status</span><strong>{order.status}</strong></div>
+        </div>
+
+        <template lwc:if={inFulfillment}>
+            <p class="nf-fulfil"><lightning-icon icon-name="utility:info" size="x-small" alternative-text=""></lightning-icon>
+                Your order is with our fulfillment team: we're reserving your network connection, shipping your equipment
+                and lining up your installation.</p>
+        </template>
+        <div class="nf-install">
+            <c-nf-install-booking order-id={order.orderId} booking-token={order.bookingToken} site-key="main"
+                appointment={appointment} heading={bookingHeading} onbooked={handleBooked}></c-nf-install-booking>
+        </div>
+
+        <ol class="nf-next">
+            <li>We reserve your connection on the NovaNet network.</li>
+            <li>Your equipment ships, then a technician installs and activates your service.</li>
+            <li>Billing starts once you're live.</li>
+        </ol>
+        <template lwc:if={canTrack}>
+            <p class="nf-muted nf-small nf-center-text">Follow every step in My NovaFiber: log in with <strong>{order.portalUsername}</strong>.</p>
+        </template>
+
+        <div class="nf-actions nf-center">
+            <template lwc:if={isAgent}>
+                <lightning-button label="Open order" icon-name="utility:new_window" onclick={handleOpen}></lightning-button>
+            </template>
+            <template lwc:if={canTrack}>
+                <lightning-button label="Track my order" icon-name="utility:forward" onclick={handleTrack}></lightning-button>
+            </template>
+            <lightning-button variant="brand" label={restartLabel} onclick={handleRestart}></lightning-button>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Certificate_Name__c</fullName>
+    <label>Certificate Name</label>
+    <description>Salesforce certificate (Certificate and Key Management) that signs the DocuSign JWT; its public key is registered on the DocuSign app. Default NF_DocuSign_JWT.</description>
+    <type>Text</type>
+    <length>80</length>
+</CustomField>

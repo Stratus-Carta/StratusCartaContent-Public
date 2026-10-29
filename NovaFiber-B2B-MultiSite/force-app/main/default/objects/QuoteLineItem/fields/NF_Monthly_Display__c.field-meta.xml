@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Monthly_Display__c</fullName>
+    <label>NF Monthly (display)</label>
+    <description>Monthly amount as text for document templates; a dash for one-time charges.</description>
+    <formula>IF(NF_Is_One_Time__c, "—", "$" &amp; IF((BLANKVALUE(NetTotalPrice, 0)) &gt;= 1000, TEXT(FLOOR((BLANKVALUE(NetTotalPrice, 0)) / 1000)) &amp; "," &amp; RIGHT("00" &amp; TEXT(MOD(FLOOR((BLANKVALUE(NetTotalPrice, 0))), 1000)), 3), TEXT(FLOOR((BLANKVALUE(NetTotalPrice, 0))))) &amp; "." &amp; RIGHT("0" &amp; TEXT(ROUND(MOD((BLANKVALUE(NetTotalPrice, 0)), 1) * 100, 0)), 2))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

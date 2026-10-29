@@ -1,0 +1,244 @@
+<template>
+    <aside class="nf-insp" aria-label="Journey inspector">
+        <div class="nf-head">
+            <div class="nf-row">
+                <span class="nf-dot" aria-hidden="true"></span>
+                <strong class="nf-title">Journey inspector</strong>
+                <span class="nf-chan">{channelLabel}</span>
+                <button class="nf-icon-btn" type="button" aria-label="Clear log" title="Clear log" onclick={handleClear}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>
+                </button>
+                <button class="nf-icon-btn" type="button" aria-label="Close inspector" title="Close" onclick={handleClose}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                </button>
+            </div>
+            <div class="nf-sub mono">{totals.calls} calls · {totals.callouts} callouts · {totals.pst} PST · {totals.records} records · {totals.ms} ms</div>
+            <div class="nf-tabs" role="tablist" aria-label="Inspector views">
+                <template for:each={tabs} for:item="t">
+                    <button key={t.key} type="button" role="tab" aria-selected={t.selected} class={t.cssClass}
+                        data-key={t.key} onclick={handleTab}>{t.label}</button>
+                </template>
+            </div>
+            <template lwc:if={isCalls}>
+                <div class="nf-filters">
+                    <template for:each={filters} for:item="f">
+                        <button key={f.key} type="button" class={f.cssClass} data-key={f.key} onclick={handleFilter}>{f.label}</button>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="nf-body">
+            <!-- BEHIND THE SCENES -->
+            <template lwc:if={isBts}>
+                <div class="bt-tiles">
+                    <template for:each={btsTotals} for:item="t">
+                        <div key={t.key} class={t.cssClass}>
+                            <span class="bt-count">{t.count}</span>
+                            <span class="bt-tile-label">{t.label}</span>
+                            <span class="bt-tile-hint">{t.hint}</span>
+                        </div>
+                    </template>
+                </div>
+                <template lwc:if={hasCalls}>
+                    <ol class="nf-list">
+                        <template for:each={btsCalls} for:item="c">
+                            <li key={c.id} class={c.cardClass}>
+                                <div class="bt-call-head">
+                                    <span class="bt-tag bt-custom">Custom</span>
+                                    <span class="bt-comp">
+                                        <span class="bt-name">UI · LWC {c.ui}</span>
+                                        <span class="bt-flow mono"><span class="bt-dim">Apex · </span>{c.entry}</span>
+                                    </span>
+                                    <span class="bt-time mono">{c.timing}</span>
+                                </div>
+                                <template lwc:if={c.hasRows}>
+                                    <ol class="bt-rows">
+                                        <template for:each={c.rows} for:item="r">
+                                            <li key={r.key} class={r.rowClass}>
+                                                <span class={r.tagClass}>{r.tag}</span>
+                                                <span class="bt-comp">
+                                                    <span class="bt-name">{r.component}</span>
+                                                    <template lwc:if={r.hasEndpoint}>
+                                                        <span class={r.apiClass}><b>API</b><span class="mono">{r.endpoint}</span></span>
+                                                    </template>
+                                                    <template lwc:if={r.hasWhat}><span class="bt-what">{r.what}</span></template>
+                                                </span>
+                                                <span class="bt-time mono">{r.duration}</span>
+                                            </li>
+                                        </template>
+                                    </ol>
+                                </template>
+                            </li>
+                        </template>
+                    </ol>
+                </template>
+                <template lwc:else>
+                    <p class="nf-empty">No calls yet. Enter an address to start the journey.</p>
+                </template>
+            </template>
+
+            <!-- CALLS -->
+            <template lwc:if={isCalls}>
+                <template lwc:if={hasCalls}>
+                    <ol class="nf-list">
+                        <template for:each={calls} for:item="c">
+                            <li key={c.id} class={c.cardClass}>
+                                <button type="button" class="nf-call-head" data-id={c.id} onclick={toggle} aria-expanded={c.open}>
+                                    <span class="nf-badge k-client">LWC</span>
+                                    <span class="mono nf-call-name">{c.name}</span>
+                                    <span class={c.statusClass}>{c.statusLabel}</span>
+                                </button>
+                                <div class="mono nf-meta">{c.at} · {c.timing}</div>
+                                <template lwc:if={c.open}>
+                                    <div class="nf-call-body">
+                                        <template lwc:if={c.error}>
+                                            <p class="nf-error-msg">{c.error}</p>
+                                        </template>
+                                        <template lwc:if={c.params}>
+                                            <div class="nf-label">Sent</div>
+                                            <pre class="nf-json">{c.params}</pre>
+                                        </template>
+                                        <template lwc:if={c.hasSteps}>
+                                            <div class="nf-label">Server trace</div>
+                                            <ol class="nf-steps">
+                                                <template for:each={c.steps} for:item="s">
+                                                    <li key={s.key} style={s.style}>
+                                                        <div class="nf-step">
+                                                            <span class={s.badgeClass}>{s.kind}</span>
+                                                            <span class="mono nf-step-label">{s.label}</span>
+                                                            <span class={s.statusClass}>{s.duration}</span>
+                                                            <template lwc:if={s.hasBody}>
+                                                                <button type="button" class="nf-link" data-id={s.key} onclick={toggle}>{s.toggleLabel}</button>
+                                                            </template>
+                                                        </div>
+                                                        <template lwc:if={s.detail}>
+                                                            <div class="mono nf-detail">{s.detail}</div>
+                                                        </template>
+                                                        <template lwc:if={s.open}>
+                                                            <template lwc:if={s.request}>
+                                                                <div class="nf-label">Request</div>
+                                                                <pre class="nf-json">{s.request}</pre>
+                                                            </template>
+                                                            <template lwc:if={s.response}>
+                                                                <div class="nf-label">Response</div>
+                                                                <pre class="nf-json">{s.response}</pre>
+                                                            </template>
+                                                            <template lwc:if={s.hasRecords}>
+                                                                <ul class="nf-recs mono">
+                                                                    <template for:each={s.records} for:item="r">
+                                                                        <li key={r.key}>{r.op} {r.sobjectType} {r.recordId}</li>
+                                                                    </template>
+                                                                </ul>
+                                                            </template>
+                                                        </template>
+                                                    </li>
+                                                </template>
+                                            </ol>
+                                        </template>
+                                        <template lwc:if={c.response}>
+                                            <div class="nf-label">Returned to the page</div>
+                                            <pre class="nf-json">{c.response}</pre>
+                                        </template>
+                                        <div class="nf-foot">
+                                            <span class="mono nf-meta">{c.limits}</span>
+                                            <button type="button" class="nf-small-btn" data-id={c.id} onclick={handleCopy}>Copy JSON</button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </li>
+                        </template>
+                    </ol>
+                </template>
+                <template lwc:else>
+                    <p class="nf-empty">No calls yet. Enter an address to start the journey.</p>
+                </template>
+            </template>
+
+            <!-- SEQUENCE -->
+            <template lwc:if={isFlow}>
+                <template lwc:if={hasSequence}>
+                    <p class="nf-hint nf-sq-hint">Each call from the page, in order. Solid arrows are requests, dashed are responses. Click an arrow for its details.</p>
+                    <div class="nf-sq-wrap">
+                        <svg class="nf-sq" width={sequence.width} height={sequence.height} viewBox={sequence.viewBox}
+                            role="img" aria-label="Sequence diagram of the journey calls">
+                            <template for:each={sequence.lanes} for:item="l">
+                                <g key={l.key}>
+                                    <line class="sq-life" x1={l.x} y1="44" x2={l.x} y2={l.lifeY2}></line>
+                                    <rect class="sq-lane" x={l.rectX} y="4" width={l.rectW} height="38" rx="8"></rect>
+                                    <text class="sq-lane-title" x={l.x} y="20" text-anchor="middle">{l.label}</text>
+                                    <text class="sq-lane-sub" x={l.x} y="34" text-anchor="middle">{l.sub}</text>
+                                </g>
+                            </template>
+                            <template for:each={sequence.items} for:item="m">
+                                <g key={m.key} class="sq-item" data-call={m.callId} onclick={handleSequenceClick}>
+                                    <template lwc:if={m.isSep}>
+                                        <line class="sq-sep" x1="0" y1={m.y} x2={m.x2} y2={m.y}></line>
+                                        <text class="sq-sep-text" x="6" y={m.textY}>{m.label}</text>
+                                    </template>
+                                    <template lwc:if={m.isArrow}>
+                                        <title>{m.title}</title>
+                                        <line class={m.lineClass} x1={m.x1} y1={m.y} x2={m.x2} y2={m.y}></line>
+                                        <polygon class={m.headClass} points={m.head}></polygon>
+                                        <text class={m.textClass} x={m.textX} y={m.textY} text-anchor="middle">{m.label}</text>
+                                    </template>
+                                    <template lwc:if={m.isNote}>
+                                        <title>{m.title}</title>
+                                        <rect class="sq-note" x={m.rectX} y={m.rectY} width={m.rectW} height="22" rx="5"></rect>
+                                        <text class="sq-note-text" x={m.x} y={m.textY} text-anchor="middle">{m.label}</text>
+                                    </template>
+                                </g>
+                            </template>
+                        </svg>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="nf-empty">No calls yet. Enter an address to start the journey.</p>
+                </template>
+            </template>
+
+            <!-- DATA -->
+            <template lwc:if={isData}>
+                <div class="nf-sub">{storedCount} stored · {readCount} retrieved</div>
+                <template lwc:if={hasData}>
+                    <div class="nf-table-wrap">
+                        <table class="mono nf-table">
+                            <thead>
+                                <tr><th scope="col">Op</th><th scope="col">Object</th><th scope="col">Id</th><th scope="col">Why</th></tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={dataRows} for:item="r">
+                                    <tr key={r.key}>
+                                        <td><span class={r.opClass}>{r.op}</span></td>
+                                        <td>{r.sobjectType}</td>
+                                        <td>
+                                            <template lwc:if={r.showLink}>
+                                                <a href={r.href} target="_blank" rel="noopener">{r.shortId}</a>
+                                            </template>
+                                            <template lwc:else>{r.shortId}</template>
+                                        </td>
+                                        <td class="nf-why">{r.label}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="nf-empty">Nothing stored or retrieved yet.</p>
+                </template>
+                <template lwc:if={canLink}>
+                    <p class="nf-hint">Ids open the record in Salesforce.</p>
+                </template>
+                <template lwc:else>
+                    <p class="nf-hint">Emails and phone numbers are masked in every payload.</p>
+                </template>
+            </template>
+
+            <!-- CONTEXT -->
+            <template lwc:if={isContext}>
+                <pre class="nf-json">{contextJson}</pre>
+            </template>
+        </div>
+    </aside>
+</template>

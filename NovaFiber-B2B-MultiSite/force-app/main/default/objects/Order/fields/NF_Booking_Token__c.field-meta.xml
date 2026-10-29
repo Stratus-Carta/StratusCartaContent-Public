@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Booking_Token__c</fullName>
+    <label>NF Booking Token</label>
+    <description>Random token returned with the order confirmation; lets the self-service visitor book and sign for this order only.</description>
+    <type>Text</type>
+    <length>64</length>
+</CustomField>

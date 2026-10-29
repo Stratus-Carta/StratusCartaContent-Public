@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Journey_Mode__c</fullName>
+    <description>Default journey mode. Cached: serviceability, catalog, offers and already-priced carts come from the org cache (fast). Realtime: every step calls the network API and Revenue Cloud live. Agents and debug visitors can switch per session.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <label>Journey Mode</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Cached</fullName><default>true</default><label>Cached</label></value>
+            <value><fullName>Realtime</fullName><default>false</default><label>Realtime</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

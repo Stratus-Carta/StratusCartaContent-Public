@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NF_Valid_Until_Display__c</fullName>
+    <label>NF Valid Until (display)</label>
+    <description>Thirty days from today, written out.</description>
+    <formula>CASE(MONTH((TODAY() + 30)), 1, "January", 2, "February", 3, "March", 4, "April", 5, "May", 6, "June", 7, "July", 8, "August", 9, "September", 10, "October", 11, "November", "December") &amp; " " &amp; TEXT(DAY((TODAY() + 30))) &amp; ", " &amp; TEXT(YEAR((TODAY() + 30)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

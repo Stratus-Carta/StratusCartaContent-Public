@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Unlocks agent-only capabilities in the NovaFiber guided selling journey: discounts (up to 20%), serviceability override and selecting an existing customer account.</description>
+    <isLicensed>false</isLicensed>
+    <label>NovaFiber Agent-Assisted Selling</label>
+</CustomPermission>

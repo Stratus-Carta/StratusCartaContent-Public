@@ -1,0 +1,81 @@
+<template>
+    <section class="ib" aria-label={heading}>
+        <template lwc:if={error}>
+            <div class="ib-error" role="alert">
+                <lightning-icon icon-name="utility:error" size="x-small" alternative-text=""></lightning-icon>
+                <span>{error}</span>
+            </div>
+        </template>
+
+        <template lwc:if={showBooked}>
+            <div class="ib-booked">
+                <div class="ib-booked-icon" aria-hidden="true">
+                    <lightning-icon icon-name="utility:event" size="small" alternative-text=""></lightning-icon>
+                </div>
+                <div class="ib-booked-body">
+                    <p class="ib-eyebrow">Installation booked{siteSuffix}</p>
+                    <p class="ib-booked-when">{booked.dateLabel}</p>
+                    <p class="ib-booked-window">Technicians arrive {booked.windowLabel}</p>
+                    <p class="nf-small nf-muted">{booked.crewName} · Work order {booked.workOrderNumber} · Appointment {booked.appointmentNumber}</p>
+                </div>
+                <button type="button" class="nf-link ib-change" onclick={handleChange}>Change</button>
+            </div>
+        </template>
+
+        <template lwc:if={showCalendar}>
+            <div class="ib-head">
+                <div>
+                    <h3 class="nf-h3">{heading}</h3>
+                    <p class="nf-small nf-muted">{subtitle}</p>
+                </div>
+                <template lwc:if={editing}>
+                    <button type="button" class="nf-link" onclick={handleCancelChange}>Keep current appointment</button>
+                </template>
+            </div>
+
+            <div class="ib-cal" role="group" aria-label="Choose a day">
+                <template for:each={weekdayHeaders} for:item="w">
+                    <div key={w} class="ib-weekday" aria-hidden="true">{w}</div>
+                </template>
+                <template for:each={cells} for:item="c">
+                    <template lwc:if={c.isPad}>
+                        <div key={c.key} class={c.className}></div>
+                    </template>
+                    <template lwc:else>
+                        <button key={c.key} type="button" class={c.className} data-date={c.dateKey} disabled={c.disabled}
+                            aria-label={c.ariaLabel} onclick={handleDay}>
+                            <span class="ib-day-month">{c.month}</span>
+                            <span class="ib-day-num">{c.dayNumber}</span>
+                            <span class="ib-day-avail">{c.availability}</span>
+                        </button>
+                    </template>
+                </template>
+            </div>
+
+            <template lwc:if={hasSlotsForDay}>
+                <p class="ib-slots-title">Arrival windows on {selectedDayLabel}</p>
+                <div class="ib-slots" role="group" aria-label="Choose an arrival window">
+                    <template for:each={daySlots} for:item="s">
+                        <button key={s.slotKey} type="button" class={s.className} data-slot={s.slotKey} disabled={s.disabled}
+                            aria-pressed={s.pressed} onclick={handleSlot}>
+                            <span class="ib-slot-label">{s.label}</span>
+                            <span class="ib-slot-note">{s.note}</span>
+                        </button>
+                    </template>
+                </div>
+            </template>
+
+            <div class="ib-actions">
+                <lightning-button variant="brand" label={bookLabel} icon-name="utility:event" onclick={handleBook}
+                    disabled={bookDisabled}></lightning-button>
+            </div>
+        </template>
+
+        <template lwc:if={loading}>
+            <div class="ib-loading">
+                <lightning-spinner size="small" alternative-text="Loading crew availability"></lightning-spinner>
+                <span class="nf-small nf-muted">Checking crew availability…</span>
+            </div>
+        </template>
+    </section>
+</template>
